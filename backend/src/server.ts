@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import "dotenv/config";
 
 // importação do client do prisma
 // sem ele, não há como utilizar as queries do banco
@@ -9,12 +10,19 @@ import { prisma } from "./lib/prisma";
 // a variável "fastify" representa o servidor inteiro
 const fastify = Fastify();
 
+// rota teste
+fastify.get("/", (req, res) => {
+  {
+    return { message: "Servidor ok!" };
+  }
+});
+
 // a inicialização do servidor demorar um pouco, por isso a função é asíncrona
 // definir "host: 0.0.0.0" permite que o servidor aceite conexões externas
 const start = async () => {
   try {
     const endereco = await fastify.listen({
-      port: 3000,
+      port: process.env.PORT ? Number(process.env.PORT) : 3000,
       host: "0.0.0.0",
     });
 
