@@ -1,9 +1,11 @@
 import Fastify from "fastify";
+
+// import do dotenv para receber a variável "PORT"
 import "dotenv/config";
 
-// importação do client do prisma
-// sem ele, não há como utilizar as queries do banco
-import { prisma } from "./lib/prisma";
+// como as rotas não estão sendo criadas neste arquivo, 
+// é preciso importá-las para que o fastify as reconheças
+import { usuarioRoutes } from "./routes/usuario.routes";
 
 // a função Fastify é a responsável por criar o servidor
 // ela é armazenada em um variável para facilidade
@@ -11,11 +13,13 @@ import { prisma } from "./lib/prisma";
 const fastify = Fastify();
 
 // rota teste
-fastify.get("/", (req, res) => {
-  {
+fastify.get("/teste", async (req, res) => {
     return { message: "Servidor ok!" };
-  }
 });
+
+// como as rotas não estão sendo criadas neste arquivo, 
+// é preciso registrá-las para que o fastify as reconheças
+fastify.register(usuarioRoutes);
 
 // a inicialização do servidor demorar um pouco, por isso a função é asíncrona
 // definir "host: 0.0.0.0" permite que o servidor aceite conexões externas
