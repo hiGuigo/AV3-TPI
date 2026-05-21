@@ -1,8 +1,9 @@
-## Estrutura do Projeto
+## Estrutura do Projeto Aerocode
 
 Abaixo está a organização principal do projeto e a responsabilidade de cada diretório/arquivo mais importante.
 
 ```
+backend/
 ├── prisma/
 ├── src/
 │   ├── lib/
