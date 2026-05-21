@@ -23,14 +23,14 @@ Para entender melhor como foi pensada a estrutura do projeto, acesse a documenta
 ## Regras de Negócio
 
 <p style="line-height: 0;">
-Para entender um pouco melhor sobre que o sistema permite e como funciona por trás do código, acesse a documentação:
+Para entender um pouco melhor sobre o que o sistema permite e como funciona por trás do código, acesse a documentação:
 
 <a href="https://github.com/hiGuigo/AV3-TPI/blob/main/documenta%C3%A7%C3%A3o/regras.md">Regras de Negócio Aerocode</a>
 </p>
 
 ## Entidades do Banco de Dados
 <p style="line-height: 0;">
-Para uma visualização básica das entidades utilizadas na base de dados do projeto, acessa a documentação:
+Para uma visualização básica das entidades utilizadas na base de dados do projeto, acesse a documentação:
 
 <a href="https://github.com/hiGuigo/AV3-TPI/blob/main/documenta%C3%A7%C3%A3o/entidades.md">Banco de Dados Aerocode</a>
 </p>
