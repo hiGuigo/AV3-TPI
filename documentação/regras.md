@@ -35,3 +35,11 @@ O administrador possui todas as permissões do engenheiro e também pode:
 - cadastrar usuários
 - editar usuários
 - adicionar etapas
+
+## Do sistema
+
+Algumas regras gerais que o sistema atende
+
+- Senha no cadastro de usuário criptografada com "bcrypt"
+- Usuário (username) existente não pode ser cadastrado novamente
+- Identificação de usuários (id) feita com "Identificador Único Universal" (UUID)
