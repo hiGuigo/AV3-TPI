@@ -24,7 +24,7 @@ git clone repo
 ### 3. Acessar o diretório do projeto
 
 ```bash
-cd dir
+cd AV3-TPI
 cd backend
 ```
 
@@ -51,7 +51,19 @@ DATABASE_PASSWORD=
 DATABASE_NAME=
 ```
 
-### 7. Iniciar o servidor em modo de desenvolvimento
+### 7. Crie o cliente do prisma
+
+```bash
+npx prisma generate
+```
+
+### 8. Execute a migração do prisma
+
+```bash
+npx prisma migrate dev
+```
+
+### 9. Iniciar o servidor em modo de desenvolvimento
 
 ```bash
 npm run dev
