@@ -36,10 +36,36 @@ O administrador possui todas as permissões do engenheiro e também pode:
 - editar usuários
 - adicionar etapas
 
-## Do sistema
+## Algumas regras gerais que o sistema atende
 
-Algumas regras gerais que o sistema atende
+**Senha no cadastro de usuário criptografada com "bcrypt"**
 
-- Senha no cadastro de usuário criptografada com "bcrypt"
-- Usuário (username) existente não pode ser cadastrado novamente
-- Identificação de usuários (id) feita com "Identificador Único Universal" (UUID)
+- Evita que senhas sejam armazenadas em texto puro no banco de dados
+- Aumenta a segurança caso ocorra vazamento de dados
+- Dificulta ataques de engenharia reversa utilizando hash com salt
+
+**Usuário (username) existente não pode ser cadastrado novamente**
+
+- Garante unicidade dos usuários no sistema
+- Evita conflitos durante o processo de login
+- Impede duplicidade de informações no banco de dados
+
+**Identificação de usuários (id) feita com "Identificador Único Universal" (UUID)**
+
+- Garante identificadores únicos para cada usuário
+- Evita conflitos de IDs em diferentes ambientes ou servidores
+- Dificulta previsões sequenciais de identificadores por questões de segurança
+
+**Utilização de JWT (Jason Web Token) para autenticação stateless**
+
+- Permite autenticação sem necessidade de armazenar sessão no servidor
+- Facilita escalabilidade da aplicação
+- Possibilita validação rápida e segura do usuário autenticado
+- Mantém informações do usuário protegidas através de assinatura digital do token
+
+**O sistema atende a estrutura "Role-Based Access Controll (RBAC)" para controle de permissões**
+
+- Garante que cada usuário acesse apenas funcionalidades permitidas
+- Facilita gerenciamento de permissões por cargos ou níveis de acesso
+- Melhora a segurança da aplicação
+- Centraliza regras de autorização de forma organizada e escalável

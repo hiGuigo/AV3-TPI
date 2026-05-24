@@ -49,6 +49,8 @@ DATABASE_HOST=
 DATABASE_USER=
 DATABASE_PASSWORD=
 DATABASE_NAME=
+
+JWT_SECRET=
 ```
 
 ### 7. Crie o cliente do prisma
