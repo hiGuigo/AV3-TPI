@@ -3,8 +3,12 @@ import Fastify from "fastify";
 // import do dotenv para receber a variável "PORT"
 import "dotenv/config";
 
+// importanto o jason web token antes das rotas (importante)
+import jwt from "./plugins/jwt";
+
 // como as rotas não estão sendo criadas neste arquivo, 
 // é preciso importá-las para que o fastify as reconheças
+import { authRoutes } from "./routes/auth.routes";
 import { usuarioRoutes } from "./routes/usuario.routes";
 
 // a função Fastify é a responsável por criar o servidor
@@ -12,14 +16,15 @@ import { usuarioRoutes } from "./routes/usuario.routes";
 // a variável "fastify" representa o servidor inteiro
 const fastify = Fastify();
 
-// rota teste
-fastify.get("/teste", async (req, res) => {
-    return { message: "Servidor ok!" };
-});
+// registrando o jason web token
+// ele deve vir antes das rotas porque adiciona funcionalidades
+// ao módulo que as rotas irão precisar utilizar
+await fastify.register(jwt);
 
 // como as rotas não estão sendo criadas neste arquivo, 
 // é preciso registrá-las para que o fastify as reconheças
-fastify.register(usuarioRoutes);
+await fastify.register(authRoutes);
+await fastify.register(usuarioRoutes);
 
 // a inicialização do servidor demorar um pouco, por isso a função é asíncrona
 // definir "host: 0.0.0.0" permite que o servidor aceite conexões externas

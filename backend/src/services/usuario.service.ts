@@ -6,7 +6,7 @@ import { UsuarioRepository } from "../repositories/usuario.repository";
 
 // as permissões são utilizadas em muitos lugares
 // para evitar repetição de código, elas são definidas em um único arquivo
-import { Permissao } from "../types/usuario/permissao";
+import { Permissao } from "../types/auth/permissao";
 
 export class UsuarioService {
   // criação da instância do repository
@@ -91,7 +91,7 @@ export class UsuarioService {
     if (data.username) {
       const usernameExiste = await this.usuarioRepository.findByUsername(
         data.username,
-      );  
+      );
 
       // o segundo if evita conflito quando o usuário altera os próprios dados
       // a primeira parte verifica se foi encontrado alguém com o username informado

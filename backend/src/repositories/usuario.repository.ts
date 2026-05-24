@@ -5,7 +5,7 @@ import { prisma } from "../lib/prisma";
 
 // as permissões são utilizadas em muitos lugares
 // para evitar repetição de código, elas são definidas em um único arquivo
-import { Permissao } from "../types/usuario/permissao";
+import { Permissao } from "../types/auth/permissao";
 
 export class UsuarioRepository {
   // utiliza o client para realisar o SELECT no banco

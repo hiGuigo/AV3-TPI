@@ -1,5 +1,4 @@
-// utilizado em praticamente todo o fluxo de arquivos:
-// routes -> controller -> services -> repository
+// utilizado em diversos arquivos para garantir a aplicação corretao do RBAC
 export const permissoes = [
   "ADMIN",
   "ENGENHEIRO",

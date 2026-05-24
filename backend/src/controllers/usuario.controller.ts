@@ -18,29 +18,29 @@ export class UsuarioController {
   // esse método é responsável pela busca de todos os usuários cadastrados
   // ele armazena na variável "usuarios" o resultado da pesquisa retornada pelo service
   // e retorna "usuarios" para a requisição feita em "usuario.routes.ts"
-  async findAll(req: FastifyRequest, res: FastifyReply) {
-    // a responsabilidade de tratar os erros é executada aqui pelo try catch
-    try {
-      const usuarios = await this.usuarioService.findAll();
-      return res.status(200).send(usuarios);
-    } catch (e) {
-      // aqui vem o tratamento de erro em si
-      // como em JS e TS qualquer coisa pode ser "lançada"
-      // o código verifica se o que está acontecendo é realmente um objeto da classe Error
-      // isso garante que .message exista
-      if (e instanceof Error) {
-        // erro 400 para erros causados pelo cliente (tratamento das regras de negócio)
-        return res.status(400).send({
-          erro: e.message,
+    async findAll(req: FastifyRequest, res: FastifyReply) {
+      // a responsabilidade de tratar os erros é executada aqui pelo try catch
+      try {
+        const usuarios = await this.usuarioService.findAll();
+        return res.status(200).send(usuarios);
+      } catch (e) {
+        // aqui vem o tratamento de erro em si
+        // como em JS e TS qualquer coisa pode ser "lançada"
+        // o código verifica se o que está acontecendo é realmente um objeto da classe Error
+        // isso garante que .message exista
+        if (e instanceof Error) {
+          // erro 400 para erros causados pelo cliente (tratamento das regras de negócio)
+          return res.status(400).send({
+            erro: e.message,
+          });
+        }
+
+        // erro 500 para erros inesperados no servidor (falha no banco, por exemplo)
+        return res.status(500).send({
+          erro: "Erro interno",
         });
       }
-
-      // erro 500 para erros inesperados no servidor (falha no banco, por exemplo)
-      return res.status(500).send({
-        erro: "Erro interno",
-      });
     }
-  }
 
   // aqui é necessário informar o "request" e "response", bem como os seus tipos.
   // "<{Body: CreateUsuarioBody}>" é uma "personalização"

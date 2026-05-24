@@ -5,6 +5,9 @@
 // é preciso informar o tipo da instância com o import
 import { FastifyInstance } from "fastify";
 
+import { auth } from "../middlewares/auth";
+import { verifyRole } from "../middlewares/verifyRole";
+
 // classe controller
 import { UsuarioController } from "../controllers/usuario.controller";
 
@@ -13,7 +16,11 @@ const usuarioController = new UsuarioController();
 
 // as permissões são utilizadas em muitos lugares
 // para evitar repetição de código, elas são definidas em um único arquivo
-import { permissoes } from "../types/usuario/permissao";
+import { permissoes } from "../types/auth/permissao";
+
+// imports para a tipagem das rotas
+import { UpdateUsuarioBody } from "../types/usuario/updateUsuarioBody";
+import { CreateUsuarioBody } from "../types/usuario/createUsuarioBody";
 
 // por conta da tipagem do TypeScript, além de ser necessário informar a instância (fastify),
 // é necessário também informar o tipo dela (FastifyInstance)
@@ -23,17 +30,37 @@ import { permissoes } from "../types/usuario/permissao";
 export async function usuarioRoutes(fastify: FastifyInstance) {
   // requisição simples para buscar todos os usuários no sistema
   // utilizao método "findAll" do controller
-  fastify.get("/usuarios", usuarioController.findAll.bind(usuarioController));
+  fastify.get(
+    "/usuarios",
+    // o preHandler é utilizado para garantir a execução dos middlewares (que no caso são dois)
+    // "auth" é responsável por fazer a verificação do token e autenticar o usuário (se está logado ou não)
+    // "verifyRole" depende de auth, por isso vem depois. ele garante que apenas quem tem permissão acesse a rota
+    // usuário sem token: erro
+    // usuário autenticado, mas sem permissão: erro
+    // aqui é garantido o "Role-Based Access Controll"
+    { preHandler: [auth, verifyRole(["ADMIN"])] },
+
+    usuarioController.findAll.bind(usuarioController),
+  );
 
   // aqui é definida a rota,
   // a validação dos campos (aceitam somente o que é passado no schema)
   // e um "bind()" para que o contexto (controller) do método de requisição
   // seja mantido quando o método for executado pelo Fastify
-  fastify.post(
+  fastify.post<{
+    Body: CreateUsuarioBody;
+  }>(
     "/usuarios",
     {
-      // schema serve para configurar a rota (coisa do Fastify)
-      // ele valida dados, gera tipagem, impede requests inválidos, entre outras coisas
+      // o preHandler é utilizado para garantir a execução dos middlewares (que no caso são dois)
+      // "auth" é responsável por fazer a verificação do token e autenticar o usuário (se está logado ou não)
+      // "verifyRole" depende de auth, por isso vem depois. ele garante que apenas quem tem permissão acesse a rota
+      // usuário sem token: erro
+      // usuário autenticado, mas sem permissão: erro
+      // aqui é garantido o "Role-Based Access Controll"
+      preHandler: [auth, verifyRole(["ADMIN"])],
+
+      // schema serve para validar os dados da rota em runtime
       // aqui ele valida params e body, se os dois forem inválidos de alguma forma,
       // o método nem chega no controller
       schema: {
@@ -68,11 +95,21 @@ export async function usuarioRoutes(fastify: FastifyInstance) {
 
   // aqui no método patch, assim como nos outros,
   // existe uma validação de params, body e chamada do controller
-  fastify.patch(
+  fastify.patch<{
+    Params: { id: string };
+    Body: UpdateUsuarioBody;
+  }>(
     "/usuarios/:id",
     {
-      // schema serve para configurar a rota (coisa do Fastify)
-      // ele valida dados, gera tipagem, impede requests inválidos, entre outras coisas
+      // o preHandler é utilizado para garantir a execução dos middlewares (que no caso são dois)
+      // "auth" é responsável por fazer a verificação do token e autenticar o usuário (se está logado ou não)
+      // "verifyRole" depende de auth, por isso vem depois. ele garante que apenas quem tem permissão acesse a rota
+      // usuário sem token: erro
+      // usuário autenticado, mas sem permissão: erro
+      // aqui é garantido o "Role-Based Access Controll"
+      preHandler: [auth, verifyRole(["ADMIN"])],
+
+      // schema serve para validar os dados da rota em runtime
       // aqui ele valida params e body, se os dois forem inválidos de alguma forma,
       // o método nem chega no controller
       schema: {
@@ -117,9 +154,21 @@ export async function usuarioRoutes(fastify: FastifyInstance) {
 
   // aqui como sempre, mais fácil de entender
   // define a rota, configuração e handler
-  fastify.delete(
+  // é importante tipar a rota para que o preHandler seja "entendido" pelo TypeScript
+  fastify.delete<{
+    Params: {
+      id: string;
+    };
+  }>(
     "/usuarios/:id",
     {
+      // o preHandler é utilizado para garantir a execução dos middlewares (que no caso são dois)
+      // "auth" é responsável por fazer a verificação do token e autenticar o usuário (se está logado ou não)
+      // "verifyRole" depende de auth, por isso vem depois. ele garante que apenas quem tem permissão acesse a rota
+      // usuário sem token: erro
+      // usuário autenticado, mas sem permissão: erro
+      // aqui é garantido o "Role-Based Access Controll"
+      preHandler: [auth, verifyRole(["ADMIN"])],
       // schema é o responsável pela configuração da rota
       schema: {
         // params garante a validação do que está sendo enviado junto com a url
