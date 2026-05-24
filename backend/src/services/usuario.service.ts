@@ -29,7 +29,7 @@ export class UsuarioService {
     const tempoProcessamento = fimProcessamento - inicioProcessamento;
 
     console.log(
-      `Tempo de processamento de GET /usuarios: ${tempoProcessamento.toFixed(2)} ms`,
+      `[Service] findAll executado em ${tempoProcessamento.toFixed(2)} ms`,
     );
 
     return usuarios;
