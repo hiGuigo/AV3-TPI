@@ -35,6 +35,13 @@ Para uma visualização básica das entidades utilizadas na base de dados do pro
 <a href="https://github.com/hiGuigo/AV3-TPI/blob/main/documenta%C3%A7%C3%A3o/entidades.md">Banco de Dados Aerocode</a>
 </p>
 
+## Relatório de Testes
+<p style="line-height: 0;">
+Para entender sobre como foram feitos os testes de desempenho do servidor, acesse a documentação:
+
+<a href="https://github.com/hiGuigo/AV3-TPI/blob/main/documenta%C3%A7%C3%A3o/relatorio.md">Relatório de Testes Aerocode</a>
+</p>
+
 ## Stack Utilizada
 
 - Node.js
