@@ -1,6 +1,9 @@
 // bcrypt para criptografia da senha
 import bcrypt from "bcrypt";
 
+// importação do módulo perf_hooks para medição das métricas
+import { performance } from "perf_hooks";
+
 // o service não "conversa" diretamente com o banco, ele delega isso para o repository
 import { UsuarioRepository } from "../repositories/usuario.repository";
 
@@ -16,7 +19,20 @@ export class UsuarioService {
   // utiliza o método findMany do repositório para retornar o resultado
   // para o controller
   async findAll() {
-    return this.usuarioRepository.findMany();
+    // medidores de tempo de processamento aplicados na rota GET /usuarios
+    const inicioProcessamento = performance.now();
+
+    const usuarios = await this.usuarioRepository.findMany();
+
+    const fimProcessamento = performance.now();
+
+    const tempoProcessamento = fimProcessamento - inicioProcessamento;
+
+    console.log(
+      `Tempo de processamento de GET /usuarios: ${tempoProcessamento.toFixed(2)} ms`,
+    );
+
+    return usuarios;
   }
 
   // esse é o método responsável por criar o usuário

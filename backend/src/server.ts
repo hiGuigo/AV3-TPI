@@ -27,19 +27,28 @@ fastify.addHook("onRequest", async (req, reply) => {
   req.inicio = performance.now();
 });
 
-// o hook onSend é executado um pouco antes da resposta ser enviada ao client
-// quando ele é chamado, a rota já foi executada, o controller já terminou de fazer o que tinha que fazer
-// e o status HTTP já existe, a requisição só não terminou ainda, mas tá praticamente lá
-fastify.addHook("onSend", async (req, reply, payload) => {
-  // depois de tudo ter sido feito, é salvo o instante final da requisição
+// o hook onResponse é executado quando a requisição já terminou
+// ele será utilizado principalmente para medir o tempo de resposta
+let totalTempo = 0;
+let totalRequisicoes = 0;
+
+fastify.addHook("onResponse", async (req, reply) => {
+  // é salvo o instânte final da requisição
   const fim = performance.now();
 
-  // cálculo do tempo que a requisição levou (em ms)
+  // calculado o tempo da resposta (em ms)
   const tempo = fim - req.inicio;
+
+  // para calcular o tempo médio da resposta são somados tempo e requisições feitas
+  totalTempo += tempo;
+  totalRequisicoes++;
 
   console.log(
     `[${reply.statusCode}] ${req.method} ${req.url} - ${tempo.toFixed(2)} ms`,
   );
+
+  // calculando o tempo médio das requisições
+  console.log(`Tempo médio de resposta da requisição: ${(totalTempo / totalRequisicoes).toFixed(2)} ms`);
 });
 
 // registrando o jason web token
