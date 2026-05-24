@@ -18,7 +18,7 @@ create database aerocode;
 ### 2. Clonar o repositório
 
 ```bash
-git clone repo
+git clone https://github.com/hiGuigo/AV3-TPI.git
 ```
 
 ### 3. Acessar o diretório do projeto
@@ -49,7 +49,10 @@ DATABASE_HOST=
 DATABASE_USER=
 DATABASE_PASSWORD=
 DATABASE_NAME=
+```
 
+E defina a sua assinatura para o JWT:
+```
 JWT_SECRET=
 ```
 
