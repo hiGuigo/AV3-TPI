@@ -13,7 +13,8 @@ import jwt from "./plugins/jwt";
 // é preciso importá-las para que o fastify as reconheças
 import { authRoutes } from "./routes/auth.routes";
 import { usuarioRoutes } from "./routes/usuario.routes";
-import {funcionarioRoutes} from "./routes/funcionario.routes";
+import { funcionarioRoutes } from "./routes/funcionario.routes";
+import { aeronaveRoutes } from "./routes/aeronave.routes";
 
 // a função Fastify é a responsável por criar o servidor
 // ela é armazenada em um variável para facilidade
@@ -49,7 +50,9 @@ fastify.addHook("onResponse", async (req, reply) => {
   );
 
   // calculando o tempo médio das requisições
-  console.log(`Tempo médio de resposta da requisição: ${(totalTempo / totalRequisicoes).toFixed(2)} ms`);
+  console.log(
+    `Tempo médio de resposta da requisição: ${(totalTempo / totalRequisicoes).toFixed(2)} ms`,
+  );
 });
 
 // registrando o jason web token
@@ -61,7 +64,8 @@ await fastify.register(jwt);
 // é preciso registrá-las para que o fastify as reconheças
 await fastify.register(authRoutes);
 await fastify.register(usuarioRoutes);
-await fastify.register(funcionarioRoutes)
+await fastify.register(funcionarioRoutes);
+await fastify.register(aeronaveRoutes);
 
 // a inicialização do servidor demorar um pouco, por isso a função é asíncrona
 // definir "host: 0.0.0.0" permite que o servidor aceite conexões externas
