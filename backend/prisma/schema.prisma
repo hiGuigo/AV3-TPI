@@ -73,11 +73,13 @@ model Peca {
 }
 
 model Teste {
-  id         String           @id @default(uuid())
-  tipo       TipoTeste
-  resultado  testes_resultado
+  id        String           @id @default(uuid())
+  tipo      TipoTeste
+  resultado testes_resultado
+  createdAt DateTime         @default(now())
+
   aeronaveId String
-  aeronave   Aeronave         @relation(fields: [aeronaveId], references: [id])
+  aeronave   Aeronave @relation(fields: [aeronaveId], references: [id])
 
   @@index([aeronaveId], map: "testes_aeronaveId_fkey")
   @@map("testes")
