@@ -16,6 +16,7 @@ import { usuarioRoutes } from "./routes/usuario.routes";
 import { funcionarioRoutes } from "./routes/funcionario.routes";
 import { aeronaveRoutes } from "./routes/aeronave.routes";
 import { etapaRoutes } from "./routes/etapa.routes";
+import { pecaRoutes } from "./routes/peca.routes";
 
 // a função Fastify é a responsável por criar o servidor
 // ela é armazenada em um variável para facilidade
@@ -68,6 +69,7 @@ await fastify.register(usuarioRoutes);
 await fastify.register(funcionarioRoutes);
 await fastify.register(aeronaveRoutes);
 await fastify.register(etapaRoutes);
+await fastify.register(pecaRoutes);
 
 // a inicialização do servidor demorar um pouco, por isso a função é asíncrona
 // definir "host: 0.0.0.0" permite que o servidor aceite conexões externas
