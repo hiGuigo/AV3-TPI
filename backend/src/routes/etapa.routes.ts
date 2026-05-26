@@ -1,0 +1,80 @@
+import { FastifyInstance } from "fastify";
+import { auth } from "../middlewares/auth";
+import { verifyRole } from "../middlewares/verifyRole";
+import { EtapaController } from "../controllers/etapa.controller";
+import { CreateEtapaBody } from "../types/etapa/createEtapaBody";
+import { UpdateEtapaBody } from "../types/etapa/updateEtapaBody";
+
+const etapaController = new EtapaController();
+
+export async function etapaRoutes(fastify: FastifyInstance) {
+  fastify.get(
+    "/etapas",
+    { preHandler: [auth] },
+    etapaController.findAll.bind(etapaController),
+  );
+
+  fastify.post<{ Body: CreateEtapaBody }>(
+    "/etapas",
+    {
+      preHandler: [auth, verifyRole(["ADMIN"])],
+      schema: {
+        body: {
+          type: "object",
+          required: ["prazo", "status", "aeronaveId", "funcionariosIds"],
+          properties: {
+            prazo: { type: "string" },
+            status: {
+              type: "string",
+              enum: ["PENDENTE", "ANDAMENTO", "CONCLUIDA"],
+            },
+            aeronaveId: { type: "string" },
+            funcionariosIds: {
+              type: "array",
+              items: { type: "string" },
+            },
+          },
+        },
+      },
+    },
+    etapaController.create.bind(etapaController),
+  );
+
+  fastify.patch<{
+    Params: { id: string };
+    Body: UpdateEtapaBody;
+  }>(
+    "/etapas/:id",
+    {
+      preHandler: [auth, verifyRole(["ADMIN"])],
+      schema: {
+        body: {
+          type: "object",
+          properties: {
+            status: {
+              type: "string",
+              enum: ["PENDENTE", "ANDAMENTO", "CONCLUIDA"],
+            },
+            adicionarFuncionariosIds: {
+              type: "array",
+              items: { type: "string" },
+            },
+            removerFuncionariosIds: {
+              type: "array",
+              items: { type: "string" },
+            },
+          },
+        },
+      },
+    },
+    etapaController.update.bind(etapaController),
+  );
+
+  fastify.delete<{ Params: { id: string } }>(
+    "/etapas/:id",
+    {
+      preHandler: [auth, verifyRole(["ADMIN"])],
+    },
+    etapaController.delete.bind(etapaController),
+  );
+}
