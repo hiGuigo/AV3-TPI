@@ -46,6 +46,7 @@ enum TipoTeste {
 }
 
 enum ResultadoTeste {
+  PENDENTE
   APROVADO
   REPROVADO
 }
