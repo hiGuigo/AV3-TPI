@@ -1,6 +1,7 @@
 # Manual de Instalação Aerocode
 
 ## Requisitos
+
 - Node.js
 - TypeScript
 - MySQL
@@ -52,7 +53,8 @@ DATABASE_NAME=
 ```
 
 E defina a sua assinatura para o JWT:
-```
+
+```env
 JWT_SECRET=
 ```
 

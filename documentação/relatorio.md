@@ -26,7 +26,7 @@ O resultado da latência foi obtido no relatório pós-processamento do autocann
 
 Para calcular o tempo de processamento interno da aplicação, foi utilizada uma lógica simples dentro do método responsável pela regra de negócio.
 
-```
+```ts
 async findAll() {
     const inicioProcessamento = performance.now();
 
@@ -48,7 +48,7 @@ Para medir o tempo de resposta da requisição, foi utilizado um hook global do 
 
 **Hook "onRequest", executado quando a requisição chega no servidor:**
 
-```
+```ts
 fastify.addHook("onRequest", async (req, reply) => {
   req.inicio = performance.now();
 });
@@ -56,7 +56,7 @@ fastify.addHook("onRequest", async (req, reply) => {
 
 **Hook "onResponse", executado no fim da requisição:**
 
-```
+```ts
 let totalTempo = 0;
 let totalRequisicoes = 0;
 
@@ -80,7 +80,7 @@ Os testes de desempenho foram realizados utilizando a ferramenta autocannon, exe
 
 **Exemplo de comando para teste com 5 usuários simultâneos:**
 
-```
+```bash
 npx autocannon -H "Authorization: Bearer TOKEN_JWT" -c 5 -d 10 http://localhost:3000/usuarios
 ```
 
