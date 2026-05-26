@@ -18,11 +18,19 @@ export class FuncionarioService {
     usuarioId?: string;
   }) {
     if (data.usuarioId) {
-      const exists = await this.funcionarioRepository.findIdUsuarioEmUso(
+      const usuarioExiste = await prisma.usuario.findUnique({
+        where: { id: data.usuarioId },
+      });
+
+      if (!usuarioExiste) {
+        throw new Error("Usuário não existe");
+      }
+
+      const usuarioEmUso = await this.funcionarioRepository.findIdUsuarioEmUso(
         data.usuarioId,
       );
 
-      if (exists) {
+      if (usuarioEmUso) {
         throw new Error("Este usuário já está vinculado a outro funcionário");
       }
     }
@@ -87,11 +95,19 @@ export class FuncionarioService {
     }
 
     if (data.usuarioId) {
-      const exists = await this.funcionarioRepository.findIdUsuarioEmUso(
+      const usuarioExiste = await prisma.usuario.findUnique({
+        where: { id: data.usuarioId },
+      });
+
+      if (!usuarioExiste) {
+        throw new Error("Usuário não existe");
+      }
+
+      const usuarioEmUso = await this.funcionarioRepository.findIdUsuarioEmUso(
         data.usuarioId,
       );
-      
-      if (exists && exists.id !== id) {
+
+      if (usuarioEmUso) {
         throw new Error("Este usuário já está vinculado a outro funcionário");
       }
     }

@@ -59,6 +59,18 @@ export class AeronaveService {
       throw new Error("Aeronave não encontrada");
     }
 
+    if (aeronave.etapas.length > 0) {
+      throw new Error("Não é possível deletar aeronaves com etapas vinculadas");
+    }
+
+    if (aeronave.pecas.length > 0) {
+      throw new Error("Não é possível deletar aeronaves com peças vinculadas");
+    }
+
+    if (aeronave.testes.length > 0) {
+      throw new Error("Não é possível deletar aeronaves com testes vinculados");
+    }
+
     return this.aeronaveRepository.delete(id);
   }
 }

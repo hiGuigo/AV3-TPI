@@ -13,7 +13,7 @@ const funcionarioController = new FuncionarioController();
 export async function funcionarioRoutes(fastify: FastifyInstance) {
   fastify.get(
     "/funcionarios",
-    { preHandler: [auth] },
+    { preHandler: [auth, verifyRole(["ADMIN"])] },
     funcionarioController.findAll.bind(funcionarioController),
   );
 

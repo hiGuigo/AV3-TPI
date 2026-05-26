@@ -142,11 +142,31 @@ export class UsuarioService {
   // verifica a existência do usuário,
   // se não existir, não executa o delete,
   // se existir, executa normalmente
-  async delete(id: string) {
+  async delete(
+    usuario: {
+      id: string;
+      username: string;
+      permissao: string;
+    },
+    id: string,
+  ) {
     const usuarioExiste = await this.usuarioRepository.findById(id);
 
     if (!usuarioExiste) {
       throw new Error("Usuário não encontrado");
+    }
+
+    // impede que o usuário delete a si mesmo
+    if (usuario.id === id) {
+      throw new Error("Você não pode deletar a si próprio");
+    }
+
+    // garante que sempre haverá pelo menos um usuário administrado no sistema
+    const usuarios = await this.usuarioRepository.findMany();
+    const totalAdmins = usuarios.filter((u) => u.permissao === "ADMIN").length;
+
+    if (usuarioExiste.permissao === "ADMIN" && totalAdmins === 1) {
+      throw new Error("O sistema deve possuir pelo menos um administrador");
     }
 
     return this.usuarioRepository.delete(id);

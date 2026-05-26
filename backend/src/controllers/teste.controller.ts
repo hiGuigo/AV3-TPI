@@ -55,7 +55,7 @@ export class TesteController {
     res: FastifyReply,
   ) {
     try {
-      const teste = await this.testeService.update(req.params.id, req.body);
+      const teste = await this.testeService.update(req.user, req.params.id, req.body);
 
       return res.status(200).send(teste);
     } catch (e) {
