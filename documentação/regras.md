@@ -1,6 +1,6 @@
 # Regras de Negócio Aerocode
 
-## **Regras gerais que o sistema atende**
+## **Características do sistema**
 
 **1. Senha no cadastro de usuário criptografada com "bcrypt"**
 
@@ -194,7 +194,11 @@ private validarTransicaoPeca(
   }
 ```
 
-**10. Regras de transição de status das testes**
+- Obriga que as peças sigam uma ordem lógica: em produção → em transporte → pronta
+- Impede retrocessos ou modificações em peças já prontas, preservando o histórico do processo
+- Garante que relatórios e métricas reflitam corretamente o estado real das operações
+
+**10. Regras de transição de status dos testes**
 
 ```ts
 // *o sistema não permite que no update, sejam feitas alterações em "status" que não "APROVADO" ou "REPROVADO"
@@ -211,6 +215,11 @@ private validarTransicaoTeste(
     }
   }
 ```
+
+- Obriga que os testes sigam uma ordem lógica: pendente → aprovado ou reprovado
+- Garante a integridade e confiabilidade dos resultados dos testes
+- Evita inconsistências na geração de relatórios e análises finais
+
 
 **11. Funcionários só podem ser adicionados enquanto a etapa não estiver concluída**
 
@@ -264,7 +273,3 @@ O administrador possui todas as permissões do engenheiro e também pode:
 - cadastrar usuários
 - editar usuários
 - adicionar etapas
-
-```
-
-```

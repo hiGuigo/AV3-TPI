@@ -65,7 +65,7 @@ Arquivo modelo das variáveis de ambiente necessárias para o projeto.
 #### `prisma.config.ts`
 Configuração da conexão do Prisma com o banco de dados.
 
-### A separação de responsábilidades se dá, no código, através do seguinte fluxo:
+### A separação de responsabilidades se dá, no código, através do seguinte fluxo:
 
 ```
 Request
