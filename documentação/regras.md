@@ -157,16 +157,13 @@ if (existe) {
 **8. Regras de transição de status das etapas**
 
 ```ts
+// *o sistema não permite que no update, sejam feitas alterações em "status" que não "ANDAMENTO" ou "CONCLUIDA"
 private validarTransicaoStatus(
     atual: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA",
     novo: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA",
   ) {
     if (atual === "PENDENTE" && novo === "CONCLUIDA") {
       throw new Error("Não é possível concluir uma etapa pendente");
-    }
-
-    if (atual === "ANDAMENTO" && novo === "PENDENTE") {
-      throw new Error("Não é possível voltar uma etapa para pendente");
     }
 
     if (atual === "CONCLUIDA") {
@@ -179,7 +176,43 @@ private validarTransicaoStatus(
 - Impede retrocessos ou modificações em etapas já concluídas, preservando o histórico do processo
 - Garante que relatórios e métricas reflitam corretamente o estado real das operações
 
-**9. Funcionários só podem ser adicionados enquanto a etapa não estiver concluída**
+**9. Regras de transição de status das peças**
+
+```ts
+// *o sistema não permite que no update, sejam feitas alterações em "status" que não "EM_TRANSPORTE" ou "PRONTA"
+private validarTransicaoPeca(
+    atual: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA",
+    novo: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA",
+  ) {
+    if (atual === "EM_PRODUCAO" && novo === "PRONTA") {
+      throw new Error("Não é possível concluir uma peca pendente");
+    }
+
+    if (atual === "PRONTA") {
+      throw new Error("Peça concluída não pode ser alterada");
+    }
+  }
+```
+
+**10. Regras de transição de status das testes**
+
+```ts
+// *o sistema não permite que no update, sejam feitas alterações em "status" que não "APROVADO" ou "REPROVADO"
+private validarTransicaoTeste(
+    atual: "PENDENTE" | "APROVADO" | "REPROVADO",
+    novo: "PENDENTE" | "APROVADO" | "REPROVADO",
+  ) {
+    if (atual === "APROVADO" && novo === "REPROVADO") {
+      throw new Error("Não é possível reprovar um teste aprovado");
+    }
+
+    if (atual === "APROVADO") {
+      throw new Error("Teste aprovado não pode ser alterado ou deletado");
+    }
+  }
+```
+
+**11. Funcionários só podem ser adicionados enquanto a etapa não estiver concluída**
 
 ```ts
 const alterandoFuncionarios =
