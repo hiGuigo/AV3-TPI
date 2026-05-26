@@ -73,7 +73,7 @@ interface FastifyJWT {
   };
 }
 
-// autenticação (authController.ts)
+// criação do token (authController.ts)
 const usuario = await this.authService.login(req.body);
 
 const token = await res.jwtSign({
@@ -101,7 +101,7 @@ fastify.post<{
 }>(
     "/usuarios",
     {
-    // preHandler responsável pela autenticação e RBCA
+    // preHandler responsável pela autenticação e RBAC
     preHandler: [auth, verifyRole(["ADMIN"])],
     schema: {
     body: {
@@ -125,7 +125,7 @@ fastify.post<{
 - Melhora a segurança da aplicação
 - Centraliza regras de autorização de forma organizada e escalável
 
-**6.  não podem ser criados com um usuário já em uso**
+**6. Funcionários não podem ser criados com um usuário já em uso**
 
 ```ts
 const usuarioExiste = await prisma.usuario.findUnique({
