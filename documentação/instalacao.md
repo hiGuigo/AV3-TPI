@@ -70,7 +70,13 @@ npx prisma generate
 npx prisma migrate dev
 ```
 
-### 9. Iniciar o servidor em modo de desenvolvimento
+### 9. Execute a seed para criar o primeiro usuário
+
+```bash
+npx prisma db seed
+```
+
+### 10. Iniciar o servidor em modo de desenvolvimento
 
 ```bash
 npm run dev
@@ -83,3 +89,22 @@ Após iniciar a aplicação, o servidor estará disponível em:
 ```text
 http://127.0.0.1:3000
 ```
+
+## Testes
+
+Caso queira testar as rotas por meio de um aplicativo:
+
+1. Faça login pela rota
+
+```json
+{
+  "username": "admin",
+  "senha": "admin"
+}
+```
+
+2. Copie o token e cole em Bearer Token (Autorization)
+
+<img src="./instalacao/postmanToken.png" />
+
+3. Com o token de administrador, será possível testar todas as rotas através do aplicativo
