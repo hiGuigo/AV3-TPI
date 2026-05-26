@@ -11,12 +11,8 @@ export class EtapaService {
       throw new Error("Não é possível concluir uma etapa pendente");
     }
 
-    if (atual === "ANDAMENTO" && novo === "PENDENTE") {
-      throw new Error("Não é possível voltar uma etapa para pendente");
-    }
-
     if (atual === "CONCLUIDA") {
-      throw new Error("Etapa concluída não pode ser alterada ou deletada");
+      throw new Error("Etapa concluída não pode ser alterada");
     }
   }
 
@@ -26,12 +22,12 @@ export class EtapaService {
 
   async create(data: {
     prazo: string;
-    status: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA";
     aeronaveId: string;
     funcionariosIds: string[];
   }) {
     return this.etapaRepository.create({
       ...data,
+      status: "PENDENTE",
       prazo: new Date(data.prazo),
     });
   }
@@ -39,7 +35,7 @@ export class EtapaService {
   async update(
     id: string,
     data: {
-      status?: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA";
+      status?: "ANDAMENTO" | "CONCLUIDA";
       adicionarFuncionariosIds?: string[];
       removerFuncionariosIds?: string[];
     },

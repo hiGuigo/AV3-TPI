@@ -21,13 +21,9 @@ export async function etapaRoutes(fastify: FastifyInstance) {
       schema: {
         body: {
           type: "object",
-          required: ["prazo", "status", "aeronaveId", "funcionariosIds"],
+          required: ["prazo", "aeronaveId", "funcionariosIds"],
           properties: {
             prazo: { type: "string" },
-            status: {
-              type: "string",
-              enum: ["PENDENTE", "ANDAMENTO", "CONCLUIDA"],
-            },
             aeronaveId: { type: "string" },
             funcionariosIds: {
               type: "array",
@@ -53,7 +49,7 @@ export async function etapaRoutes(fastify: FastifyInstance) {
           properties: {
             status: {
               type: "string",
-              enum: ["PENDENTE", "ANDAMENTO", "CONCLUIDA"],
+              enum: ["ANDAMENTO", "CONCLUIDA"],
             },
             adicionarFuncionariosIds: {
               type: "array",

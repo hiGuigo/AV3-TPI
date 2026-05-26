@@ -11,12 +11,8 @@ export class PecaService {
       throw new Error("Não é possível concluir uma peca pendente");
     }
 
-    if (atual === "EM_TRANSPORTE" && novo === "EM_PRODUCAO") {
-      throw new Error("Não é possível voltar uma peça para EM_TRANSPORTE");
-    }
-
     if (atual === "PRONTA") {
-      throw new Error("Peça concluída não pode ser alterada ou deletada");
+      throw new Error("Peça concluída não pode ser alterada");
     }
   }
 
@@ -28,10 +24,10 @@ export class PecaService {
     nome: string;
     tipo: "NACIONAL" | "IMPORTADA";
     fornecedor: string;
-    status: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA";
+
     aeronaveId: string;
   }) {
-    return this.pecaRepository.create(data);
+    return this.pecaRepository.create({ ...data, status: "EM_PRODUCAO" });
   }
 
   async update(
@@ -40,7 +36,7 @@ export class PecaService {
       nome?: string;
       tipo?: "NACIONAL" | "IMPORTADA";
       fornecedor?: string;
-      status?: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA";
+      status?: "EM_TRANSPORTE" | "PRONTA";
     },
   ) {
     const peca = await this.pecaRepository.findById(id);
@@ -51,10 +47,6 @@ export class PecaService {
 
     if (data.status) {
       this.validarTransicaoPeca(peca.status, data.status);
-    }
-
-    if (peca.status === "PRONTA") {
-      throw new Error("Peça pronta não pode ser alterada");
     }
 
     return this.pecaRepository.update(id, data);

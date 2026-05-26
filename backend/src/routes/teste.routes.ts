@@ -28,17 +28,12 @@ export async function testeRoutes(fastify: FastifyInstance) {
         body: {
           type: "object",
 
-          required: ["tipo", "resultado", "aeronaveId"],
+          required: ["tipo", "aeronaveId"],
 
           properties: {
             tipo: {
               type: "string",
               enum: ["ELETRICO", "HIDRAULICO", "AERODINAMICO"],
-            },
-
-            resultado: {
-              type: "string",
-              enum: ["PENDENTE", "APROVADO", "REPROVADO"],
             },
 
             aeronaveId: {
@@ -84,7 +79,7 @@ export async function testeRoutes(fastify: FastifyInstance) {
 
             resultado: {
               type: "string",
-              enum: ["PENDENTE", "APROVADO", "REPROVADO"],
+              enum: ["APROVADO", "REPROVADO"],
             },
           },
         },

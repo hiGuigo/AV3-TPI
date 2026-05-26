@@ -22,7 +22,7 @@ export class EtapaRepository {
 
   async create(data: {
     prazo: Date;
-    status: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA";
+    status: "PENDENTE";
     aeronaveId: string;
     funcionariosIds: string[];
   }) {
@@ -49,7 +49,7 @@ export class EtapaRepository {
   async update(
     id: string,
     data: {
-      status?: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA";
+      status?: "ANDAMENTO" | "CONCLUIDA";
       adicionarFuncionariosIds?: string[];
       removerFuncionariosIds?: string[];
     },

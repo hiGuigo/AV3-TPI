@@ -22,7 +22,7 @@ export class PecaRepository {
     nome: string;
     tipo: "NACIONAL" | "IMPORTADA";
     fornecedor: string;
-    status: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA";
+    status: "EM_PRODUCAO";
     aeronaveId: string;
   }) {
     return prisma.peca.create({
@@ -39,7 +39,7 @@ export class PecaRepository {
       nome: string;
       tipo: "NACIONAL" | "IMPORTADA";
       fornecedor: string;
-      status: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA";
+      status: "EM_TRANSPORTE" | "PRONTA";
     }>,
   ) {
     return prisma.peca.update({
