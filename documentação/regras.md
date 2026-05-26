@@ -72,7 +72,9 @@ interface FastifyJWT {
     permissao: string;
   };
 }
+```
 
+```ts
 // criação do token (authController.ts)
 const usuario = await this.authService.login(req.body);
 
@@ -92,7 +94,7 @@ return res.status(200).send({
 - Possibilita validação rápida e segura do usuário autenticado
 - Mantém informações do usuário protegidas através de assinatura digital do token
 
-**5. O sistema atende a estrutura "Role-Based Access Controll (RBAC)" para controle de permissões**
+**5. O sistema utiliza RBAC (Role-Based Access Control)**
 
 ```ts
 // exemplo de uma rota onde só usuários com permissão "ADMIN" podem acessar
@@ -125,15 +127,15 @@ fastify.post<{
 - Melhora a segurança da aplicação
 - Centraliza regras de autorização de forma organizada e escalável
 
-**6. Funcionários não podem ser criados com um usuário já em uso**
+**6. Funcionários não podem ser vinculados ao mesmo usuário**
 
 ```ts
-const usuarioExiste = await prisma.usuario.findUnique({
-  where: { username: data.username },
-});
+const usuarioEmUso = await this.funcionarioRepository.findIdUsuarioEmUso(
+  data.usuarioId,
+);
 
-if (usuarioExiste) {
-  throw new Error("Usuário já existe");
+if (usuarioEmUso) {
+  throw new Error("Este usuário já está vinculado a outro funcionário");
 }
 ```
 
@@ -141,7 +143,23 @@ if (usuarioExiste) {
 - Impede conflitos de autenticação, permissões e identificação de funcionários dentro do sistema
 - Cada usuário possui um relacionamento único, tornando mais simples identificar responsabilidades e ações realizadas
 
-**7. Aeronaves não podem ser criadas com código já existente**
+**7. Funcionários só podem ser vinculados a usuários existentes**
+
+```ts
+const usuarioExiste = await prisma.usuario.findUnique({
+  where: { id: data.usuarioId },
+});
+
+if (!usuarioExiste) {
+  throw new Error("Usuário não existe");
+}
+```
+
+- Impede vínculos inválidos no banco de dados
+- Evita referências quebradas entre entidades
+- Garante integridade relacional da aplicação
+
+**8. Aeronaves não podem ser criadas com código já existente**
 
 ```ts
 const existe = await this.aeronaveRepository.findByCodigo(data.codigo);
@@ -154,51 +172,63 @@ if (existe) {
 - Evita ambiguidades durante consultas, manutenção e gerenciamento operacional
 - Impede que duas aeronaves sejam confundidas em processos internos ou relatórios
 
-**8. Regras de transição de status das etapas**
+**9. Regras de transição de status das etapas**
 
 ```ts
 // *o sistema não permite que no update, sejam feitas alterações em "status" que não "ANDAMENTO" ou "CONCLUIDA"
-private validarTransicaoStatus(
-    atual: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA",
-    novo: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA",
-  ) {
-    if (atual === "PENDENTE" && novo === "CONCLUIDA") {
-      throw new Error("Não é possível concluir uma etapa pendente");
-    }
-
-    if (atual === "CONCLUIDA") {
-      throw new Error("Etapa concluída não pode ser alterada");
-    }
+private validarTransicaoPeca(
+  atual: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA",
+  novo: "EM_TRANSPORTE" | "PRONTA",
+) {
+  if (atual === "EM_PRODUCAO" && novo !== "EM_TRANSPORTE") {
+    throw new Error("Uma peça em produção só pode ir para transporte");
   }
+
+  if (atual === "EM_TRANSPORTE" && novo !== "PRONTA") {
+    throw new Error("Uma peça em transporte só pode ser finalizada");
+  }
+
+  if (atual === "PRONTA") {
+    throw new Error("Peça pronta não pode ser alterada");
+  }
+}
 ```
 
 - Obriga que as etapas sigam uma ordem lógica: pendente → em andamento → concluída
 - Impede retrocessos ou modificações em etapas já concluídas, preservando o histórico do processo
 - Garante que relatórios e métricas reflitam corretamente o estado real das operações
 
-**9. Regras de transição de status das peças**
+**10. Regras de transição de status das peças**
 
 ```ts
 // *o sistema não permite que no update, sejam feitas alterações em "status" que não "EM_TRANSPORTE" ou "PRONTA"
 private validarTransicaoPeca(
-    atual: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA",
-    novo: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA",
-  ) {
-    if (atual === "EM_PRODUCAO" && novo === "PRONTA") {
-      throw new Error("Não é possível concluir uma peca pendente");
-    }
-
-    if (atual === "PRONTA") {
-      throw new Error("Peça concluída não pode ser alterada");
-    }
+  atual: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA",
+  novo: "EM_TRANSPORTE" | "PRONTA",
+) {
+  if (atual === "EM_PRODUCAO" && novo !== "EM_TRANSPORTE") {
+    throw new Error(
+      "Uma peça em produção só pode ir para transporte",
+    );
   }
+
+  if (atual === "EM_TRANSPORTE" && novo !== "PRONTA") {
+    throw new Error(
+      "Uma peça em transporte só pode ser finalizada",
+    );
+  }
+
+  if (atual === "PRONTA") {
+    throw new Error("Peça pronta não pode ser alterada");
+  }
+}
 ```
 
 - Obriga que as peças sigam uma ordem lógica: em produção → em transporte → pronta
 - Impede retrocessos ou modificações em peças já prontas, preservando o histórico do processo
 - Garante que relatórios e métricas reflitam corretamente o estado real das operações
 
-**10. Regras de transição de status dos testes**
+**11. Regras de transição de status dos testes**
 
 ```ts
 // *o sistema não permite que no update, sejam feitas alterações em "status" que não "APROVADO" ou "REPROVADO"
@@ -206,12 +236,8 @@ private validarTransicaoTeste(
     atual: "PENDENTE" | "APROVADO" | "REPROVADO",
     novo: "PENDENTE" | "APROVADO" | "REPROVADO",
   ) {
-    if (atual === "APROVADO" && novo === "REPROVADO") {
-      throw new Error("Não é possível reprovar um teste aprovado");
-    }
-
-    if (atual === "APROVADO") {
-      throw new Error("Teste aprovado não pode ser alterado ou deletado");
+    if (atual !== "PENDENTE") {
+      throw new Error("Teste já avaliado não pode ser alterado");
     }
   }
 ```
@@ -220,12 +246,12 @@ private validarTransicaoTeste(
 - Garante a integridade e confiabilidade dos resultados dos testes
 - Evita inconsistências na geração de relatórios e análises finais
 
-
-**11. Funcionários só podem ser adicionados enquanto a etapa não estiver concluída**
+**12. Funcionários só podem ser alterados enquanto a etapa não estiver concluída**
 
 ```ts
 const alterandoFuncionarios =
-  data.adicionarFuncionariosIds?.length || data.removerFuncionariosIds?.length;
+  (data.adicionarFuncionariosIds?.length || 0) > 0 ||
+  (data.removerFuncionariosIds?.length || 0) > 0;
 
 if (etapa.status === "CONCLUIDA" && alterandoFuncionarios) {
   throw new Error("Não é possível alterar funcionários de uma etapa concluída");
@@ -236,6 +262,87 @@ if (etapa.status === "CONCLUIDA" && alterandoFuncionarios) {
 - Garante que apenas os funcionários realmente envolvidos durante a execução da etapa sejam registrados
 - Facilita validações futuras e análise de responsabilidade das atividades executadas
 
+**13. Etapas concluídas devem possuir pelo menos um funcionário**
+
+```ts
+if (data.status === "CONCLUIDA" && totalFinalFuncionarios <= 0) {
+  throw new Error("Etapa concluída deve possuir pelo menos um funcionário");
+}
+```
+
+- Garante que etapas concluídas possuam responsáveis registrados
+- Evita etapas finalizadas sem execução atribuída
+- Mantém coerência operacional e auditoria do processo
+
+**14. O sistema impede remover todos os funcionários de uma etapa**
+
+```ts
+if (funcionariosAtuaisIds.length > 0 && totalFinalFuncionarios <= 0) {
+  throw new Error("Não é possível remover todos os funcionários de uma etapa");
+}
+```
+
+- Garante que etapas sempre mantenham responsáveis associados
+- Evita inconsistências operacionais
+- Impede etapas órfãs sem responsáveis definidos
+
+**15. Testes avaliados não podem ser deletados**
+
+```ts
+if (teste.resultado === "APROVADO" || teste.resultado === "REPROVADO") {
+  throw new Error("Não é possível deletar um teste já avaliado");
+}
+```
+
+- Preserva histórico de testes realizados
+- Impede perda de dados importantes para auditoria
+- Garante confiabilidade de relatórios e análises
+
+**16. Usuários administradores não podem deletar a si próprios**
+
+```ts
+if (usuario.id === id) {
+  throw new Error("Você não pode deletar a si próprio");
+}
+```
+
+- Evita perda acidental de acesso administrativo
+- Garante continuidade de gerenciamento do sistema
+
+**17. O sistema deve possuir pelo menos um administrador**
+
+```ts
+const usuarios = await this.usuarioRepository.findMany();
+const totalAdmins = usuarios.filter((u) => u.permissao === "ADMIN").length;
+
+if (usuarioExiste.permissao === "ADMIN" && totalAdmins === 1) {
+  throw new Error("O sistema deve possuir pelo menos um administrador");
+}
+```
+
+- Impede que o sistema fique sem administradores
+- Garante manutenção contínua do ambiente
+- Evita bloqueio administrativo da aplicação
+
+**18. Engenheiros possuem restrições de edição em testes**
+
+```ts
+if (usuario.permissao === "ENGENHEIRO") {
+  const camposProibidos = ["tipo"];
+
+  const engenheiroCampoProibido = camposProibidos.some(
+    (campo) => data[campo as keyof typeof data] !== undefined,
+  );
+
+  if (engenheiroCampoProibido) {
+    throw new Error("Engenheiros podem alterar apenas o resultado do teste");
+  }
+}
+```
+
+- Garante integridade estrutural dos testes cadastrados
+- Evita mudanças indevidas após criação do teste
+
 ## **Permissões de Usuários**
 
 ### Operador
@@ -244,7 +351,7 @@ Permissões disponíveis para usuários operadores:
 
 - visualizar aeronaves
 - visualizar detalhes de uma aeronave
-- visualizar etapas, peças e testes de uma aeronave
+- visualizar detalhes de etapas, peças e testes de uma aeronave
 - visualizar relatórios
 - visualizar detalhes de um relatório
 
@@ -254,12 +361,13 @@ O engenheiro possui todas as permissões do operador e também pode:
 
 - gerar relatórios de produção
 - adicionar peças em aeronaves
+- alterar apenas o status de peças
 - adicionar testes em aeronaves
+- alterar apenas o status de testes
 - adicionar funcionários em etapas
+- remover funcionários em etapas
 - iniciar etapas
 - finalizar etapas
-- alterar status de peças
-- alterar status de testes
 
 ### Administrador
 
@@ -267,9 +375,19 @@ O administrador possui todas as permissões do engenheiro e também pode:
 
 - cadastrar aeronaves
 - editar aeronaves
-- cadastrar peças
-- visualizar usuários
-- visualizar detalhes de usuários
+- excluir aeronaves
 - cadastrar usuários
 - editar usuários
+- visualizar usuários
+- excluir usuários
+- cadastrar funcionários
+- editar funcionários
+- visualizar funcionários
+- excluir funcionários
+- cadastrar diretamente um funcionário com usuário
 - adicionar etapas
+- editar etapas
+- excluir etapas
+- editar peças
+- excluir peças
+- excluir testes

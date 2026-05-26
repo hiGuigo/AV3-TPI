@@ -42,7 +42,7 @@ export async function etapaRoutes(fastify: FastifyInstance) {
   }>(
     "/etapas/:id",
     {
-      preHandler: [auth, verifyRole(["ADMIN"])],
+      preHandler: [auth, verifyRole(["ADMIN", "ENGENHEIRO"])],
       schema: {
         body: {
           type: "object",

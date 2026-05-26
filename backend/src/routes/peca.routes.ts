@@ -22,7 +22,7 @@ export async function pecaRoutes(fastify: FastifyInstance) {
   fastify.post<{ Body: CreatePecaBody }>(
     "/pecas",
     {
-      preHandler: [auth, verifyRole(["ADMIN"])],
+      preHandler: [auth, verifyRole(["ADMIN", "ENGENHEIRO"])],
 
       schema: {
         body: {
@@ -60,7 +60,7 @@ export async function pecaRoutes(fastify: FastifyInstance) {
   }>(
     "/pecas/:id",
     {
-      preHandler: [auth, verifyRole(["ADMIN"])],
+      preHandler: [auth, verifyRole(["ADMIN", "ENGENHEIRO"])],
 
       schema: {
         body: {

@@ -55,7 +55,7 @@ export class PecaController {
     res: FastifyReply,
   ) {
     try {
-      const peca = await this.pecaService.update(req.params.id, req.body);
+      const peca = await this.pecaService.update(req.user, req.params.id, req.body);
 
       return res.status(200).send(peca);
     } catch (e) {

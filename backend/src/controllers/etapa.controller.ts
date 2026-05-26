@@ -41,7 +41,7 @@ export class EtapaController {
     res: FastifyReply,
   ) {
     try {
-      const etapa = await this.etapaService.update(req.params.id, req.body);
+      const etapa = await this.etapaService.update(req.user, req.params.id, req.body);
 
       return res.status(200).send(etapa);
     } catch (e) {

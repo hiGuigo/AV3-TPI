@@ -128,7 +128,7 @@ export class UsuarioController {
     try {
       // aqui o controller utiliza o id recebido na url
       // e envia para as validações feitas no service
-      const usuario = await this.usuarioService.delete(req.params.id);
+      const usuario = await this.usuarioService.delete(req.user, req.params.id);
 
       // caso o service retorne sucesso, status HTTP = ok (200)
       // e os dados do usuário deletado são exibidos na resposta

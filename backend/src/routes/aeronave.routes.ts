@@ -46,6 +46,42 @@ export async function aeronaveRoutes(fastify: FastifyInstance) {
     "/aeronaves/:id",
     {
       preHandler: [auth, verifyRole(["ADMIN"])],
+      schema: {
+        params: {
+          type: "object",
+          required: ["id"],
+          properties: {
+            id: {
+              type: "string",
+            },
+          },
+        },
+        body: {
+          type: "object",
+          properties: {
+            codigo: {
+              type: "string",
+            },
+
+            modelo: {
+              type: "string",
+            },
+
+            capacidade: {
+              type: "number",
+            },
+
+            alcance: {
+              type: "number",
+            },
+
+            tipo: {
+              type: "string",
+              enum: ["COMERCIAL", "MILITAR"],
+            },
+          },
+        },
+      },
     },
     aeronaveController.update.bind(aeronaveController),
   );

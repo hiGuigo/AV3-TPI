@@ -22,7 +22,7 @@ export async function testeRoutes(fastify: FastifyInstance) {
   fastify.post<{ Body: CreateTesteBody }>(
     "/testes",
     {
-      preHandler: [auth, verifyRole(["ADMIN"])],
+      preHandler: [auth, verifyRole(["ADMIN", "ENGENHEIRO"])],
 
       schema: {
         body: {
@@ -53,30 +53,25 @@ export async function testeRoutes(fastify: FastifyInstance) {
   }>(
     "/testes/:id",
     {
-      preHandler: [auth, verifyRole(["ADMIN"])],
+      preHandler: [auth, verifyRole(["ADMIN", "ENGENHEIRO"])],
 
       schema: {
         params: {
           type: "object",
-
           required: ["id"],
-
           properties: {
             id: {
               type: "string",
             },
           },
         },
-
         body: {
           type: "object",
-
           properties: {
             tipo: {
               type: "string",
               enum: ["ELETRICO", "HIDRAULICO", "AERODINAMICO"],
             },
-
             resultado: {
               type: "string",
               enum: ["APROVADO", "REPROVADO"],
@@ -95,13 +90,10 @@ export async function testeRoutes(fastify: FastifyInstance) {
     "/testes/:id",
     {
       preHandler: [auth, verifyRole(["ADMIN"])],
-
       schema: {
         params: {
           type: "object",
-
           required: ["id"],
-
           properties: {
             id: {
               type: "string",

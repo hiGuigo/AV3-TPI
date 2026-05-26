@@ -24,7 +24,6 @@ export async function authRoutes(fastify: FastifyInstance) {
             username: {
               type: "string",
             },
-
             senha: {
               type: "string",
             },

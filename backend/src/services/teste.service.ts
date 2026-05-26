@@ -7,12 +7,8 @@ export class TesteService {
     atual: "PENDENTE" | "APROVADO" | "REPROVADO",
     novo: "PENDENTE" | "APROVADO" | "REPROVADO",
   ) {
-    if (atual === "APROVADO" && novo === "REPROVADO") {
-      throw new Error("Não é possível reprovar um teste aprovado");
-    }
-
-    if (atual === "APROVADO") {
-      throw new Error("Teste aprovado não pode ser alterado ou deletado");
+    if (atual !== "PENDENTE") {
+      throw new Error("Teste já avaliado não pode ser alterado");
     }
   }
 
@@ -29,6 +25,11 @@ export class TesteService {
   }
 
   async update(
+    usuario: {
+      id: string;
+      username: string;
+      permissao: string;
+    },
     id: string,
     data: {
       tipo?: "ELETRICO" | "HIDRAULICO" | "AERODINAMICO";
@@ -39,6 +40,20 @@ export class TesteService {
 
     if (!teste) {
       throw new Error("Teste não encontrado");
+    }
+
+    if (usuario.permissao === "ENGENHEIRO") {
+      const camposProibidos = ["tipo"];
+
+      const engenheiroCampoProibido = camposProibidos.some(
+        (campo) => data[campo as keyof typeof data] !== undefined,
+      );
+
+      if (engenheiroCampoProibido) {
+        throw new Error(
+          "Engenheiros podem alterar apenas o resultado do teste",
+        );
+      }
     }
 
     if (data.resultado) {
@@ -55,8 +70,8 @@ export class TesteService {
       throw new Error("Teste não encontrado");
     }
 
-    if (teste.resultado === "APROVADO") {
-      throw new Error("Não é possível deletar um teste já aprovado");
+    if (teste.resultado === "APROVADO" || teste.resultado === "REPROVADO") {
+      throw new Error("Não é possível deletar um teste já avaliado");
     }
 
     return this.testeRepository.delete(id);

@@ -5,10 +5,14 @@ export class EtapaService {
 
   private validarTransicaoStatus(
     atual: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA",
-    novo: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA",
+    novo: "ANDAMENTO" | "CONCLUIDA",
   ) {
-    if (atual === "PENDENTE" && novo === "CONCLUIDA") {
-      throw new Error("Não é possível concluir uma etapa pendente");
+    if (atual === "PENDENTE" && novo !== "ANDAMENTO") {
+      throw new Error("Uma etapa pendente só pode ser iniciada");
+    }
+
+    if (atual === "ANDAMENTO" && novo !== "CONCLUIDA") {
+      throw new Error("Uma etapa em andamento só pode ser concluída");
     }
 
     if (atual === "CONCLUIDA") {
@@ -33,6 +37,11 @@ export class EtapaService {
   }
 
   async update(
+    usuario: {
+      id: string;
+      username: string;
+      permissao: string;
+    },
     id: string,
     data: {
       status?: "ANDAMENTO" | "CONCLUIDA";
@@ -46,18 +55,43 @@ export class EtapaService {
       throw new Error("Etapa não encontrada");
     }
 
-    if (data.status) {
-      this.validarTransicaoStatus(etapa.status, data.status);
-    }
-
     const alterandoFuncionarios =
-      data.adicionarFuncionariosIds?.length ||
-      data.removerFuncionariosIds?.length;
+      (data.adicionarFuncionariosIds?.length || 0) > 0 ||
+      (data.removerFuncionariosIds?.length || 0) > 0;
 
     if (etapa.status === "CONCLUIDA" && alterandoFuncionarios) {
       throw new Error(
         "Não é possível alterar funcionários de uma etapa concluída",
       );
+    }
+
+    if (data.status) {
+      this.validarTransicaoStatus(etapa.status, data.status);
+    }
+
+    const funcionariosAtuaisIds = etapa.funcionarios.map(
+      (funcionario) => funcionario.id,
+    );
+
+    const funcionariosRemovidos = (data.removerFuncionariosIds || []).filter(
+      (id) => funcionariosAtuaisIds.includes(id),
+    );
+
+    const funcionariosAdicionados = data.adicionarFuncionariosIds || [];
+
+    const totalFinalFuncionarios =
+      funcionariosAtuaisIds.length -
+      funcionariosRemovidos.length +
+      funcionariosAdicionados.length;
+
+    if (funcionariosAtuaisIds.length > 0 && totalFinalFuncionarios <= 0) {
+      throw new Error(
+        "Não é possível remover todos os funcionários de uma etapa",
+      );
+    }
+
+    if (data.status === "CONCLUIDA" && totalFinalFuncionarios <= 0) {
+      throw new Error("Etapa concluída deve possuir pelo menos um funcionário");
     }
 
     return this.etapaRepository.update(id, data);
