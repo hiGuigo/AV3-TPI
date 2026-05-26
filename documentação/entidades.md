@@ -55,6 +55,7 @@
 - id
 - tipo (`ELETRICO`, `HIDRAULICO` ou `AERODINAMICO`)
 - resultado (`PENDENTE`, `APROVADO` ou `REPROVADO`)
+- createdAt
 - aeronave associada
 
 ## Relatório
