@@ -7,13 +7,6 @@ export class TesteService {
     atual: "PENDENTE" | "APROVADO" | "REPROVADO",
     novo: "PENDENTE" | "APROVADO" | "REPROVADO",
   ) {
-    if (
-      (atual === "APROVADO" || atual === "REPROVADO") &&
-      novo === "PENDENTE"
-    ) {
-      throw new Error("Não é possível voltar um teste para pendente");
-    }
-
     if (atual === "APROVADO" && novo === "REPROVADO") {
       throw new Error("Não é possível reprovar um teste aprovado");
     }
@@ -29,17 +22,17 @@ export class TesteService {
 
   async create(data: {
     tipo: "ELETRICO" | "HIDRAULICO" | "AERODINAMICO";
-    resultado: "PENDENTE" | "APROVADO" | "REPROVADO";
+
     aeronaveId: string;
   }) {
-    return this.testeRepository.create(data);
+    return this.testeRepository.create({ ...data, resultado: "PENDENTE" });
   }
 
   async update(
     id: string,
     data: {
       tipo?: "ELETRICO" | "HIDRAULICO" | "AERODINAMICO";
-      resultado?: "PENDENTE" | "APROVADO" | "REPROVADO";
+      resultado?: "APROVADO" | "REPROVADO";
     },
   ) {
     const teste = await this.testeRepository.findById(id);

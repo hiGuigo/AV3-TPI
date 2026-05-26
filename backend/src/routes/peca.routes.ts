@@ -27,7 +27,7 @@ export async function pecaRoutes(fastify: FastifyInstance) {
       schema: {
         body: {
           type: "object",
-          required: ["nome", "tipo", "fornecedor", "status", "aeronaveId"],
+          required: ["nome", "tipo", "fornecedor", "aeronaveId"],
 
           properties: {
             nome: {
@@ -41,11 +41,6 @@ export async function pecaRoutes(fastify: FastifyInstance) {
 
             fornecedor: {
               type: "string",
-            },
-
-            status: {
-              type: "string",
-              enum: ["EM_PRODUCAO", "EM_TRANSPORTE", "PRONTA"],
             },
 
             aeronaveId: {
@@ -87,7 +82,7 @@ export async function pecaRoutes(fastify: FastifyInstance) {
 
             status: {
               type: "string",
-              enum: ["EM_PRODUCAO", "EM_TRANSPORTE", "PRONTA"],
+              enum: ["EM_TRANSPORTE", "PRONTA"],
             },
           },
         },

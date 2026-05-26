@@ -1,5 +1,5 @@
 export type UpdateEtapaBody = {
-  status?: "PENDENTE" | "ANDAMENTO" | "CONCLUIDA";
+  status?: "ANDAMENTO" | "CONCLUIDA";
   adicionarFuncionariosIds?: string[];
   removerFuncionariosIds?: string[];
 };

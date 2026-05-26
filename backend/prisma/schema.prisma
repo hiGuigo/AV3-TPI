@@ -1,14 +1,102 @@
-// trecho responsável por definir como o prisma vai gerar o client
-// nesse caso, em js/ts
-// sem declarar o output, o padrão é "node_modules/.prisma/client"
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
 }
 
-// aqui é apenas a declaração de qual banco irá ser utilizado
 datasource db {
   provider = "mysql"
+}
+
+model Usuario {
+  id          String       @id @default(uuid())
+  username    String       @unique
+  senha       String
+  permissao   Permissao
+  createdAt   DateTime     @default(now())
+  funcionario Funcionario?
+  relatorios  Relatorio[]
+
+  @@map("usuarios")
+}
+
+model Funcionario {
+  id        String   @id @default(uuid())
+  nome      String
+  telefone  String?
+  endereco  String?
+  usuarioId String?  @unique
+  usuario   Usuario? @relation(fields: [usuarioId], references: [id])
+  etapas    Etapa[]  @relation("EtapaToFuncionario")
+
+  @@map("funcionarios")
+}
+
+model Aeronave {
+  id         String       @id @default(uuid())
+  codigo     String       @unique
+  modelo     String
+  capacidade Int
+  alcance    Int
+  tipo       TipoAeronave
+  createdAt  DateTime     @default(now())
+  etapas     Etapa[]
+  pecas      Peca[]
+  relatorios Relatorio[]
+  testes     Teste[]
+
+  @@map("aeronaves")
+}
+
+model Etapa {
+  id           String        @id @default(uuid())
+  prazo        DateTime
+  status       StatusEtapa
+  aeronaveId   String
+  aeronave     Aeronave      @relation(fields: [aeronaveId], references: [id])
+  funcionarios Funcionario[] @relation("EtapaToFuncionario")
+
+  @@index([aeronaveId], map: "etapas_aeronaveId_fkey")
+  @@map("etapas")
+}
+
+model Peca {
+  id         String     @id @default(uuid())
+  nome       String
+  tipo       TipoPeca
+  fornecedor String
+  status     StatusPeca
+  aeronaveId String
+  aeronave   Aeronave   @relation(fields: [aeronaveId], references: [id])
+
+  @@index([aeronaveId], map: "pecas_aeronaveId_fkey")
+  @@map("pecas")
+}
+
+model Teste {
+  id         String           @id @default(uuid())
+  tipo       TipoTeste
+  resultado  testes_resultado
+  aeronaveId String
+  aeronave   Aeronave         @relation(fields: [aeronaveId], references: [id])
+
+  @@index([aeronaveId], map: "testes_aeronaveId_fkey")
+  @@map("testes")
+}
+
+model Relatorio {
+  id          String   @id @default(uuid())
+  cliente     String
+  dataEntrega DateTime
+  texto       String
+  aeronaveId  String
+  autorId     String
+  createdAt   DateTime @default(now())
+  aeronave    Aeronave @relation(fields: [aeronaveId], references: [id])
+  autor       Usuario  @relation(fields: [autorId], references: [id])
+
+  @@index([aeronaveId], map: "relatorios_aeronaveId_fkey")
+  @@index([autorId], map: "relatorios_autorId_fkey")
+  @@map("relatorios")
 }
 
 enum Permissao {
@@ -45,108 +133,8 @@ enum TipoTeste {
   AERODINAMICO
 }
 
-enum ResultadoTeste {
+enum testes_resultado {
   PENDENTE
   APROVADO
   REPROVADO
-}
-
-model Usuario {
-  id        String    @id @default(uuid())
-  username  String    @unique
-  senha     String
-  permissao Permissao
-
-  funcionario Funcionario?
-  relatorios  Relatorio[]
-
-  createdAt DateTime @default(now())
-
-  @@map("usuarios")
-}
-
-model Funcionario {
-  id       String  @id @default(uuid())
-  nome     String
-  telefone String?
-  endereco String?
-
-  usuarioId String?  @unique
-  usuario   Usuario? @relation(fields: [usuarioId], references: [id])
-
-  etapas Etapa[]
-
-  @@map("funcionarios")
-}
-
-model Aeronave {
-  id         String       @id @default(uuid())
-  codigo     String       @unique
-  modelo     String
-  capacidade Int
-  alcance    Int
-  tipo       TipoAeronave
-
-  pecas      Peca[]
-  etapas     Etapa[]
-  testes     Teste[]
-  relatorios Relatorio[]
-
-  createdAt DateTime @default(now())
-
-  @@map("aeronaves")
-}
-
-model Etapa {
-  id     String      @id @default(uuid())
-  prazo  DateTime
-  status StatusEtapa
-
-  aeronaveId String
-  aeronave   Aeronave @relation(fields: [aeronaveId], references: [id])
-
-  funcionarios Funcionario[]
-
-  @@map("etapas")
-}
-
-model Peca {
-  id         String     @id @default(uuid())
-  nome       String
-  tipo       TipoPeca
-  fornecedor String
-  status     StatusPeca
-
-  aeronaveId String
-  aeronave   Aeronave @relation(fields: [aeronaveId], references: [id])
-
-  @@map("pecas")
-}
-
-model Teste {
-  id        String         @id @default(uuid())
-  tipo      TipoTeste
-  resultado ResultadoTeste
-
-  aeronaveId String
-  aeronave   Aeronave @relation(fields: [aeronaveId], references: [id])
-
-  @@map("testes")
-}
-
-model Relatorio {
-  id          String   @id @default(uuid())
-  cliente     String
-  dataEntrega DateTime
-  texto       String
-
-  aeronaveId String
-  aeronave   Aeronave @relation(fields: [aeronaveId], references: [id])
-
-  autorId String
-  autor   Usuario @relation(fields: [autorId], references: [id])
-
-  createdAt DateTime @default(now())
-
-  @@map("relatorios")
 }

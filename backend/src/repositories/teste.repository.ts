@@ -20,7 +20,7 @@ export class TesteRepository {
 
   async create(data: {
     tipo: "ELETRICO" | "HIDRAULICO" | "AERODINAMICO";
-    resultado: "PENDENTE" | "APROVADO" | "REPROVADO";
+    resultado: "PENDENTE";
     aeronaveId: string;
   }) {
     return prisma.teste.create({
@@ -35,7 +35,7 @@ export class TesteRepository {
     id: string,
     data: Partial<{
       tipo: "ELETRICO" | "HIDRAULICO" | "AERODINAMICO";
-      resultado: "PENDENTE" | "APROVADO" | "REPROVADO";
+      resultado: "APROVADO" | "REPROVADO";
     }>,
   ) {
     return prisma.teste.update({
