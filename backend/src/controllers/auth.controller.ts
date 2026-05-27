@@ -37,9 +37,14 @@ export class AuthController {
       });
 
       // se a verificação de usuário der certo e o token for criado com sucesso,
-      // o token é retornado junto com o status "ok"
+      // o token é retornado junto com o status "ok" + os dados do usuário para verificações no front
       return res.status(200).send({
         token,
+        usuario: {
+          id: usuario.id,
+          username: usuario.username,
+          permissao: usuario.permissao,
+        },
       });
     } catch (e) {
       // aqui é feita a validação dos erros, garantindo primeiro que o que está
@@ -51,7 +56,7 @@ export class AuthController {
         });
       }
 
-      // erro 500 para ocorrências inesperadas do lado do servidor  
+      // erro 500 para ocorrências inesperadas do lado do servidor
       return res.status(500).send({
         erro: "Erro interno",
       });

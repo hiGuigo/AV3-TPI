@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import cors from "@fastify/cors";
 
 // importação do módulo perf_hooks para medição das métricas
 import { performance } from "perf_hooks";
@@ -56,6 +57,10 @@ fastify.addHook("onResponse", async (req, reply) => {
   console.log(
     `Tempo médio de resposta da requisição: ${(totalTempo / totalRequisicoes).toFixed(2)} ms`,
   );
+});
+
+await fastify.register(cors, {
+  origin: "http://localhost:5173",
 });
 
 // registrando o jason web token

@@ -22,7 +22,7 @@ create database aerocode;
 git clone https://github.com/hiGuigo/AV3-TPI.git
 ```
 
-### 3. Acessar o diretório do projeto
+### 3. Acessar o diretório backend do projeto
 
 ```bash
 cd AV3-TPI
@@ -82,12 +82,38 @@ npx prisma db seed
 npm run dev
 ```
 
+### 11. Acessar o diretório frontend do projeto em outro cmd
+
+```bash
+cd frontend
+```
+
+### 12. Instalar as dependências
+
+```bash
+npm install
+```
+
+### 13. Iniciar a aplicação no modo desenvolvimento
+
+```bash
+npm run dev
+```
+
 ## Servidor
 
 Após iniciar a aplicação, o servidor estará disponível em:
 
 ```text
 http://127.0.0.1:3000
+```
+
+## Site
+
+Após iniciar a aplicação, o site estará disponível em:
+
+```text
+http://127.0.0.1:5173
 ```
 
 ## Testes
