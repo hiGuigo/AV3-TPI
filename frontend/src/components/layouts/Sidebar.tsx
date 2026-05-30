@@ -1,5 +1,4 @@
 import { Plane, ClipboardList, Users, X } from "lucide-react";
-
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
@@ -12,7 +11,6 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const navigate = useNavigate();
-
   const { usuario } = useAuth();
 
   function navigateTo(path: string) {
@@ -30,13 +28,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       )}
 
       <aside
-        className={`
-          fixed left-0 top-0 z-50 flex min-h-full w-64 flex-col
-          border-r border-slate-200 bg-slate-900 p-4 text-white
-          transition-transform duration-300
-          lg:static lg:translate-x-0
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
+        className={`fixed left-0 top-0 z-50 flex min-h-full w-64 flex-col border-r border-slate-200 bg-slate-900 p-4 text-white transition-transform duration-300 lg:static lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="mb-10 flex items-center justify-between">
           <h1 className="text-2xl font-bold">AeroCode</h1>

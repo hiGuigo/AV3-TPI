@@ -2,11 +2,13 @@
 // exatamente como os dados de login devem ser enviados e recebidos, respectivamente
 // elas serão utilizadas em auth.service.ts
 
+import type { Permissao } from "./permissao";
+
 // interface para os dados do usuário
 export interface Usuario {
   id: string;
   username: string;
-  permissao: "ADMIN" | "ENGENHEIRO" | "OPERADOR";
+  permissao: Permissao;
 }
 
 // aqui é garantido que só seja aceito no request os parâmetros "username" e "senha"

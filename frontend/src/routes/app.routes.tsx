@@ -10,9 +10,11 @@ import { LoginPage } from "../pages/LoginPage";
 
 // páginas de listagem
 import { AeronavesPage } from "../pages/aeronave/AeronavesPage";
+import { UsuariosPage } from "../pages/usuario/UsuariosPage";
 
 // páginas de cadastro
 import { CadastrarAeronavePage } from "../pages/aeronave/CadastrarAeronavePage";
+import { CadastrarUsuarioPage } from "../pages/usuario/CadastrarUsuarioPage";
 
 // páginas de detalhes
 import { DetalhesAeronavePage } from "../pages/aeronave/DetalhesAeronavePage";
@@ -42,11 +44,16 @@ export function AppRoutes() {
           <Route element={<MainLayout />}>
             {/* listagem */}
             <Route path="/aeronaves" element={<AeronavesPage />} />
+            <Route path="/usuarios" element={<UsuariosPage />} />
 
             {/* cadastro */}
             <Route
               path="/aeronaves/cadastrar"
               element={<CadastrarAeronavePage />}
+            />
+            <Route
+              path="/usuarios/cadastrar"
+              element={<CadastrarUsuarioPage />}
             />
 
             {/* detalhes */}
