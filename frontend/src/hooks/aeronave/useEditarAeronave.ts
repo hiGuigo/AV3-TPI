@@ -2,23 +2,22 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useAeronave } from "./useAeronave";
-
 import { updateAeronave } from "../../services/aeronave.service";
 
 import type { UpdateAeronaveData } from "../../types/aeronave/updateAeronave";
+import { getApiErrorMessage } from "../../utils/getApiErrorMessage";
 
 type TipoAeronave = "COMERCIAL" | "MILITAR";
 
 export function useEditarAeronave() {
   const { id } = useParams();
-
   const navigate = useNavigate();
 
   const { aeronave, isLoading } = useAeronave();
 
   const [isSaving, setIsSaving] = useState(false);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState<UpdateAeronaveData>({
     modelo: "",
@@ -38,43 +37,37 @@ export function useEditarAeronave() {
     }));
   }
 
-  async function handleSubmit(e: React.SubmitEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!aeronave) {
-      return;
-    }
+    if (!aeronave) return;
 
     const data: UpdateAeronaveData = {};
 
-    if (formData.modelo && formData.modelo !== aeronave.modelo) {
+    if (formData.modelo && formData.modelo !== aeronave.modelo)
       data.modelo = formData.modelo;
-    }
 
-    if (formData.codigo && formData.codigo !== aeronave.codigo) {
+    if (formData.codigo && formData.codigo !== aeronave.codigo)
       data.codigo = formData.codigo;
-    }
 
-    if (formData.capacidade && formData.capacidade !== aeronave.capacidade) {
+    if (formData.capacidade && formData.capacidade !== aeronave.capacidade)
       data.capacidade = formData.capacidade;
-    }
 
-    if (formData.alcance && formData.alcance !== aeronave.alcance) {
+    if (formData.alcance && formData.alcance !== aeronave.alcance)
       data.alcance = formData.alcance;
-    }
 
-    if (formData.tipo && formData.tipo !== aeronave.tipo) {
+    if (formData.tipo && formData.tipo !== aeronave.tipo)
       data.tipo = formData.tipo as TipoAeronave;
-    }
 
     try {
       setIsSaving(true);
 
-      await updateAeronave(id, data);
+      await updateAeronave(id!, data);
 
+      setErrorMessage("");
       setIsModalOpen(true);
     } catch (error) {
-      console.error(error);
+      setErrorMessage(getApiErrorMessage(error));
     } finally {
       setIsSaving(false);
     }
@@ -82,19 +75,17 @@ export function useEditarAeronave() {
 
   function handleCloseModal() {
     setIsModalOpen(false);
-
     navigate(`/aeronaves/${id}`);
   }
 
   return {
     aeronave,
-
     isLoading,
     isSaving,
+    errorMessage,
 
     formData,
     handleChange,
-
     handleSubmit,
 
     isModalOpen,

@@ -1,4 +1,5 @@
 import { Button } from "../../components/ui/Button";
+import { ErrorMessage } from "../../components/ui/ErrorMessage";
 import { FeedbackModal } from "../../components/ui/FeedBackModal";
 import { Input } from "../../components/ui/Input";
 
@@ -10,6 +11,7 @@ export function EditarAeronavePage() {
     isLoading,
     isSaving,
     formData,
+    errorMessage,
     handleChange,
     handleSubmit,
     isModalOpen,
@@ -27,6 +29,8 @@ export function EditarAeronavePage() {
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-3xl font-bold text-slate-800">Editar Aeronave</h1>
+
+      {errorMessage && <ErrorMessage message={errorMessage} />}
 
       <div className="rounded-2xl bg-white p-8 shadow-sm">
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">

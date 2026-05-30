@@ -1,4 +1,5 @@
 import { Button } from "../../components/ui/Button";
+import { ErrorMessage } from "../../components/ui/ErrorMessage";
 
 import { ListarItensAeronave } from "../../components/ListarItensAeronave";
 
@@ -18,6 +19,7 @@ export function DetalhesAeronavePage() {
     aeronave,
     isLoading,
     aeronaveId,
+    errorMessage,
 
     isEtapaModalOpen,
     isPecaModalOpen,
@@ -52,6 +54,8 @@ export function DetalhesAeronavePage() {
       <h1 className="text-2xl font-bold text-slate-800 sm:text-3xl">
         Detalhes Aeronave
       </h1>
+
+      {errorMessage && <ErrorMessage message={errorMessage} />}
 
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
         <h2 className="text-2xl mb-3">

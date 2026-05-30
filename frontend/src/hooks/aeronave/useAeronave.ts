@@ -5,6 +5,8 @@ import type { Aeronave } from "../../types/aeronave/aeronave";
 
 import { getAeronaveById } from "../../services/aeronave.service";
 
+import { getApiErrorMessage } from "../../utils/getApiErrorMessage";
+
 export function useAeronave() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ export function useAeronave() {
 
   const [aeronave, setAeronave] = useState<Aeronave | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [isEtapaModalOpen, setIsEtapaModalOpen] = useState(false);
   const [isPecaModalOpen, setIsPecaModalOpen] = useState(false);
@@ -26,8 +29,10 @@ export function useAeronave() {
 
       const data = await getAeronaveById(aeronaveId);
       setAeronave(data);
+
+      setErrorMessage("");
     } catch (error) {
-      console.error(error);
+      setErrorMessage(getApiErrorMessage(error));
     } finally {
       setIsLoading(false);
     }
@@ -43,8 +48,10 @@ export function useAeronave() {
         if (isActive) {
           setAeronave(data);
         }
+
+        setErrorMessage("");
       } catch (error) {
-        console.error(error);
+        setErrorMessage(getApiErrorMessage(error));
       } finally {
         if (isActive) {
           setIsLoading(false);
@@ -94,6 +101,7 @@ export function useAeronave() {
   return {
     aeronave,
     isLoading,
+    errorMessage,
     aeronaveId,
 
     isEtapaModalOpen,
