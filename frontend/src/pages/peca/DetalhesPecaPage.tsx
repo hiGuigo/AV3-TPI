@@ -24,19 +24,38 @@ export function DetalhesPecaPage() {
       <h1 className="text-3xl font-bold text-slate-800">Detalhes da Peça</h1>
 
       <div className="rounded-2xl bg-white p-8 shadow-sm">
-        <h2 className="text-2xl font-semibold">{peca.nome}</h2>
+        <h2 className="text-2xl mb-3">
+          <span className="font-bold text-slate-900">Nome: </span>
+          <span className="font-medium text-slate-700">{peca.nome}</span>
+        </h2>
 
         <p>
-          <strong>Status:</strong> {peca.status}
+          <span className="text-slate-700 font-bold">Status: </span>
+          <span
+            className={`font-bold
+            ${
+              peca.status === "EM_PRODUCAO"
+                ? " text-yellow-600"
+                : peca.status === "EM_TRANSPORTE"
+                  ? " text-blue-600"
+                  : " text-green-600"
+            }
+          `}
+          >
+            {peca.status}
+          </span>
         </p>
       </div>
 
-      <div className="rounded-2xl bg-white p-8 shadow-sm">
+      <div className="rounded-2xl bg-white p-8 shadow-sm space-y-2">
         <p>
-          <strong>Tipo:</strong> {peca.tipo}
+          <strong className="text-slate-600">Tipo:</strong>{" "}
+          <span className="text-slate-800">{peca.tipo}</span>
         </p>
+
         <p>
-          <strong>Fornecedor:</strong> {peca.fornecedor}
+          <strong className="text-slate-600">Fornecedor:</strong>{" "}
+          <span className="text-slate-800">{peca.fornecedor}</span>
         </p>
       </div>
 

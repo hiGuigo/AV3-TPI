@@ -53,13 +53,30 @@ export function DetalhesAeronavePage() {
         Detalhes Aeronave
       </h1>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-        <h2 className="text-2xl font-bold">{aeronave.modelo}</h2>
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <h2 className="text-2xl mb-3">
+          <span className="font-bold text-slate-900">Modelo: </span>
+          <span className="font-medium text-slate-700">{aeronave.modelo}</span>
+        </h2>
 
-        <p>Código: {aeronave.codigo}</p>
-        <p>Capacidade: {aeronave.capacidade}</p>
-        <p>Alcance: {aeronave.alcance}</p>
-        <p>Tipo: {aeronave.tipo}</p>
+        <div className="space-y-2 text-slate-700">
+          <p>
+            <span className="font-medium text-slate-500">Código:</span>{" "}
+            <span className="text-slate-800">{aeronave.codigo}</span>
+          </p>
+          <p>
+            <span className="font-medium text-slate-500">Capacidade:</span>{" "}
+            <span className="text-slate-800">{aeronave.capacidade}</span>
+          </p>
+          <p>
+            <span className="font-medium text-slate-500">Alcance:</span>{" "}
+            <span className="text-slate-800">{aeronave.alcance}</span>
+          </p>
+          <p>
+            <span className="font-medium text-slate-500">Tipo:</span>{" "}
+            <span className="text-slate-800">{aeronave.tipo}</span>
+          </p>
+        </div>
       </div>
 
       {(usuario?.permissao === "ADMIN" ||

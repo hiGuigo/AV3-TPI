@@ -7,6 +7,7 @@ import { useEditarUsuario } from "../../hooks/usuario/useEditarUsuario";
 export function EditarUsuarioPage() {
   const {
     usuario,
+    isSelfEdit,
     isLoading,
     isSaving,
     formData,
@@ -44,7 +45,9 @@ export function EditarUsuarioPage() {
 
           <div className="grid grid-cols-2 gap-6 items-center">
             <div className="rounded-xl bg-slate-50 px-4 py-3">
-              Senha omitida
+              <p className="text-sm text-gray-500">
+                Senha omitida por motivos de segurança.
+              </p>
             </div>
 
             <Input
@@ -60,15 +63,21 @@ export function EditarUsuarioPage() {
               {usuario.permissao}
             </div>
 
-            <select
-              value={formData.permissao}
-              onChange={(e) => handleChange("permissao", e.target.value)}
-              className="rounded-xl border px-4 py-3"
-            >
-              <option value="ADMIN">ADMIN</option>
-              <option value="ENGENHEIRO">ENGENHEIRO</option>
-              <option value="OPERADOR">OPERADOR</option>
-            </select>
+            {isSelfEdit ? (
+              <p className="text-sm text-gray-500">
+                Você não pode alterar a própria função.
+              </p>
+            ) : (
+              <select
+                value={formData.permissao}
+                onChange={(e) => handleChange("permissao", e.target.value)}
+                className="rounded-xl border px-4 py-3"
+              >
+                <option value="ADMIN">ADMIN</option>
+                <option value="ENGENHEIRO">ENGENHEIRO</option>
+                <option value="OPERADOR">OPERADOR</option>
+              </select>
+            )}
           </div>
 
           <div className="border-t pt-4 mt-2">

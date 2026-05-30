@@ -6,6 +6,7 @@ import { updateUsuario } from "../../services/usuario.service";
 import { updateFuncionario } from "../../services/funcionario.service";
 
 import type { Permissao, Usuario } from "../../types/funcionario/funcionario";
+import { useAuth } from "../useAuth";
 
 type FormData = {
   username: string;
@@ -19,7 +20,11 @@ type FormData = {
 
 export function useEditarUsuario() {
   const { id } = useParams();
-  
+
+  const { usuario: usuarioLogado } = useAuth();
+
+  const isSelfEdit = usuarioLogado?.id === id;
+
   const navigate = useNavigate();
 
   const [usuario, setUsuario] = useState<Usuario | null>(null);
@@ -109,6 +114,7 @@ export function useEditarUsuario() {
 
   return {
     usuario,
+    isSelfEdit,
     isLoading,
     isSaving,
     formData,
