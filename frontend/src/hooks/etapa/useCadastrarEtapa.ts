@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 
 import axios from "axios";
 
 import { createEtapa } from "../../services/etapa.service";
+import { getFuncionarios } from "../../services/funcionario.service";
 
+import type { Funcionario } from "../../types/funcionario/funcionario";
 import type { FormData, FormErrors } from "../../types/etapa/createEtapa";
 
-export function useCadastrarEtapa(aeronaveId: string, onSuccess: () => void) {
+export function useCadastrarEtapa(
+  aeronaveId: string,
+  onSuccess: () => void,
+  isOpen: boolean,
+) {
+  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
+
   const [formData, setFormData] = useState<FormData>({
     prazo: "",
     nome: "",
@@ -15,29 +23,43 @@ export function useCadastrarEtapa(aeronaveId: string, onSuccess: () => void) {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
-
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    async function loadFuncionarios() {
+      try {
+        const data = await getFuncionarios();
+        setFuncionarios(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadFuncionarios();
+  }, [isOpen]);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
-    setFormData((prevState) => ({
-      ...prevState,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
 
-    setErrors((prevState) => ({
-      ...prevState,
+    setErrors((prev) => ({
+      ...prev,
       [name]: "",
     }));
   }
 
   function handleFuncionarioToggle(funcionarioId: string) {
-    setFormData((prevState) => ({
-      ...prevState,
-      funcionariosIds: prevState.funcionariosIds.includes(funcionarioId)
-        ? prevState.funcionariosIds.filter((id) => id !== funcionarioId)
-        : [...prevState.funcionariosIds, funcionarioId],
+    setFormData((prev) => ({
+      ...prev,
+      funcionariosIds: prev.funcionariosIds.includes(funcionarioId)
+        ? prev.funcionariosIds.filter((id) => id !== funcionarioId)
+        : [...prev.funcionariosIds, funcionarioId],
     }));
   }
 
@@ -64,9 +86,7 @@ export function useCadastrarEtapa(aeronaveId: string, onSuccess: () => void) {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!validate()) {
-      return;
-    }
+    if (!validate()) return;
 
     try {
       setIsSubmitting(true);
@@ -94,6 +114,7 @@ export function useCadastrarEtapa(aeronaveId: string, onSuccess: () => void) {
     formData,
     errors,
     isSubmitting,
+    funcionarios,
     handleChange,
     handleFuncionarioToggle,
     handleSubmit,

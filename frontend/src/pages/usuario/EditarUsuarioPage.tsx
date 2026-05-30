@@ -1,5 +1,3 @@
-import { useParams } from "react-router-dom";
-
 import { Button } from "../../components/ui/Button";
 import { FeedbackModal } from "../../components/ui/FeedBackModal";
 import { Input } from "../../components/ui/Input";
@@ -7,10 +5,9 @@ import { Input } from "../../components/ui/Input";
 import { useEditarUsuario } from "../../hooks/usuario/useEditarUsuario";
 
 export function EditarUsuarioPage() {
-  const { id } = useParams();
-
   const {
     usuario,
+    isSelfEdit,
     isLoading,
     isSaving,
     formData,
@@ -18,7 +15,7 @@ export function EditarUsuarioPage() {
     handleSubmit,
     isModalOpen,
     handleCloseModal,
-  } = useEditarUsuario(id as string);
+  } = useEditarUsuario();
 
   if (isLoading || !usuario) {
     return (
@@ -47,7 +44,11 @@ export function EditarUsuarioPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-6 items-center">
-            <div className="rounded-xl bg-slate-50 px-4 py-3">******</div>
+            <div className="rounded-xl bg-slate-50 px-4 py-3">
+              <p className="text-sm text-gray-500">
+                Senha omitida por motivos de segurança.
+              </p>
+            </div>
 
             <Input
               type="password"
@@ -62,15 +63,21 @@ export function EditarUsuarioPage() {
               {usuario.permissao}
             </div>
 
-            <select
-              value={formData.permissao}
-              onChange={(e) => handleChange("permissao", e.target.value)}
-              className="rounded-xl border px-4 py-3"
-            >
-              <option value="ADMIN">ADMIN</option>
-              <option value="ENGENHEIRO">ENGENHEIRO</option>
-              <option value="FUNCIONARIO">FUNCIONARIO</option>
-            </select>
+            {isSelfEdit ? (
+              <p className="text-sm text-gray-500">
+                Você não pode alterar a própria função.
+              </p>
+            ) : (
+              <select
+                value={formData.permissao}
+                onChange={(e) => handleChange("permissao", e.target.value)}
+                className="rounded-xl border px-4 py-3"
+              >
+                <option value="ADMIN">ADMIN</option>
+                <option value="ENGENHEIRO">ENGENHEIRO</option>
+                <option value="OPERADOR">OPERADOR</option>
+              </select>
+            )}
           </div>
 
           <div className="border-t pt-4 mt-2">
@@ -114,11 +121,7 @@ export function EditarUsuarioPage() {
           </div>
 
           <div className="flex justify-end pt-4">
-            <Button
-              type="submit"
-              disabled={isSaving}
-              className="bg-blue-600 px-6 py-3 font-semibold"
-            >
+            <Button type="submit" disabled={isSaving} className="bg-blue-600">
               {isSaving ? "Salvando..." : "Salvar alterações"}
             </Button>
           </div>

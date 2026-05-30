@@ -1,8 +1,10 @@
 import { Plane, ClipboardList, Users, X } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "../../hooks/useAuth";
 import { Button } from "../ui/Button";
+
+import { useAuth } from "../../hooks/useAuth";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -11,6 +13,7 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const navigate = useNavigate();
+
   const { usuario } = useAuth();
 
   function navigateTo(path: string) {
@@ -39,30 +42,29 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         </div>
 
         <nav className="flex flex-col gap-2">
-          {usuario?.permissao === "ADMIN" && (
-            <Button
-              onClick={() => navigateTo("/aeronaves")}
-              className="flex items-center gap-3 rounded-lg px-4 py-3 transition hover:bg-slate-800"
-            >
-              <Plane size={20} />
-              Aeronaves
-            </Button>
-          )}
+          <Button
+            onClick={() => navigateTo("/aeronaves")}
+            className="flex items-center gap-3 bg-slate-800"
+          >
+            <Plane size={20} />
+            Aeronaves
+          </Button>
 
           {usuario?.permissao === "ADMIN" && (
             <Button
               onClick={() => navigateTo("/usuarios")}
-              className="flex items-center gap-3 rounded-lg px-4 py-3 transition hover:bg-slate-800"
+              className="flex items-center gap-3 bg-slate-800"
             >
               <Users size={20} />
               Usuários
             </Button>
           )}
 
-          {usuario?.permissao === "ADMIN" && (
+          {(usuario?.permissao === "ADMIN" ||
+            usuario?.permissao === "ENGENHEIRO") && (
             <Button
               onClick={() => navigateTo("/relatorios")}
-              className="flex items-center gap-3 rounded-lg px-4 py-3 transition hover:bg-slate-800"
+              className="flex items-center gap-3 bg-slate-800"
             >
               <ClipboardList size={20} />
               Relatórios

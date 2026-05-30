@@ -1,10 +1,9 @@
 import { useState } from "react";
-import type { ChangeEvent, SubmitEvent } from "react";
-
-import axios from "axios";
+import type { ChangeEvent } from "react";
 
 import { createAeronave } from "../../services/aeronave.service";
 import type { FormData, FormErrors } from "../../types/aeronave/createAeronave";
+import axios from "axios";
 
 export function useCadastrarAeronave(onSuccess: () => void) {
   const [formData, setFormData] = useState<FormData>({
@@ -16,9 +15,7 @@ export function useCadastrarAeronave(onSuccess: () => void) {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleChange(
@@ -26,13 +23,13 @@ export function useCadastrarAeronave(onSuccess: () => void) {
   ) {
     const { name, value } = event.target;
 
-    setFormData((prevState) => ({
-      ...prevState,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
 
-    setErrors((prevState) => ({
-      ...prevState,
+    setErrors((prev) => ({
+      ...prev,
       [name]: "",
     }));
   }
@@ -40,37 +37,22 @@ export function useCadastrarAeronave(onSuccess: () => void) {
   function validate() {
     const newErrors: FormErrors = {};
 
-    if (!formData.codigo.trim()) {
-      newErrors.codigo = "O código é obrigatório.";
-    }
-
-    if (!formData.modelo.trim()) {
-      newErrors.modelo = "O modelo é obrigatório.";
-    }
-
-    if (!formData.capacidade) {
+    if (!formData.codigo.trim()) newErrors.codigo = "O código é obrigatório.";
+    if (!formData.modelo.trim()) newErrors.modelo = "O modelo é obrigatório.";
+    if (!formData.capacidade)
       newErrors.capacidade = "A capacidade é obrigatória.";
-    }
-
-    if (!formData.alcance) {
-      newErrors.alcance = "O alcance é obrigatório.";
-    }
-
-    if (!formData.tipo) {
-      newErrors.tipo = "O tipo é obrigatório.";
-    }
+    if (!formData.alcance) newErrors.alcance = "O alcance é obrigatório.";
+    if (!formData.tipo) newErrors.tipo = "O tipo é obrigatório.";
 
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
   }
 
-  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!validate()) {
-      return;
-    }
+    if (!validate()) return;
 
     try {
       setIsSubmitting(true);
@@ -85,15 +67,16 @@ export function useCadastrarAeronave(onSuccess: () => void) {
 
       setIsModalOpen(true);
     } catch (error) {
-      console.error(error);
-
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.erro;
 
-        setErrors((prevState) => ({
-          ...prevState,
+        setErrors({
           codigo: message || "Erro ao cadastrar aeronave.",
-        }));
+        });
+      } else {
+        setErrors({
+          codigo: "Erro inesperado.",
+        });
       }
     } finally {
       setIsSubmitting(false);
@@ -102,7 +85,6 @@ export function useCadastrarAeronave(onSuccess: () => void) {
 
   function closeModal() {
     setIsModalOpen(false);
-
     onSuccess();
   }
 

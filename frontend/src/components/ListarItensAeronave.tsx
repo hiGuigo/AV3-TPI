@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import { useListarItensAeronave } from "../hooks/aeronave/useListarItensAeronave";
-
 import { Button } from "./ui/Button";
+
+import { useListarItensAeronave } from "../hooks/aeronave/useListarItensAeronave";
 
 type BaseItem = {
   id: string;
@@ -63,7 +63,7 @@ export function ListarItensAeronave<T extends BaseItem>({
 
             <Button
               onClick={() => navigate(`/${resource}/${item.id}`)}
-              className="w-full bg-blue-600 p-2 text-sm sm:w-auto"
+              className="bg-blue-600"
             >
               Detalhes
             </Button>

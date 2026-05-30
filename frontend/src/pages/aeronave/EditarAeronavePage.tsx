@@ -1,28 +1,22 @@
-import { useParams } from "react-router-dom";
-
 import { Button } from "../../components/ui/Button";
+import { ErrorMessage } from "../../components/ui/ErrorMessage";
 import { FeedbackModal } from "../../components/ui/FeedBackModal";
 import { Input } from "../../components/ui/Input";
 
 import { useEditarAeronave } from "../../hooks/aeronave/useEditarAeronave";
 
 export function EditarAeronavePage() {
-  const { id } = useParams();
-
   const {
     aeronave,
-
     isLoading,
     isSaving,
-
     formData,
+    errorMessage,
     handleChange,
-
     handleSubmit,
-
     isModalOpen,
     handleCloseModal,
-  } = useEditarAeronave(id as string);
+  } = useEditarAeronave();
 
   if (isLoading || !aeronave) {
     return (
@@ -35,6 +29,8 @@ export function EditarAeronavePage() {
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-3xl font-bold text-slate-800">Editar Aeronave</h1>
+
+      {errorMessage && <ErrorMessage message={errorMessage} />}
 
       <div className="rounded-2xl bg-white p-8 shadow-sm">
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
@@ -119,11 +115,7 @@ export function EditarAeronavePage() {
           </div>
 
           <div className="flex justify-end pt-4">
-            <Button
-              type="submit"
-              disabled={isSaving}
-              className="bg-blue-600 hover:bg-blue-700 px-6 py-3 font-semibold shadow-md"
-            >
+            <Button type="submit" disabled={isSaving} className="bg-blue-600">
               {isSaving ? "Salvando..." : "Salvar alterações"}
             </Button>
           </div>

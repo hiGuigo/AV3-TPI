@@ -1,6 +1,7 @@
 import { api } from "../lib/axios";
 
-import type { Etapa } from "../types/etapa/etapa";
+
+import type { Etapa, EtapaStatus } from "../types/etapa/etapa";
 
 import type { CreateEtapaData } from "../types/etapa/createEtapa";
 
@@ -21,7 +22,7 @@ export async function updateEtapa(
   data: {
     nome?: string;
 
-    status?: "ANDAMENTO" | "CONCLUIDA";
+    status?: EtapaStatus;
 
     adicionarFuncionariosIds?: string[];
 

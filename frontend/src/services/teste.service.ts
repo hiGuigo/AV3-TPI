@@ -1,13 +1,8 @@
 import { api } from "../lib/axios";
 
+import type { Teste, ResultadoTeste } from "../types/teste/teste";
+
 import type { CreateTesteData } from "../types/teste/createTeste";
-import type { Teste } from "../types/teste/teste";
-
-export async function createTeste(data: CreateTesteData) {
-  const response = await api.post("/testes", data);
-
-  return response.data;
-}
 
 export async function getTesteById(id: string) {
   const response = await api.get<Teste>(`/testes/${id}`);
@@ -15,10 +10,16 @@ export async function getTesteById(id: string) {
   return response.data;
 }
 
+export async function createTeste(data: CreateTesteData) {
+  const response = await api.post("/testes", data);
+
+  return response.data;
+}
+
 export async function updateTeste(
   id: string,
   data: {
-    resultado?: "APROVADO" | "REPROVADO";
+    resultado?: ResultadoTeste;
   },
 ) {
   const response = await api.patch(`/testes/${id}`, data);

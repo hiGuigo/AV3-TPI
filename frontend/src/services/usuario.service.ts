@@ -1,12 +1,11 @@
 import { api } from "../lib/axios";
 
-import type { Usuarios } from "../types/usuario/usuarios";
-import type { Usuario } from "../types/funcionario/funcionario";
+import type { Usuario, Permissao } from "../types/funcionario/funcionario";
 
 import type { CreateUsuarioData } from "../types/usuario/createUsuario";
 
-export async function createUsuario(data: CreateUsuarioData) {
-  const response = await api.post("/funcionarios/com-usuario", data);
+export async function getUsuarios() {
+  const response = await api.get<Usuario[]>("/usuarios");
 
   return response.data;
 }
@@ -17,8 +16,8 @@ export async function getUsuarioById(id: string) {
   return response.data;
 }
 
-export async function getUsuarios() {
-  const response = await api.get<Usuarios[]>("/usuarios");
+export async function createUsuario(data: CreateUsuarioData) {
+  const response = await api.post("/funcionarios/com-usuario", data);
 
   return response.data;
 }
@@ -28,7 +27,7 @@ export async function updateUsuario(
   data: {
     username?: string;
     senha?: string;
-    permissao?: "ADMIN" | "ENGENHEIRO" | "FUNCIONARIO";
+    permissao?: Permissao;
   },
 ) {
   const response = await api.patch(`/usuarios/${id}`, data);

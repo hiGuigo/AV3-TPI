@@ -54,16 +54,12 @@ export function CadastrarTesteModal({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 px-4 py-2"
+              className="bg-blue-600"
             >
               {isSubmitting ? "Salvando..." : "Cadastrar"}
             </Button>
 
-            <Button
-              type="button"
-              onClick={onClose}
-              className="bg-red-600 px-4 py-2"
-            >
+            <Button type="button" onClick={onClose} className="bg-red-600">
               Cancelar
             </Button>
           </div>

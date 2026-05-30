@@ -1,13 +1,8 @@
 import { api } from "../lib/axios";
 
+import type { Peca, StatusPeca } from "../types/peca/peca";
+
 import type { CreatePecaData } from "../types/peca/createPeca";
-import type { Peca } from "../types/peca/peca";
-
-export async function createPeca(data: CreatePecaData) {
-  const response = await api.post("/pecas", data);
-
-  return response.data;
-}
 
 export async function getPecaById(id: string) {
   const response = await api.get<Peca>(`/pecas/${id}`);
@@ -15,10 +10,16 @@ export async function getPecaById(id: string) {
   return response.data;
 }
 
+export async function createPeca(data: CreatePecaData) {
+  const response = await api.post("/pecas", data);
+
+  return response.data;
+}
+
 export async function updatePeca(
   id: string,
   data: {
-    status?: "EM_TRANSPORTE" | "PRONTA";
+    status?: StatusPeca;
     nome?: string;
     fornecedor?: string;
     tipo?: string;

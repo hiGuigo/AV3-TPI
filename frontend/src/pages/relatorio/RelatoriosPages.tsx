@@ -1,5 +1,4 @@
 import { ItemList } from "../../components/ui/ItemList";
-
 import { useRelatorios } from "../../hooks/relatorio/useRelatorios";
 
 export function RelatoriosPage() {
@@ -13,7 +12,11 @@ export function RelatoriosPage() {
         {isLoading ? (
           <p>Carregando relatórios...</p>
         ) : (
-          <ItemList items={relatorios} detailsBaseRoute="/relatorios" showEdit={false} />
+          <ItemList
+            items={relatorios}
+            detailsBaseRoute="/relatorios"
+            showEdit={false}
+          />
         )}
       </div>
     </div>

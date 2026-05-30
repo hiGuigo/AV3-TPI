@@ -15,13 +15,17 @@ export function ItemList({
           key={item.id}
           id={item.id}
           title={
-            item.nome ||
-            item.modelo ||
-            item.username || 
-            new Date(item.createdAt).toLocaleDateString("pt-BR")
+            item.aeronave?.modelo && item.cliente
+              ? `${item.aeronave.modelo} - ${item.cliente}`
+              : item.nome || item.modelo || item.username || "Sem título"
+          }
+          subtitle={
+            item.createdAt
+              ? new Date(item.createdAt).toLocaleDateString("pt-BR")
+              : undefined
           }
           detailsRoute={`${detailsBaseRoute}/${item.id}`}
-          editRoute={`${editBaseRoute}/${item.id}`}
+          editRoute={editBaseRoute ? `${editBaseRoute}/${item.id}` : undefined}
           showEdit={showEdit}
         />
       ))}

@@ -1,8 +1,8 @@
 import { Menu } from "lucide-react";
 
-import { useAuth } from "../../hooks/useAuth";
-
 import { Button } from "../ui/Button";
+
+import { useAuth } from "../../hooks/useAuth";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -23,10 +23,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         </h2>
       </div>
 
-      <Button
-        onClick={signOut}
-        className="bg-red-500 px-3 py-2 text-sm hover:bg-red-600 sm:px-4"
-      >
+      <Button onClick={signOut} className="bg-red-500">
         Sair
       </Button>
     </header>

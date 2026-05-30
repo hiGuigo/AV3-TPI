@@ -1,5 +1,7 @@
+import type { TipoTeste } from "./teste";
+
 export interface CreateTesteData {
-  tipo: "ELETRICO" | "HIDRAULICO" | "AERODINAMICO";
+  tipo: TipoTeste;
   aeronaveId: string;
 }
 

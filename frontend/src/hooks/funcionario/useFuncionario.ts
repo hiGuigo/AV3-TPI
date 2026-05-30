@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 import { getFuncionarios } from "../../services/funcionario.service";
 
-import type { Funcionarios } from "../../types/funcionario/funcionarios";
+import type { Funcionario } from "../../types/funcionario/funcionario";
 
 export function useFuncionarios() {
-  const [funcionarios, setFuncionarios] = useState<Funcionarios[]>([]);
+  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
 

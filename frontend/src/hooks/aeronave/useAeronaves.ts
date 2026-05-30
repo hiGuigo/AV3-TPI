@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 
 import { getAeronaves } from "../../services/aeronave.service";
+import type { Aeronave } from "../../types/aeronave/aeronave";
 
-import type { Aeronaves } from "../../types/aeronave/aeronaves";
+import { useAuth } from "../useAuth";
+
+import { getApiErrorMessage } from "../../utils/getApiErrorMessage";
 
 export function useAeronaves() {
   const navigate = useNavigate();
 
-  const [aeronaves, setAeronaves] = useState<Aeronaves[]>([]);
-
+  const [aeronaves, setAeronaves] = useState<Aeronave[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { usuario } = useAuth();
 
   useEffect(() => {
     async function fetchAeronaves() {
@@ -21,12 +23,11 @@ export function useAeronaves() {
         setIsLoading(true);
 
         const data = await getAeronaves();
-
         setAeronaves(data);
-      } catch (error) {
-        console.error(error);
 
-        setErrorMessage("Erro ao carregar aeronaves.");
+        setErrorMessage("");
+      } catch (error) {
+        setErrorMessage(getApiErrorMessage(error));
       } finally {
         setIsLoading(false);
       }
@@ -36,13 +37,15 @@ export function useAeronaves() {
   }, []);
 
   function handleNavigateToCreate() {
-    navigate("/cadastrarAeronave");
+    navigate("/aeronaves/cadastrar");
   }
 
   return {
     aeronaves,
+    usuario,
     isLoading,
     errorMessage,
     handleNavigateToCreate,
+    navigate,
   };
 }

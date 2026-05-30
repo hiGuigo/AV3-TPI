@@ -1,8 +1,8 @@
 import { api } from "../lib/axios";
 
-import type { CreateRelatorioData } from "../types/relatorio/createRelatorio";
-
 import type { Relatorio } from "../types/relatorio/relatorios";
+
+import type { CreateRelatorioData } from "../types/relatorio/createRelatorio";
 
 export async function getRelatorios() {
   const response = await api.get<Relatorio[]>("/relatorios");

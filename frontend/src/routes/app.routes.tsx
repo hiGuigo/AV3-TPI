@@ -11,7 +11,7 @@ import { LoginPage } from "../pages/LoginPage";
 // páginas de listagem
 import { AeronavesPage } from "../pages/aeronave/AeronavesPage";
 import { UsuariosPage } from "../pages/usuario/UsuariosPage";
-import { RelatoriosPage } from "../pages/relatorio/RelatorioPages";
+import { RelatoriosPage } from "../pages/relatorio/RelatoriosPages";
 
 // páginas de cadastro
 import { CadastrarAeronavePage } from "../pages/aeronave/CadastrarAeronavePage";
@@ -33,6 +33,7 @@ import { EditarUsuarioPage } from "../pages/usuario/EditarUsuarioPage";
 // tratamento das rotas
 import { PrivateRoute } from "./private.route";
 import { PublicRoute } from "./public.route";
+import { ProtectedRoute } from "./protected.route";
 
 // layout estrutural
 import { MainLayout } from "../layouts/MainLayout";
@@ -50,42 +51,73 @@ export function AppRoutes() {
         {/* rotas privadas (dentro do sistema, depois de fazer login) */}
         <Route element={<PrivateRoute />}>
           <Route element={<MainLayout />}>
-            {/* listagem */}
-            <Route path="/aeronaves" element={<AeronavesPage />} />
-            <Route path="/usuarios" element={<UsuariosPage />} />
-            <Route path="/relatorios" element={<RelatoriosPage />} />
+            {/* rotas nível admin */}
+            <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+              <Route path="/usuarios" element={<UsuariosPage />} />
 
-            {/* cadastro */}
-            <Route
-              path="/aeronaves/cadastrar"
-              element={<CadastrarAeronavePage />}
-            />
-            <Route
-              path="/usuarios/cadastrar"
-              element={<CadastrarUsuarioPage />}
-            />
-            <Route
-              path="/relatorios/cadastrar"
-              element={<CadastrarRelatorioPage />}
-            />
+              <Route
+                path="/aeronaves/cadastrar"
+                element={<CadastrarAeronavePage />}
+              />
 
-            {/* detalhes */}
-            <Route path="/aeronaves/:id" element={<DetalhesAeronavePage />} />
-            <Route path="/etapas/:id" element={<DetalhesEtapaPage />} />
-            <Route path="/pecas/:id" element={<DetalhesPecaPage />} />
-            <Route path="/testes/:id" element={<DetalhesTestePage />} />
-            <Route path="/relatorios/:id" element={<DetalhesRelatorioPage />} />
-            <Route path="/usuarios/:id" element={<DetalhesUsuarioPage />} />
+              <Route
+                path="/usuarios/cadastrar"
+                element={<CadastrarUsuarioPage />}
+              />
 
-            {/* edição */}
+              <Route path="/usuarios/:id" element={<DetalhesUsuarioPage />} />
+
+              <Route
+                path="/aeronaves/editar/:id"
+                element={<EditarAeronavePage />}
+              />
+
+              <Route
+                path="/usuarios/editar/:id"
+                element={<EditarUsuarioPage />}
+              />
+            </Route>
+            {/* fim rotas nível admin */}
+
+            {/* rotas nível engenheiro */}
             <Route
-              path="/aeronaves/editar/:id"
-              element={<EditarAeronavePage />}
-            />
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN", "ENGENHEIRO"]} />
+              }
+            >
+              <Route
+                path="/relatorios/cadastrar"
+                element={<CadastrarRelatorioPage />}
+              />
+            </Route>
+            {/* fim rotas nível engenheiro */}
+
+            {/* rotas nível operador */}
             <Route
-              path="/usuarios/editar/:id"
-              element={<EditarUsuarioPage />}
-            />
+              element={
+                <ProtectedRoute
+                  allowedRoles={["ADMIN", "ENGENHEIRO", "OPERADOR"]}
+                />
+              }
+            >
+              <Route path="/aeronaves" element={<AeronavesPage />} />
+
+              <Route path="/relatorios" element={<RelatoriosPage />} />
+
+              <Route path="/aeronaves/:id" element={<DetalhesAeronavePage />} />
+
+              <Route path="/etapas/:id" element={<DetalhesEtapaPage />} />
+
+              <Route path="/pecas/:id" element={<DetalhesPecaPage />} />
+
+              <Route path="/testes/:id" element={<DetalhesTestePage />} />
+
+              <Route
+                path="/relatorios/:id"
+                element={<DetalhesRelatorioPage />}
+              />
+            </Route>
+            {/* fim rotas nível operador */}
           </Route>
         </Route>
       </Routes>

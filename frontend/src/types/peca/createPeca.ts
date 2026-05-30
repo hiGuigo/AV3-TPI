@@ -1,6 +1,8 @@
+import type { TipoPeca } from "./peca";
+
 export interface CreatePecaData {
   nome: string;
-  tipo: "NACIONAL" | "IMPORTADA";
+  tipo: TipoPeca;
   fornecedor: string;
   aeronaveId: string;
 }

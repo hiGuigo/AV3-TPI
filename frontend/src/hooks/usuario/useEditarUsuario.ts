@@ -1,23 +1,30 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { getUsuarioById } from "../../services/usuario.service";
 import { updateUsuario } from "../../services/usuario.service";
 import { updateFuncionario } from "../../services/funcionario.service";
 
-import type { Usuario } from "../../types/funcionario/funcionario";
+import type { Permissao, Usuario } from "../../types/funcionario/funcionario";
+import { useAuth } from "../useAuth";
 
 type FormData = {
   username: string;
   senha: string;
-  permissao: "ADMIN" | "ENGENHEIRO" | "FUNCIONARIO";
+  permissao: Permissao;
 
   nome: string;
   telefone: string;
   endereco: string;
 };
 
-export function useEditarUsuario(id: string) {
+export function useEditarUsuario() {
+  const { id } = useParams();
+
+  const { usuario: usuarioLogado } = useAuth();
+
+  const isSelfEdit = usuarioLogado?.id === id;
+
   const navigate = useNavigate();
 
   const [usuario, setUsuario] = useState<Usuario | null>(null);
@@ -27,7 +34,7 @@ export function useEditarUsuario(id: string) {
   const [formData, setFormData] = useState<FormData>({
     username: "",
     senha: "",
-    permissao: "FUNCIONARIO",
+    permissao: "OPERADOR",
     nome: "",
     telefone: "",
     endereco: "",
@@ -107,6 +114,7 @@ export function useEditarUsuario(id: string) {
 
   return {
     usuario,
+    isSelfEdit,
     isLoading,
     isSaving,
     formData,

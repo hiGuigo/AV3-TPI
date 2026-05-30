@@ -24,7 +24,9 @@ export function CadastrarUsuarioPage() {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-3xl font-bold text-slate-800">Cadastrar Funcionário</h1>
+      <h1 className="text-3xl font-bold text-slate-800">
+        Cadastrar Funcionário
+      </h1>
 
       <div className="rounded-2xl bg-white p-8 shadow-sm">
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -117,7 +119,7 @@ export function CadastrarUsuarioPage() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 px-4 py-2"
+              className="bg-blue-600"
             >
               {isSubmitting ? "Cadastrando..." : "Cadastrar"}
             </Button>

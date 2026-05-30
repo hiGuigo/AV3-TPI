@@ -1,9 +1,9 @@
 import { api } from "../lib/axios";
 
-import type { Funcionarios } from "../types/funcionario/funcionarios";
+import type { Funcionario } from "../types/funcionario/funcionario";
 
 export async function getFuncionarios() {
-  const response = await api.get<Funcionarios[]>("/funcionarios");
+  const response = await api.get<Funcionario[]>("/funcionarios");
 
   return response.data;
 }

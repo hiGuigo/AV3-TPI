@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { createUsuario } from "../../services/usuario.service";
 
-import type { Permissao } from "../../types/permissao";
+import type { Permissao } from "../../types/funcionario/funcionario";
 
 import type { FormData, FormErrors } from "../../types/usuario/createUsuario";
 

@@ -1,3 +1,5 @@
+import { Button } from "./Button";
+
 import type { FeedbackModalProps } from "../../types/components/FeedbackModal";
 
 export function FeedbackModal({
@@ -19,12 +21,9 @@ export function FeedbackModal({
 
           <p className="text-gray-600">{message}</p>
 
-          <button
-            onClick={onClose}
-            className="bg-blue-600 text-white rounded-md px-4 py-2 font-bold cursor-pointer"
-          >
+          <Button onClick={onClose} className="bg-blue-600">
             {buttonText}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

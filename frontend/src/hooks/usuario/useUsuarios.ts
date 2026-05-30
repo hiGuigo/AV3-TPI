@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 import { getUsuarios } from "../../services/usuario.service";
 
-import type { Usuarios } from "../../types/usuario/usuarios";
+import type { Usuario } from "../../types/funcionario/funcionario";
 
 export function useUsuarios() {
   const navigate = useNavigate();
 
-  const [usuarios, setUsuarios] = useState<Usuarios[]>([]);
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
