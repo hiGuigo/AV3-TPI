@@ -26,6 +26,26 @@ export class RelatorioController {
     }
   }
 
+  async findUnique(req: FastifyRequest, res: FastifyReply) {
+    try {
+      const { id } = req.params as { id: string };
+
+      const relatorio = await this.relatorioService.findUnique(id);
+
+      return res.status(200).send(relatorio);
+    } catch (e) {
+      if (e instanceof Error) {
+        return res.status(400).send({
+          erro: e.message,
+        });
+      }
+
+      return res.status(500).send({
+        erro: "Erro interno",
+      });
+    }
+  }
+
   async create(
     req: FastifyRequest<{
       Body: CreateRelatorioBody;

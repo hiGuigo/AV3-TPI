@@ -19,6 +19,14 @@ export async function pecaRoutes(fastify: FastifyInstance) {
     pecaController.findAll.bind(pecaController),
   );
 
+  fastify.get<{ Params: { id: string } }>(
+    "/pecas/:id",
+    {
+      preHandler: [auth],
+    },
+    pecaController.findUnique.bind(pecaController),
+  );
+
   fastify.post<{ Body: CreatePecaBody }>(
     "/pecas",
     {

@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import cors from "@fastify/cors";
 
 // importação do módulo perf_hooks para medição das métricas
 import { performance } from "perf_hooks";
@@ -18,6 +19,7 @@ import { aeronaveRoutes } from "./routes/aeronave.routes";
 import { etapaRoutes } from "./routes/etapa.routes";
 import { pecaRoutes } from "./routes/peca.routes";
 import { testeRoutes } from "./routes/teste.routes";
+import { relatorioRoutes } from "./routes/relatorio.routes";
 
 // a função Fastify é a responsável por criar o servidor
 // ela é armazenada em um variável para facilidade
@@ -58,6 +60,11 @@ fastify.addHook("onResponse", async (req, reply) => {
   );
 });
 
+fastify.register(cors, {
+  origin: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+});
+
 // registrando o jason web token
 // ele deve vir antes das rotas porque adiciona funcionalidades
 // ao módulo que as rotas irão precisar utilizar
@@ -72,6 +79,7 @@ await fastify.register(aeronaveRoutes);
 await fastify.register(etapaRoutes);
 await fastify.register(pecaRoutes);
 await fastify.register(testeRoutes);
+await fastify.register(relatorioRoutes)
 
 // a inicialização do servidor demorar um pouco, por isso a função é asíncrona
 // definir "host: 0.0.0.0" permite que o servidor aceite conexões externas

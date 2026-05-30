@@ -18,6 +18,26 @@ export class AeronaveController {
     }
   }
 
+  async findUnique(req: FastifyRequest, res: FastifyReply) {
+    try {
+      const { id } = req.params as { id: string };
+
+      const aeronave = await this.aeronaveService.findUnique(id);
+
+      return res.status(200).send(aeronave);
+    } catch (e) {
+      if (e instanceof Error) {
+        return res.status(400).send({
+          erro: e.message,
+        });
+      }
+
+      return res.status(500).send({
+        erro: "Erro interno",
+      });
+    }
+  }
+
   async create(
     req: FastifyRequest<{ Body: CreateAeronaveBody }>,
     res: FastifyReply,

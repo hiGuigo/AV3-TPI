@@ -14,6 +14,14 @@ export async function etapaRoutes(fastify: FastifyInstance) {
     etapaController.findAll.bind(etapaController),
   );
 
+  fastify.get<{ Params: { id: string } }>(
+    "/etapas/:id",
+    {
+      preHandler: [auth],
+    },
+    etapaController.findUnique.bind(etapaController),
+  );
+
   fastify.post<{ Body: CreateEtapaBody }>(
     "/etapas",
     {
@@ -21,9 +29,10 @@ export async function etapaRoutes(fastify: FastifyInstance) {
       schema: {
         body: {
           type: "object",
-          required: ["prazo", "aeronaveId", "funcionariosIds"],
+          required: ["prazo", "nome", "aeronaveId", "funcionariosIds"],
           properties: {
             prazo: { type: "string" },
+            nome: { type: "string" },
             aeronaveId: { type: "string" },
             funcionariosIds: {
               type: "array",
@@ -47,6 +56,7 @@ export async function etapaRoutes(fastify: FastifyInstance) {
         body: {
           type: "object",
           properties: {
+            nome: { type: "string" },
             status: {
               type: "string",
               enum: ["ANDAMENTO", "CONCLUIDA"],

@@ -86,6 +86,11 @@ const token = await res.jwtSign({
 
 return res.status(200).send({
   token,
+  usuario: {
+    id: usuario.id,
+    username: usuario.username,
+    permissao: usuario.permissao,
+  },
 });
 ```
 
@@ -129,6 +134,8 @@ fastify.post<{
 
 **6. Funcionários não podem ser vinculados ao mesmo usuário**
 
+Obs.: Por mais que o back-end permita o cadastro de funcionários e usuários separadamente, o sistema utiliza outra forma de cadastrar um usuário através do site, onde um funcionário já é cadastrado com um usuário novo através do método "createWithUser()", que se baseia nos mesmos princípios do "create()", mas utiliza o método transaction() para cadastrar ambos funcionário e usuário associados.
+
 ```ts
 const usuarioEmUso = await this.funcionarioRepository.findIdUsuarioEmUso(
   data.usuarioId,
@@ -144,6 +151,8 @@ if (usuarioEmUso) {
 - Cada usuário possui um relacionamento único, tornando mais simples identificar responsabilidades e ações realizadas
 
 **7. Funcionários só podem ser vinculados a usuários existentes**
+
+Obs.: Por mais que o back-end permita o cadastro de funcionários e usuários separadamente, o sistema utiliza outra forma de cadastrar um usuário através do site, onde um funcionário já é cadastrado com um usuário novo através do método "createWithUser()", que se baseia nos mesmos princípios do "create()", mas utiliza o método transaction() para cadastrar ambos funcionário e usuário associados.
 
 ```ts
 const usuarioExiste = await prisma.usuario.findUnique({

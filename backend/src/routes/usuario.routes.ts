@@ -43,6 +43,14 @@ export async function usuarioRoutes(fastify: FastifyInstance) {
     usuarioController.findAll.bind(usuarioController),
   );
 
+  fastify.get<{ Params: { id: string } }>(
+    "/usuarios/:id",
+    {
+      preHandler: [auth],
+    },
+    usuarioController.findUnique.bind(usuarioController),
+  );
+
   // aqui é definida a rota,
   // a validação dos campos (aceitam somente o que é passado no schema)
   // e um "bind()" para que o contexto (controller) do método de requisição
