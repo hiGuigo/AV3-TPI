@@ -7,11 +7,15 @@ import { useAeronave } from "../../hooks/aeronave/useAeronave";
 import { ListarItensAeronave } from "../../components/ListarItensAeronave";
 
 import type { Etapa, Peca, Teste } from "../../types/aeronave/aeronave";
+import { CadastrarEtapaModal } from "../../components/CadastrarEtapaModal";
+import { useState } from "react";
 
 export function DetalhesAeronavePage() {
   const { id } = useParams();
 
   const { aeronave, isLoading } = useAeronave(id as string);
+
+  const [isEtapaModalOpen, setIsEtapaModalOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -45,6 +49,15 @@ export function DetalhesAeronavePage() {
             <p className="mt-1 text-sm text-slate-500 sm:text-base">
               Código: {aeronave.codigo}
             </p>
+            <p className="mt-1 text-sm text-slate-500 sm:text-base">
+              Capaciadade: {aeronave.capacidade}
+            </p>
+            <p className="mt-1 text-sm text-slate-500 sm:text-base">
+              Alcance: {aeronave.alcance}
+            </p>
+            <p className="mt-1 text-sm text-slate-500 sm:text-base">
+              Tipo: {aeronave.tipo}
+            </p>
           </div>
         </div>
       </div>
@@ -55,8 +68,11 @@ export function DetalhesAeronavePage() {
             Gerar relatório
           </Button>
 
-          <Button className="w-full bg-blue-600 px-4 py-2 hover:bg-blue-700">
-            Adicionar etapa
+          <Button
+            onClick={() => setIsEtapaModalOpen(true)}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            Adicionar Etapa
           </Button>
 
           <Button className="w-full bg-blue-600 px-4 py-2 hover:bg-blue-700">
@@ -97,6 +113,17 @@ export function DetalhesAeronavePage() {
           renderLabel={(teste) => teste.tipo}
         />
       </div>
+
+      <CadastrarEtapaModal
+        isOpen={isEtapaModalOpen}
+        aeronaveId={id!}
+        onClose={() => setIsEtapaModalOpen(false)}
+        onSuccess={() => {
+          setIsEtapaModalOpen(false);
+
+          window.location.reload();
+        }}
+      />
     </div>
   );
 }

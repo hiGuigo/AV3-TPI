@@ -10,7 +10,7 @@ export function Button({ className = "", children, ...props }: ButtonProps) {
     <button
       {...props}
       // className é o padrão, e ${className} são os estilos a adicionais
-      className={`rounded-lg font-semibold text-white transition disabled:opacity-50 ${className}`}
+      className={`rounded-lg font-semibold text-white transition disabled:opacity-50 hover:opacity-80 ${className}`}
     >
       {/* renderiza o conteúdo dentro do botão */}
       {children}
