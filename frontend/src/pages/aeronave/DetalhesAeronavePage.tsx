@@ -72,9 +72,11 @@ export function DetalhesAeronavePage() {
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <Button
             onClick={() =>
-              navigate("/relatorios/cadastrar", { state: { aeronaveId: aeronave.id } })
+              navigate("/relatorios/cadastrar", {
+                state: { aeronaveId: aeronave.id },
+              })
             }
-            className="w-full bg-blue-600 px-4 py-2 hover:bg-blue-700"
+            className="bg-blue-600"
           >
             Gerar relatório
           </Button>

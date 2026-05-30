@@ -46,7 +46,7 @@ export function LoginForm() {
       <Button
         type="submit"
         disabled={loading}
-        className="bg-blue-600 hover:bg-blue-700 py-2"
+        className="bg-blue-600"
       >
         {/* o texto também fica dinâmico de acordo com o estado de loading */}
         {loading ? "Entrando..." : "Entrar"}

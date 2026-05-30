@@ -117,7 +117,7 @@ export function CadastrarUsuarioPage() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 px-4 py-2"
+              className="bg-blue-600"
             >
               {isSubmitting ? "Cadastrando..." : "Cadastrar"}
             </Button>

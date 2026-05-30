@@ -18,7 +18,7 @@ export function AeronavesPage() {
       <div className="rounded-2xl bg-white p-8 shadow-sm">
         <Button
           onClick={() => navigate("/aeronaves/cadastrar")}
-          className="bg-blue-500 hover:bg-blue-600 px-4 py-2"
+          className="bg-blue-600"
         >
           Cadastrar Aeronave
         </Button>
@@ -30,6 +30,7 @@ export function AeronavesPage() {
             items={aeronaves}
             detailsBaseRoute="/aeronaves"
             editBaseRoute="/aeronaves/editar"
+            showEdit={true}
           />
         )}
       </div>

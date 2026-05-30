@@ -19,10 +19,7 @@ export function FeedbackModal({
 
           <p className="text-gray-600">{message}</p>
 
-          <button
-            onClick={onClose}
-            className="bg-blue-600 text-white rounded-md px-4 py-2 font-bold cursor-pointer"
-          >
+          <button onClick={onClose} className="bg-blue-600">
             {buttonText}
           </button>
         </div>

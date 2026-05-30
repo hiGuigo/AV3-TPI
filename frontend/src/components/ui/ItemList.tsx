@@ -17,7 +17,7 @@ export function ItemList({
           title={
             item.nome ||
             item.modelo ||
-            item.username || 
+            item.username ||
             new Date(item.createdAt).toLocaleDateString("pt-BR")
           }
           detailsRoute={`${detailsBaseRoute}/${item.id}`}

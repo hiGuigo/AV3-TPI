@@ -122,7 +122,7 @@ export function EditarAeronavePage() {
             <Button
               type="submit"
               disabled={isSaving}
-              className="bg-blue-600 hover:bg-blue-700 px-6 py-3 font-semibold shadow-md"
+              className="bg-blue-600"
             >
               {isSaving ? "Salvando..." : "Salvar alterações"}
             </Button>

@@ -25,7 +25,7 @@ export function Header({ onMenuClick }: HeaderProps) {
 
       <Button
         onClick={signOut}
-        className="bg-red-500 px-3 py-2 text-sm hover:bg-red-600 sm:px-4"
+        className="bg-red-500"
       >
         Sair
       </Button>

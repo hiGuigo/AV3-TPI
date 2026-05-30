@@ -21,7 +21,7 @@ export function ItemListCard({
       <div className="flex gap-4">
         <Button
           onClick={() => navigate(detailsRoute || `/item/${id}`)}
-          className="bg-blue-600 text-white font-bold rounded-md px-4 py-2 cursor-pointer"
+          className="bg-blue-600"
         >
           Detalhes
         </Button>
@@ -29,7 +29,7 @@ export function ItemListCard({
         {showEdit && (
           <Button
             onClick={() => navigate(editRoute || `/item/${id}/editar`)}
-            className="bg-blue-600 text-white font-bold rounded-md px-4 py-2 cursor-pointer"
+            className="bg-blue-600"
           >
             Editar
           </Button>

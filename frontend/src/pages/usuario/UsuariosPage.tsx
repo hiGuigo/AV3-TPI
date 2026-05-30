@@ -14,7 +14,7 @@ export function UsuariosPage() {
       <div className="rounded-2xl bg-white p-8 shadow-sm">
         <Button
           onClick={handleNavigateToCreate}
-          className="bg-blue-500 hover:bg-blue-600 px-4 py-2"
+          className="bg-blue-600"
         >
           Cadastrar Usuário
         </Button>

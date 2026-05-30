@@ -117,7 +117,7 @@ export function EditarUsuarioPage() {
             <Button
               type="submit"
               disabled={isSaving}
-              className="bg-blue-600 px-6 py-3 font-semibold"
+              className="bg-blue-600"
             >
               {isSaving ? "Salvando..." : "Salvar alterações"}
             </Button>
