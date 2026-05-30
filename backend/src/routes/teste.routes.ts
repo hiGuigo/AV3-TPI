@@ -19,6 +19,14 @@ export async function testeRoutes(fastify: FastifyInstance) {
     testeController.findAll.bind(testeController),
   );
 
+  fastify.get<{ Params: { id: string } }>(
+    "/testes/:id",
+    {
+      preHandler: [auth],
+    },
+    testeController.findUnique.bind(testeController),
+  );
+
   fastify.post<{ Body: CreateTesteBody }>(
     "/testes",
     {

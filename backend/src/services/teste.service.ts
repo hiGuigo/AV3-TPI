@@ -16,6 +16,16 @@ export class TesteService {
     return this.testeRepository.findMany();
   }
 
+  async findUnique(id: string) {
+    const teste = await this.testeRepository.findById(id);
+
+    if (!teste) {
+      throw new Error("Teste não encontrado");
+    }
+
+    return teste;
+  }
+
   async create(data: {
     tipo: "ELETRICO" | "HIDRAULICO" | "AERODINAMICO";
 

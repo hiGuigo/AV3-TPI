@@ -20,6 +20,7 @@ import { CadastrarUsuarioPage } from "../pages/usuario/CadastrarUsuarioPage";
 import { DetalhesAeronavePage } from "../pages/aeronave/DetalhesAeronavePage";
 import { DetalhesEtapaPage } from "../pages/etapa/DetalhesEtapaPage";
 import { DetalhesPecaPage } from "../pages/peca/DetalhesPecaPage";
+import { DetalhesTestePage } from "../pages/teste/DetalhesTestePage";
 
 // páginas de edição
 import { EditarAeronavePage } from "../pages/aeronave/EditarAeronavePage";
@@ -62,6 +63,7 @@ export function AppRoutes() {
             <Route path="/aeronaves/:id" element={<DetalhesAeronavePage />} />
             <Route path="/etapas/:id" element={<DetalhesEtapaPage />} />
             <Route path="/pecas/:id" element={<DetalhesPecaPage />} />
+            <Route path="/testes/:id" element={<DetalhesTestePage />} />
 
             {/* edição */}
             <Route
