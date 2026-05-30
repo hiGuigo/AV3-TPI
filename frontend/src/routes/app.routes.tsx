@@ -5,9 +5,20 @@
 // Route -> cada rota
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-// páginas disponibilizadas
+// página de login
 import { LoginPage } from "../pages/LoginPage";
-import { AeronavePage } from "../pages/AeronavesPage";
+
+// páginas de listagem
+import { AeronavesPage } from "../pages/aeronave/AeronavesPage";
+
+// páginas de cadastro
+import { CadastrarAeronavePage } from "../pages/aeronave/CadastrarAeronavePage";
+
+// páginas de detalhes
+import { DetalhesAeronavePage } from "../pages/aeronave/DetalhesAeronavePage";
+
+// páginas de edição
+import { EditarAeronavePage } from "../pages/aeronave/EditarAeronavePage";
 
 // tratamento das rotas
 import { PrivateRoute } from "./private.route";
@@ -22,13 +33,30 @@ export function AppRoutes() {
       <Routes>
         {/* rotas públicas (fora do sistema) */}
         <Route element={<PublicRoute />}>
+          {/* login */}
           <Route path="/" element={<LoginPage />} />
         </Route>
 
         {/* rotas privadas (dentro do sistema, depois de fazer login) */}
         <Route element={<PrivateRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/aeronaves" element={<AeronavePage />} />
+            {/* listagem */}
+            <Route path="/aeronaves" element={<AeronavesPage />} />
+
+            {/* cadastro */}
+            <Route
+              path="/aeronaves/cadastrar"
+              element={<CadastrarAeronavePage />}
+            />
+
+            {/* detalhes */}
+            <Route path="/aeronaves/:id" element={<DetalhesAeronavePage />} />
+
+            {/* edição */}
+            <Route
+              path="/aeronaves/editar/:id"
+              element={<EditarAeronavePage />}
+            />
           </Route>
         </Route>
       </Routes>

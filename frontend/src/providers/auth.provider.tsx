@@ -12,7 +12,7 @@ import type { ReactNode } from "react";
 import { AuthContext } from "../contexts/auth.context";
 
 // tipagem do usuário logado
-import type { Usuario } from "../types/auth/auth";
+import type { Usuario } from "../types/auth";
 
 // essa interface define o tipo de "children" como um componente renderizável
 // ou seja, lá em App.tsx, que é onde está declarado o provider,

@@ -2,7 +2,7 @@
 
 ## **Back-end**
 
-Abaixo está a organização principal do projeto e a responsabilidade de cada diretório/arquivo mais importante.
+Abaixo está a organização principal do back-end e a responsabilidade de cada diretório/arquivo mais importante.
 
 ```
 backend/
@@ -123,24 +123,20 @@ Response
 
 ## **Front-end**
 
-Abaixo está a organização principal do projeto e a responsabilidade de cada diretório/arquivo mais importante.
+Abaixo está a organização principal do front-end e a responsabilidade de cada diretório mais importante.
 
 ```
 frontend/
-├── src/
-│   ├── components/
-│   │   ├── forms/
-│   │   ├── layouts/
-│   │   └── ui/
-│   │
-│   ├── contexts/
-│   ├── hooks/
-│   ├── layouts/
-│   ├── pages/
-│   ├── providers/
-│   ├── routes/
-│   ├── services/
-│   └── types/
+└── src/
+    ├── components/
+    ├── contexts/
+    ├── hooks/
+    ├── layouts/
+    ├── pages/
+    ├── providers/
+    ├── routes/
+    ├── services/
+    └── types/
 ```
 
 ---

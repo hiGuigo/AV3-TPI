@@ -15,6 +15,12 @@ export async function aeronaveRoutes(fastify: FastifyInstance) {
     aeronaveController.findAll.bind(aeronaveController),
   );
 
+  fastify.get(
+    "/aeronaves/:id",
+    { preHandler: [auth] },
+    aeronaveController.findUnique.bind(aeronaveController),
+  );
+
   fastify.post<{ Body: CreateAeronaveBody }>(
     "/aeronaves",
     {

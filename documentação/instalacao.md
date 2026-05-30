@@ -58,19 +58,19 @@ E defina a sua assinatura para o JWT:
 JWT_SECRET=
 ```
 
-### 7. Crie o cliente do prisma
+### 7. Criar o cliente do prisma
 
 ```bash
 npx prisma generate
 ```
 
-### 8. Execute a migração do prisma
+### 8. Executar a migração do prisma
 
 ```bash
 npx prisma migrate dev
 ```
 
-### 9. Execute a seed para criar o primeiro usuário
+### 9. Executar a seed para criar o primeiro usuário
 
 ```bash
 npx prisma db seed
@@ -129,7 +129,7 @@ Caso queira testar as rotas por meio de um aplicativo:
 }
 ```
 
-2. Copie o token e cole em Bearer Token (Autorization)
+2. Copie o token e cole em Auth Type: Bearer Token (Autorization)
 
 <img src="./instalacao/postmanToken.png" />
 

@@ -6,20 +6,23 @@
 // e dentro disso, as rotas filhas
 
 import { Outlet } from "react-router-dom";
+import { useState } from "react";
 
 // componentes estruturais
 import { Sidebar } from "../components/layouts/Sidebar";
 import { Header } from "../components/layouts/Header";
 
 export function MainLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen bg-slate-100">
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex flex-1 flex-col">
-        <Header />
+        <Header onMenuClick={() => setSidebarOpen(true)} />
 
-        <main className="flex-1 p-8">
+        <main className="h-[calc(100vh-80px)] overflow-y-auto p-6">
           <Outlet />
         </main>
       </div>

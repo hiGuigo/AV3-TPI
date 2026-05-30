@@ -22,12 +22,14 @@ export class EtapaRepository {
 
   async create(data: {
     prazo: Date;
+    nome: string;
     status: "PENDENTE";
     aeronaveId: string;
     funcionariosIds: string[];
   }) {
     return prisma.etapa.create({
       data: {
+        nome: data.nome,
         prazo: data.prazo,
         status: data.status,
 
@@ -49,6 +51,7 @@ export class EtapaRepository {
   async update(
     id: string,
     data: {
+      nome?: string;
       status?: "ANDAMENTO" | "CONCLUIDA";
       adicionarFuncionariosIds?: string[];
       removerFuncionariosIds?: string[];

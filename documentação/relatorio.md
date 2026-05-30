@@ -97,6 +97,7 @@ Body: {
 
 ## 3. Resultados
 
+### **GET /usuarios**
 ### Visão Geral:
 
 | Quantidade de usuários | Latência | Tempo de processamento | Tempo de resposta |
@@ -109,19 +110,19 @@ Body: {
 
 <img src="./resultados/console_1usuario.png" />
 
-<img src="./resultados/autocannon_1usuario.png" />
+<img src="./resultados/autocannon_1usuario.png" width="400" />
 
 ### 5 Usuários:
 
 <img src="./resultados/console_5usuarios.png" />
 
-<img src="./resultados/autocannon_5usuarios.png" />
+<img src="./resultados/autocannon_5usuarios.png" width="400" />
 
 ### 10 usuários:
 
 <img src="./resultados/console_10usuarios.png" />
 
-<img src="./resultados/autocannon_10usuarios.png" />
+<img src="./resultados/autocannon_10usuarios.png" width="400" />
 
 ## 4. Análise dos Resultados
 

@@ -1,40 +1,83 @@
-import { Plane, ClipboardList, Users } from "lucide-react";
+import { Plane, ClipboardList, Users, X } from "lucide-react";
 
-// para o usuário logado
+import { useNavigate } from "react-router-dom";
+
 import { useAuth } from "../../hooks/useAuth";
+import { Button } from "../ui/Button";
 
-export function Sidebar() {
-  // "pegando" o usuário logado no hook
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const navigate = useNavigate();
+
   const { usuario } = useAuth();
 
-  // aqui os itens terão uma lógica simples para verificar a permissão do usuário
-  // caso a permissão do usuário seja X, somente as páginas Y serão exibidas
+  function navigateTo(path: string) {
+    navigate(path);
+    onClose();
+  }
+
   return (
-    <aside className="flex h-screen w-64 flex-col border-r border-slate-200 bg-slate-900 p-4 text-white">
-      <h1 className="mb-10 text-2xl font-bold">AeroCode</h1>
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          onClick={onClose}
+        />
+      )}
 
-      <nav className="flex flex-col gap-2">
-        {usuario?.permissao === "ADMIN" && (
-          <button className="flex items-center gap-3 rounded-lg px-4 py-3 transition hover:bg-slate-800">
-            <Plane size={20} />
-            Aeronaves
-          </button>
-        )}
+      <aside
+        className={`
+          fixed left-0 top-0 z-50 flex min-h-full w-64 flex-col
+          border-r border-slate-200 bg-slate-900 p-4 text-white
+          transition-transform duration-300
+          lg:static lg:translate-x-0
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
+      >
+        <div className="mb-10 flex items-center justify-between">
+          <h1 className="text-2xl font-bold">AeroCode</h1>
 
-        {usuario?.permissao === "ADMIN" && (
-          <button className="flex items-center gap-3 rounded-lg px-4 py-3 transition hover:bg-slate-800">
-            <ClipboardList size={20} />
-            Relatórios
+          <button onClick={onClose} className="lg:hidden">
+            <X size={24} />
           </button>
-        )}
+        </div>
 
-        {usuario?.permissao === "ADMIN" && (
-          <button className="flex items-center gap-3 rounded-lg px-4 py-3 transition hover:bg-slate-800">
-            <Users size={20} />
-            Usuários
-          </button>
-        )}
-      </nav>
-    </aside>
+        <nav className="flex flex-col gap-2">
+          {usuario?.permissao === "ADMIN" && (
+            <Button
+              onClick={() => navigateTo("/aeronaves")}
+              className="flex items-center gap-3 rounded-lg px-4 py-3 transition hover:bg-slate-800"
+            >
+              <Plane size={20} />
+              Aeronaves
+            </Button>
+          )}
+
+          {usuario?.permissao === "ADMIN" && (
+            <Button
+              onClick={() => navigateTo("/usuarios")}
+              className="flex items-center gap-3 rounded-lg px-4 py-3 transition hover:bg-slate-800"
+            >
+              <Users size={20} />
+              Usuários
+            </Button>
+          )}
+
+          {usuario?.permissao === "ADMIN" && (
+            <Button
+              onClick={() => navigateTo("/relatorios")}
+              className="flex items-center gap-3 rounded-lg px-4 py-3 transition hover:bg-slate-800"
+            >
+              <ClipboardList size={20} />
+              Relatórios
+            </Button>
+          )}
+        </nav>
+      </aside>
+    </>
   );
 }

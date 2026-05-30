@@ -1,20 +1,32 @@
-// importação do hook para a utilização da função signOut
+import { Menu } from "lucide-react";
+
 import { useAuth } from "../../hooks/useAuth";
 
-// componente de botão genérico
 import { Button } from "../ui/Button";
 
-export function Header() {
-  // "pegando" a função do hook
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+
+export function Header({ onMenuClick }: HeaderProps) {
   const { signOut } = useAuth();
 
   return (
-    <header className="flex h-20 items-center justify-between border-b border-slate-200 bg-white px-8">
-      <h2 className="text-2xl font-semibold text-slate-800">
-        Sistema Aerocode - Gestão de Produção de Aeronaves
-      </h2>
+    <header className="flex h-auto min-h-20 items-center justify-between border-b border-slate-200 bg-white px-4 py-4 lg:px-8">
+      <div className="flex items-center gap-4">
+        <button onClick={onMenuClick} className="lg:hidden">
+          <Menu size={28} />
+        </button>
 
-      <Button onClick={signOut} className="bg-red-500 hover:bg-red-600 px-4 py-2">
+        <h2 className="text-lg font-semibold text-slate-800 sm:text-xl lg:text-2xl">
+          Sistema Aerocode
+        </h2>
+      </div>
+
+      <Button
+        onClick={signOut}
+        className="bg-red-500 px-3 py-2 text-sm hover:bg-red-600 sm:px-4"
+      >
         Sair
       </Button>
     </header>

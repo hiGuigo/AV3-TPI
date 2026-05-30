@@ -26,6 +26,7 @@ export class EtapaService {
 
   async create(data: {
     prazo: string;
+    nome: string;
     aeronaveId: string;
     funcionariosIds: string[];
   }) {
@@ -44,6 +45,7 @@ export class EtapaService {
     },
     id: string,
     data: {
+      nome?: string;
       status?: "ANDAMENTO" | "CONCLUIDA";
       adicionarFuncionariosIds?: string[];
       removerFuncionariosIds?: string[];

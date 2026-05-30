@@ -59,8 +59,9 @@ fastify.addHook("onResponse", async (req, reply) => {
   );
 });
 
-await fastify.register(cors, {
-  origin: "http://localhost:5173",
+fastify.register(cors, {
+  origin: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 });
 
 // registrando o jason web token

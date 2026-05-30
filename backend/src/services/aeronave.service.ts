@@ -7,6 +7,16 @@ export class AeronaveService {
     return this.aeronaveRepository.findMany();
   }
 
+  async findUnique(id: string) {
+    const aeronave = await this.aeronaveRepository.findById(id);
+
+    if (!aeronave) {
+      throw new Error("Aeronave não encontrada");
+    }
+
+    return aeronave;
+  }
+
   async create(data: {
     codigo: string;
     modelo: string;

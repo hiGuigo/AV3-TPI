@@ -49,6 +49,7 @@ model Aeronave {
 
 model Etapa {
   id           String        @id @default(uuid())
+  nome         String
   prazo        DateTime
   status       StatusEtapa
   aeronaveId   String

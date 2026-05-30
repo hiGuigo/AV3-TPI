@@ -7,7 +7,7 @@
 import { createContext } from "react";
 
 // tipagem do usuário logado
-import type { Usuario } from "../types/auth/auth";
+import type { Usuario } from "../types/auth";
 
 // aqui é definido o formato do contexto, o que é aceito e o que não é
 interface AuthContextType {

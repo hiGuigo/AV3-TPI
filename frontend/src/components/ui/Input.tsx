@@ -1,5 +1,9 @@
 // essta tipagem garante que esse componente aceite todos os props normais de um html-input
-type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+import type { InputHTMLAttributes } from "react";
+
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+}
 
 // recebe como parâmetro:
 // className, para o estilo complementar
