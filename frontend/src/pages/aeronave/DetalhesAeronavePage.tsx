@@ -8,8 +8,10 @@ import { useAeronave } from "../../hooks/aeronave/useAeronave";
 import { ListarItensAeronave } from "../../components/ListarItensAeronave";
 
 import type { Etapa, Peca, Teste } from "../../types/aeronave/aeronave";
+
 import { CadastrarEtapaModal } from "../../components/CadastrarEtapaModal";
 import { CadastrarPecaModal } from "../../components/CadastrarPecaModal";
+import { CadastrarTesteModal } from "../../components/CadastrarTesteModal";
 
 export function DetalhesAeronavePage() {
   const { id } = useParams();
@@ -18,6 +20,7 @@ export function DetalhesAeronavePage() {
 
   const [isEtapaModalOpen, setIsEtapaModalOpen] = useState(false);
   const [isPecaModalOpen, setIsPecaModalOpen] = useState(false);
+  const [isTesteModalOpen, setIsTesteModalOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -84,8 +87,11 @@ export function DetalhesAeronavePage() {
             Adicionar Peça
           </Button>
 
-          <Button className="w-full bg-blue-600 px-4 py-2 hover:bg-blue-700">
-            Adicionar teste
+          <Button
+            onClick={() => setIsTesteModalOpen(true)}
+            className="bg-blue-600"
+          >
+            Adicionar Teste
           </Button>
         </div>
       </div>
@@ -136,6 +142,17 @@ export function DetalhesAeronavePage() {
         onClose={() => setIsPecaModalOpen(false)}
         onSuccess={() => {
           setIsPecaModalOpen(false);
+
+          window.location.reload();
+        }}
+      />
+
+      <CadastrarTesteModal
+        isOpen={isTesteModalOpen}
+        aeronaveId={id!}
+        onClose={() => setIsTesteModalOpen(false)}
+        onSuccess={() => {
+          setIsTesteModalOpen(false);
 
           window.location.reload();
         }}
