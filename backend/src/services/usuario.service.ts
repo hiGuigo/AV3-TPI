@@ -35,6 +35,16 @@ export class UsuarioService {
     return usuarios;
   }
 
+  async findUnique(id: string) {
+    const usuario = await this.usuarioRepository.findById(id);
+
+    if (!usuario) {
+      throw new Error("Usuário não encontrado");
+    }
+
+    return usuario;
+  }
+
   // esse é o método responsável por criar o usuário
   // e exige um objeto exatamente nesse formato
   async create(data: {

@@ -2,6 +2,7 @@ export interface Item {
   id: string;
   nome?: string;
   modelo?: string;
+  username?: string;
   createdAt?: string;
 }
 

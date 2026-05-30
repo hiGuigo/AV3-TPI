@@ -24,6 +24,7 @@ import { DetalhesEtapaPage } from "../pages/etapa/DetalhesEtapaPage";
 import { DetalhesPecaPage } from "../pages/peca/DetalhesPecaPage";
 import { DetalhesTestePage } from "../pages/teste/DetalhesTestePage";
 import { DetalhesRelatorioPage } from "../pages/relatorio/DetalhesRelatorioPage";
+import { DetalhesUsuarioPage } from "../pages/usuario/DetalhesUsuarioPage";
 
 // páginas de edição
 import { EditarAeronavePage } from "../pages/aeronave/EditarAeronavePage";
@@ -73,6 +74,7 @@ export function AppRoutes() {
             <Route path="/pecas/:id" element={<DetalhesPecaPage />} />
             <Route path="/testes/:id" element={<DetalhesTestePage />} />
             <Route path="/relatorios/:id" element={<DetalhesRelatorioPage />} />
+            <Route path="/usuarios/:id" element={<DetalhesUsuarioPage />} />
 
             {/* edição */}
             <Route

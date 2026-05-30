@@ -62,6 +62,10 @@ export class UsuarioRepository {
       where: {
         id,
       },
+      include: {
+        funcionario: true,
+        relatorios: true,
+      },
     });
   }
 

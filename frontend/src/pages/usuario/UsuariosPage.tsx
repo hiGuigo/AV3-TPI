@@ -28,6 +28,7 @@ export function UsuariosPage() {
             items={usuarios}
             detailsBaseRoute="/usuarios"
             editBaseRoute="/usuarios/editar"
+            showEdit={true}
           />
         )}
       </div>
