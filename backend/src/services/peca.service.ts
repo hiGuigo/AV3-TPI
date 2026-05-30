@@ -24,6 +24,16 @@ export class PecaService {
     return this.pecaRepository.findMany();
   }
 
+  async findUnique(id: string) {
+    const peca = await this.pecaRepository.findById(id);
+
+    if (!peca) {
+      throw new Error("Peça não encontrada");
+    }
+
+    return peca;
+  }
+
   async create(data: {
     nome: string;
     tipo: "NACIONAL" | "IMPORTADA";

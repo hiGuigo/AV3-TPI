@@ -26,6 +26,26 @@ export class PecaController {
     }
   }
 
+  async findUnique(req: FastifyRequest, res: FastifyReply) {
+    try {
+      const { id } = req.params as { id: string };
+
+      const peca = await this.pecaService.findUnique(id);
+
+      return res.status(200).send(peca);
+    } catch (e) {
+      if (e instanceof Error) {
+        return res.status(400).send({
+          erro: e.message,
+        });
+      }
+
+      return res.status(500).send({
+        erro: "Erro interno",
+      });
+    }
+  }
+
   async create(
     req: FastifyRequest<{ Body: CreatePecaBody }>,
     res: FastifyReply,
