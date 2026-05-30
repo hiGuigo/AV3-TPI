@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "./Button";
-
 import type { ItemListCardProps } from "../../types/components/ItemListCard";
 
 export function ItemListCard({
@@ -9,6 +8,7 @@ export function ItemListCard({
   title,
   detailsRoute,
   editRoute,
+  showEdit = true,
 }: ItemListCardProps) {
   const navigate = useNavigate();
 
@@ -26,12 +26,14 @@ export function ItemListCard({
           Detalhes
         </Button>
 
-        <Button
-          onClick={() => navigate(editRoute || `/item/${id}/editar`)}
-          className="bg-blue-600 text-white font-bold rounded-md px-4 py-2 cursor-pointer"
-        >
-          Editar
-        </Button>
+        {showEdit && (
+          <Button
+            onClick={() => navigate(editRoute || `/item/${id}/editar`)}
+            className="bg-blue-600 text-white font-bold rounded-md px-4 py-2 cursor-pointer"
+          >
+            Editar
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -3,4 +3,5 @@ export interface ItemListCardProps {
   title: string;
   detailsRoute?: string;
   editRoute?: string;
+  showEdit: boolean;
 }

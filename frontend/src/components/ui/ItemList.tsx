@@ -6,6 +6,7 @@ export function ItemList({
   items,
   detailsBaseRoute,
   editBaseRoute,
+  showEdit,
 }: ItemListProps) {
   return (
     <div>
@@ -13,9 +14,14 @@ export function ItemList({
         <ItemListCard
           key={item.id}
           id={item.id}
-          title={item.nome || item.modelo}
+          title={
+            item.nome ||
+            item.modelo ||
+            new Date(item.createdAt).toLocaleDateString("pt-BR")
+          }
           detailsRoute={`${detailsBaseRoute}/${item.id}`}
           editRoute={`${editBaseRoute}/${item.id}`}
+          showEdit={showEdit}
         />
       ))}
     </div>

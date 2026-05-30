@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import { Button } from "../../components/ui/Button";
@@ -15,6 +15,7 @@ import { CadastrarTesteModal } from "../../components/CadastrarTesteModal";
 
 export function DetalhesAeronavePage() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { aeronave, isLoading } = useAeronave(id as string);
 
@@ -69,7 +70,12 @@ export function DetalhesAeronavePage() {
 
       <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <Button className="w-full bg-blue-600 px-4 py-2 hover:bg-blue-700">
+          <Button
+            onClick={() =>
+              navigate("/relatorios/cadastrar", { state: { aeronaveId: aeronave.id } })
+            }
+            className="w-full bg-blue-600 px-4 py-2 hover:bg-blue-700"
+          >
             Gerar relatório
           </Button>
 

@@ -20,6 +20,14 @@ export async function relatorioRoutes(fastify: FastifyInstance) {
     relatorioController.findAll.bind(relatorioController),
   );
 
+  fastify.get<{ Params: { id: string } }>(
+    "/relatorios/:id",
+    {
+      preHandler: [auth],
+    },
+    relatorioController.findUnique.bind(relatorioController),
+  );
+
   fastify.post<{
     Body: CreateRelatorioBody;
   }>(

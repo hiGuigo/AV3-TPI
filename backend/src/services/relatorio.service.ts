@@ -11,6 +11,16 @@ export class RelatorioService {
     return this.relatorioRepository.findMany();
   }
 
+  async findUnique(id: string) {
+    const relatorio = await this.relatorioRepository.findById(id);
+
+    if (!relatorio) {
+      throw new Error("Relatório não encontrado");
+    }
+
+    return relatorio;
+  }
+
   async create(data: {
     cliente: string;
     dataEntrega: string;

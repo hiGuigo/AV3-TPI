@@ -11,16 +11,19 @@ import { LoginPage } from "../pages/LoginPage";
 // páginas de listagem
 import { AeronavesPage } from "../pages/aeronave/AeronavesPage";
 import { UsuariosPage } from "../pages/usuario/UsuariosPage";
+import { RelatoriosPage } from "../pages/relatorio/RelatorioPages";
 
 // páginas de cadastro
 import { CadastrarAeronavePage } from "../pages/aeronave/CadastrarAeronavePage";
 import { CadastrarUsuarioPage } from "../pages/usuario/CadastrarUsuarioPage";
+import { CadastrarRelatorioPage } from "../pages/relatorio/CadastrarRelatorioPage";
 
 // páginas de detalhes
 import { DetalhesAeronavePage } from "../pages/aeronave/DetalhesAeronavePage";
 import { DetalhesEtapaPage } from "../pages/etapa/DetalhesEtapaPage";
 import { DetalhesPecaPage } from "../pages/peca/DetalhesPecaPage";
 import { DetalhesTestePage } from "../pages/teste/DetalhesTestePage";
+import { DetalhesRelatorioPage } from "../pages/relatorio/DetalhesRelatorioPage";
 
 // páginas de edição
 import { EditarAeronavePage } from "../pages/aeronave/EditarAeronavePage";
@@ -48,6 +51,7 @@ export function AppRoutes() {
             {/* listagem */}
             <Route path="/aeronaves" element={<AeronavesPage />} />
             <Route path="/usuarios" element={<UsuariosPage />} />
+            <Route path="/relatorios" element={<RelatoriosPage />} />
 
             {/* cadastro */}
             <Route
@@ -58,12 +62,17 @@ export function AppRoutes() {
               path="/usuarios/cadastrar"
               element={<CadastrarUsuarioPage />}
             />
+            <Route
+              path="/relatorios/cadastrar"
+              element={<CadastrarRelatorioPage />}
+            />
 
             {/* detalhes */}
             <Route path="/aeronaves/:id" element={<DetalhesAeronavePage />} />
             <Route path="/etapas/:id" element={<DetalhesEtapaPage />} />
             <Route path="/pecas/:id" element={<DetalhesPecaPage />} />
             <Route path="/testes/:id" element={<DetalhesTestePage />} />
+            <Route path="/relatorios/:id" element={<DetalhesRelatorioPage />} />
 
             {/* edição */}
             <Route
