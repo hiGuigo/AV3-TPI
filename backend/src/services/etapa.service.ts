@@ -24,6 +24,16 @@ export class EtapaService {
     return this.etapaRepository.findMany();
   }
 
+  async findUnique(id: string) {
+    const etapa = await this.etapaRepository.findById(id);
+
+    if (!etapa) {
+      throw new Error("Etapa não encontrada");
+    }
+
+    return etapa;
+  }
+
   async create(data: {
     prazo: string;
     nome: string;

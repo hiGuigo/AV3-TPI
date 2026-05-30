@@ -18,6 +18,7 @@ import { CadastrarUsuarioPage } from "../pages/usuario/CadastrarUsuarioPage";
 
 // páginas de detalhes
 import { DetalhesAeronavePage } from "../pages/aeronave/DetalhesAeronavePage";
+import { DetalhesEtapaPage } from "../pages/etapa/DetalhesEtapaPage";
 
 // páginas de edição
 import { EditarAeronavePage } from "../pages/aeronave/EditarAeronavePage";
@@ -58,6 +59,7 @@ export function AppRoutes() {
 
             {/* detalhes */}
             <Route path="/aeronaves/:id" element={<DetalhesAeronavePage />} />
+            <Route path="/etapas/:id" element={<DetalhesEtapaPage />} />
 
             {/* edição */}
             <Route

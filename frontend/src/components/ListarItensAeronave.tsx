@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { useListarItensAeronave } from "../hooks/aeronave/useListarItensAeronave";
 
 import { Button } from "./ui/Button";
@@ -23,6 +25,8 @@ export function ListarItensAeronave<T extends BaseItem>({
   loadingMessage,
   renderLabel,
 }: Props<T>) {
+  const navigate = useNavigate();
+
   const { data, isLoading } = useListarItensAeronave<T>(aeronaveId, resource);
 
   if (isLoading) {
@@ -57,7 +61,10 @@ export function ListarItensAeronave<T extends BaseItem>({
               {renderLabel(item)}
             </p>
 
-            <Button className="w-full bg-blue-600 p-2 text-sm hover:bg-blue-700 sm:w-auto">
+            <Button
+              onClick={() => navigate(`/${resource}/${item.id}`)}
+              className="w-full bg-blue-600 p-2 text-sm sm:w-auto"
+            >
               Detalhes
             </Button>
           </div>

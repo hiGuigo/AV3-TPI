@@ -14,6 +14,14 @@ export async function etapaRoutes(fastify: FastifyInstance) {
     etapaController.findAll.bind(etapaController),
   );
 
+  fastify.get<{ Params: { id: string } }>(
+    "/etapas/:id",
+    {
+      preHandler: [auth],
+    },
+    etapaController.findUnique.bind(etapaController),
+  );
+
   fastify.post<{ Body: CreateEtapaBody }>(
     "/etapas",
     {
