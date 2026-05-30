@@ -47,7 +47,7 @@ export function EditarUsuarioPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-6 items-center">
-            <div className="rounded-xl bg-slate-50 px-4 py-3">******</div>
+            <div className="rounded-xl bg-slate-50 px-4 py-3">Senha omitida</div>
 
             <Input
               type="password"
@@ -69,7 +69,7 @@ export function EditarUsuarioPage() {
             >
               <option value="ADMIN">ADMIN</option>
               <option value="ENGENHEIRO">ENGENHEIRO</option>
-              <option value="FUNCIONARIO">FUNCIONARIO</option>
+              <option value="OPERADOR">OPERADOR</option>
             </select>
           </div>
 

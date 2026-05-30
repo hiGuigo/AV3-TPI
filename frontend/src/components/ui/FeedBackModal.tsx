@@ -1,4 +1,5 @@
 import type { FeedbackModalProps } from "../../types/components/FeedbackModal";
+import { Button } from "./Button";
 
 export function FeedbackModal({
   isOpen,
@@ -19,9 +20,9 @@ export function FeedbackModal({
 
           <p className="text-gray-600">{message}</p>
 
-          <button onClick={onClose} className="bg-blue-600">
+          <Button onClick={onClose} className="bg-blue-600">
             {buttonText}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

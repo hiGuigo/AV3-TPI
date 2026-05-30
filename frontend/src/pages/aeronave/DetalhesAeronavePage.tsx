@@ -12,10 +12,12 @@ import type { Etapa, Peca, Teste } from "../../types/aeronave/aeronave";
 import { CadastrarEtapaModal } from "../../components/CadastrarEtapaModal";
 import { CadastrarPecaModal } from "../../components/CadastrarPecaModal";
 import { CadastrarTesteModal } from "../../components/CadastrarTesteModal";
+import { useAuth } from "../../hooks/useAuth";
 
 export function DetalhesAeronavePage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { usuario } = useAuth();
 
   const { aeronave, isLoading } = useAeronave(id as string);
 
@@ -68,41 +70,46 @@ export function DetalhesAeronavePage() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <Button
-            onClick={() =>
-              navigate("/relatorios/cadastrar", {
-                state: { aeronaveId: aeronave.id },
-              })
-            }
-            className="bg-blue-600"
-          >
-            Gerar relatório
-          </Button>
+      {(usuario?.permissao === "ADMIN" ||
+        usuario?.permissao === "ENGENHEIRO") && (
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="grid w-full gap-3 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
+            <Button
+              onClick={() =>
+                navigate("/relatorios/cadastrar", {
+                  state: { aeronaveId: aeronave.id },
+                })
+              }
+              className="bg-blue-600 w-full"
+            >
+              Gerar relatório
+            </Button>
 
-          <Button
-            onClick={() => setIsEtapaModalOpen(true)}
-            className="bg-blue-600"
-          >
-            Adicionar Etapa
-          </Button>
+            {usuario?.permissao === "ADMIN" && (
+              <Button
+                onClick={() => setIsEtapaModalOpen(true)}
+                className="bg-blue-600 w-full"
+              >
+                Adicionar Etapa
+              </Button>
+            )}
 
-          <Button
-            onClick={() => setIsPecaModalOpen(true)}
-            className="bg-blue-600"
-          >
-            Adicionar Peça
-          </Button>
+            <Button
+              onClick={() => setIsPecaModalOpen(true)}
+              className="bg-blue-600 w-full"
+            >
+              Adicionar Peça
+            </Button>
 
-          <Button
-            onClick={() => setIsTesteModalOpen(true)}
-            className="bg-blue-600"
-          >
-            Adicionar Teste
-          </Button>
+            <Button
+              onClick={() => setIsTesteModalOpen(true)}
+              className="bg-blue-600 w-full"
+            >
+              Adicionar Teste
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <ListarItensAeronave<Etapa>

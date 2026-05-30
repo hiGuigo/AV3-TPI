@@ -39,15 +39,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         </div>
 
         <nav className="flex flex-col gap-2">
-          {usuario?.permissao === "ADMIN" && (
-            <Button
-              onClick={() => navigateTo("/aeronaves")}
-              className="flex items-center gap-3 bg-slate-800"
-            >
-              <Plane size={20} />
-              Aeronaves
-            </Button>
-          )}
+          <Button
+            onClick={() => navigateTo("/aeronaves")}
+            className="flex items-center gap-3 bg-slate-800"
+          >
+            <Plane size={20} />
+            Aeronaves
+          </Button>
 
           {usuario?.permissao === "ADMIN" && (
             <Button
@@ -59,7 +57,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             </Button>
           )}
 
-          {usuario?.permissao === "ADMIN" && (
+          {(usuario?.permissao === "ADMIN" ||
+            usuario?.permissao === "ENGENHEIRO") && (
             <Button
               onClick={() => navigateTo("/relatorios")}
               className="flex items-center gap-3 bg-slate-800"

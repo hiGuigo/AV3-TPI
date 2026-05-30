@@ -1,6 +1,7 @@
 import { Button } from "../../components/ui/Button";
 import { ErrorMessage } from "../../components/ui/ErrorMessage";
 import { useTeste } from "../../hooks/teste/useTeste";
+import { useAuth } from "../../hooks/useAuth";
 
 export function DetalhesTestePage() {
   const {
@@ -12,6 +13,7 @@ export function DetalhesTestePage() {
     reprovarTeste,
   } = useTeste();
 
+  const { usuario } = useAuth();
   if (isLoading) return <p>Carregando teste...</p>;
 
   if (!teste) {
@@ -44,17 +46,19 @@ export function DetalhesTestePage() {
         </div>
       </div>
 
-      {!isFinalizado && (
-        <div className="flex justify-end gap-3">
-          <Button className="bg-green-600" onClick={aprovarTeste}>
-            Aprovar
-          </Button>
+      {(usuario?.permissao === "ADMIN" ||
+        usuario?.permissao === "ENGENHEIRO") &&
+        !isFinalizado && (
+          <div className="flex justify-end gap-3">
+            <Button className="bg-green-600" onClick={aprovarTeste}>
+              Aprovar
+            </Button>
 
-          <Button className="bg-red-600" onClick={reprovarTeste}>
-            Reprovar
-          </Button>
-        </div>
-      )}
+            <Button className="bg-red-600" onClick={reprovarTeste}>
+              Reprovar
+            </Button>
+          </div>
+        )}
     </div>
   );
 }

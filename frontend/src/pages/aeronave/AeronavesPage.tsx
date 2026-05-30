@@ -5,9 +5,12 @@ import { Button } from "../../components/ui/Button";
 import { ItemList } from "../../components/ui/ItemList";
 
 import { useAeronaves } from "../../hooks/aeronave/useAeronaves";
+import { useAuth } from "../../hooks/useAuth";
 
 export function AeronavesPage() {
   const { aeronaves, isLoading } = useAeronaves();
+
+  const { usuario } = useAuth();
 
   const navigate = useNavigate();
 
@@ -16,12 +19,14 @@ export function AeronavesPage() {
       <h1 className="text-3xl font-bold text-slate-800">Aeronaves</h1>
 
       <div className="rounded-2xl bg-white p-8 shadow-sm">
-        <Button
-          onClick={() => navigate("/aeronaves/cadastrar")}
-          className="bg-blue-600"
-        >
-          Cadastrar Aeronave
-        </Button>
+        {usuario?.permissao === "ADMIN" && (
+          <Button
+            onClick={() => navigate("/aeronaves/cadastrar")}
+            className="bg-blue-600"
+          >
+            Cadastrar Aeronave
+          </Button>
+        )}
 
         {isLoading ? (
           <p>Carregando aeronaves...</p>

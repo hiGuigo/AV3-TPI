@@ -1,9 +1,12 @@
 import { Button } from "../../components/ui/Button";
 import { ErrorMessage } from "../../components/ui/ErrorMessage";
 import { usePeca } from "../../hooks/peca/usePeca";
+import { useAuth } from "../../hooks/useAuth";
 
 export function DetalhesPecaPage() {
   const { peca, isLoading, errorMessage, avancarStatus } = usePeca();
+
+  const { usuario } = useAuth();
 
   if (isLoading) return <p>Carregando peça...</p>;
 
@@ -42,13 +45,15 @@ export function DetalhesPecaPage() {
         </div>
       </div>
 
-      {!isFinal && (
-        <div className="flex justify-end">
-          <Button className="bg-blue-600" onClick={avancarStatus}>
-            Avançar status
-          </Button>
-        </div>
-      )}
+      {(usuario?.permissao === "ADMIN" ||
+        usuario?.permissao === "ENGENHEIRO") &&
+        !isFinal && (
+          <div className="flex justify-end">
+            <Button className="bg-blue-600" onClick={avancarStatus}>
+              Avançar status
+            </Button>
+          </div>
+        )}
     </div>
   );
 }

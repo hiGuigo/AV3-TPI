@@ -31,6 +31,12 @@ export class UsuarioRepository {
       where: {
         username,
       },
+      select: {
+        id: true,
+        username: true,
+        senha: true,
+        permissao: true,
+      },
     });
   }
 
@@ -62,7 +68,11 @@ export class UsuarioRepository {
       where: {
         id,
       },
-      include: {
+      select: {
+        id: true,
+        username: true,
+        permissao: true,
+        createdAt: true,
         funcionario: true,
         relatorios: true,
       },
