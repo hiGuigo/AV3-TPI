@@ -1,5 +1,6 @@
-import type { FeedbackModalProps } from "../../types/components/FeedbackModal";
 import { Button } from "./Button";
+
+import type { FeedbackModalProps } from "../../types/components/FeedbackModal";
 
 export function FeedbackModal({
   isOpen,

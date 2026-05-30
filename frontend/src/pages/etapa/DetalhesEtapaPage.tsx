@@ -20,6 +20,7 @@ export function DetalhesEtapaPage() {
   } = useEtapa();
 
   const { usuario } = useAuth();
+  
   if (isLoading) return <p>Carregando etapa...</p>;
 
   if (!etapa) {

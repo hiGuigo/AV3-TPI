@@ -1,3 +1,5 @@
+export type Permissao = "ADMIN" | "ENGENHEIRO" | "OPERADOR";
+
 export interface RelatorioResumo {
   id: string;
   cliente: string;
@@ -14,7 +16,7 @@ export interface Funcionario {
 export interface Usuario {
   id: string;
   username: string;
-  permissao: "ADMIN" | "ENGENHEIRO" | "FUNCIONARIO";
+  permissao: Permissao;
   createdAt: string;
 
   funcionario?: Funcionario | null;

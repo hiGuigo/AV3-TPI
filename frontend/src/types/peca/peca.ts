@@ -1,8 +1,12 @@
+export type TipoPeca = "NACIONAL" | "IMPORTADA";
+
+export type StatusPeca = "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA";
+
 export interface Peca {
   id: string;
   nome: string;
-  tipo: "NACIONAL" | "IMPORTADA";
+  tipo: TipoPeca;
   fornecedor: string;
-  status: "EM_PRODUCAO" | "EM_TRANSPORTE" | "PRONTA";
+  status: StatusPeca;
   aeronaveId: string;
 }

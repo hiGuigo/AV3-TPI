@@ -1,8 +1,10 @@
 import { Plane, ClipboardList, Users, X } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "../../hooks/useAuth";
 import { Button } from "../ui/Button";
+
+import { useAuth } from "../../hooks/useAuth";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -11,6 +13,7 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const navigate = useNavigate();
+
   const { usuario } = useAuth();
 
   function navigateTo(path: string) {

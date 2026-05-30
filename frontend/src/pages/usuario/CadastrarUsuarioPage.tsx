@@ -24,7 +24,9 @@ export function CadastrarUsuarioPage() {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-3xl font-bold text-slate-800">Cadastrar Funcionário</h1>
+      <h1 className="text-3xl font-bold text-slate-800">
+        Cadastrar Funcionário
+      </h1>
 
       <div className="rounded-2xl bg-white p-8 shadow-sm">
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">

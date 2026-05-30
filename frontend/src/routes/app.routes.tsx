@@ -54,19 +54,24 @@ export function AppRoutes() {
             {/* rotas nível admin */}
             <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
               <Route path="/usuarios" element={<UsuariosPage />} />
+
               <Route
                 path="/aeronaves/cadastrar"
                 element={<CadastrarAeronavePage />}
               />
+
               <Route
                 path="/usuarios/cadastrar"
                 element={<CadastrarUsuarioPage />}
               />
+
               <Route path="/usuarios/:id" element={<DetalhesUsuarioPage />} />
+
               <Route
                 path="/aeronaves/editar/:id"
                 element={<EditarAeronavePage />}
               />
+
               <Route
                 path="/usuarios/editar/:id"
                 element={<EditarUsuarioPage />}
@@ -96,11 +101,17 @@ export function AppRoutes() {
               }
             >
               <Route path="/aeronaves" element={<AeronavesPage />} />
+
               <Route path="/relatorios" element={<RelatoriosPage />} />
+
               <Route path="/aeronaves/:id" element={<DetalhesAeronavePage />} />
+
               <Route path="/etapas/:id" element={<DetalhesEtapaPage />} />
+
               <Route path="/pecas/:id" element={<DetalhesPecaPage />} />
+
               <Route path="/testes/:id" element={<DetalhesTestePage />} />
+
               <Route
                 path="/relatorios/:id"
                 element={<DetalhesRelatorioPage />}

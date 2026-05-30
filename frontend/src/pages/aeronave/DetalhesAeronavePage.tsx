@@ -1,9 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
-
 import { Button } from "../../components/ui/Button";
-
-import { useAeronave } from "../../hooks/aeronave/useAeronave";
 
 import { ListarItensAeronave } from "../../components/ListarItensAeronave";
 
@@ -12,18 +7,29 @@ import type { Etapa, Peca, Teste } from "../../types/aeronave/aeronave";
 import { CadastrarEtapaModal } from "../../components/CadastrarEtapaModal";
 import { CadastrarPecaModal } from "../../components/CadastrarPecaModal";
 import { CadastrarTesteModal } from "../../components/CadastrarTesteModal";
+
+import { useAeronave } from "../../hooks/aeronave/useAeronave";
 import { useAuth } from "../../hooks/useAuth";
 
 export function DetalhesAeronavePage() {
-  const { id } = useParams();
-  const navigate = useNavigate();
   const { usuario } = useAuth();
 
-  const { aeronave, isLoading } = useAeronave(id as string);
+  const {
+    aeronave,
+    isLoading,
+    aeronaveId,
 
-  const [isEtapaModalOpen, setIsEtapaModalOpen] = useState(false);
-  const [isPecaModalOpen, setIsPecaModalOpen] = useState(false);
-  const [isTesteModalOpen, setIsTesteModalOpen] = useState(false);
+    isEtapaModalOpen,
+    isPecaModalOpen,
+    isTesteModalOpen,
+
+    openEtapaModal,
+    openPecaModal,
+    openTesteModal,
+
+    goToRelatorio,
+    handleSuccess,
+  } = useAeronave();
 
   if (isLoading) {
     return (
@@ -48,63 +54,33 @@ export function DetalhesAeronavePage() {
       </h1>
 
       <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-800 sm:text-3xl">
-              {aeronave.modelo}
-            </h2>
+        <h2 className="text-2xl font-bold">{aeronave.modelo}</h2>
 
-            <p className="mt-1 text-sm text-slate-500 sm:text-base">
-              Código: {aeronave.codigo}
-            </p>
-            <p className="mt-1 text-sm text-slate-500 sm:text-base">
-              Capaciadade: {aeronave.capacidade}
-            </p>
-            <p className="mt-1 text-sm text-slate-500 sm:text-base">
-              Alcance: {aeronave.alcance}
-            </p>
-            <p className="mt-1 text-sm text-slate-500 sm:text-base">
-              Tipo: {aeronave.tipo}
-            </p>
-          </div>
-        </div>
+        <p>Código: {aeronave.codigo}</p>
+        <p>Capacidade: {aeronave.capacidade}</p>
+        <p>Alcance: {aeronave.alcance}</p>
+        <p>Tipo: {aeronave.tipo}</p>
       </div>
 
       {(usuario?.permissao === "ADMIN" ||
         usuario?.permissao === "ENGENHEIRO") && (
         <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div className="grid w-full gap-3 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
-            <Button
-              onClick={() =>
-                navigate("/relatorios/cadastrar", {
-                  state: { aeronaveId: aeronave.id },
-                })
-              }
-              className="bg-blue-600 w-full"
-            >
+          <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
+            <Button onClick={goToRelatorio} className="bg-blue-600 w-full">
               Gerar relatório
             </Button>
 
             {usuario?.permissao === "ADMIN" && (
-              <Button
-                onClick={() => setIsEtapaModalOpen(true)}
-                className="bg-blue-600 w-full"
-              >
+              <Button onClick={openEtapaModal} className="bg-blue-600 w-full">
                 Adicionar Etapa
               </Button>
             )}
 
-            <Button
-              onClick={() => setIsPecaModalOpen(true)}
-              className="bg-blue-600 w-full"
-            >
+            <Button onClick={openPecaModal} className="bg-blue-600 w-full">
               Adicionar Peça
             </Button>
 
-            <Button
-              onClick={() => setIsTesteModalOpen(true)}
-              className="bg-blue-600 w-full"
-            >
+            <Button onClick={openTesteModal} className="bg-blue-600 w-full">
               Adicionar Teste
             </Button>
           </div>
@@ -134,7 +110,7 @@ export function DetalhesAeronavePage() {
           aeronaveId={aeronave.id}
           resource="testes"
           title="Testes"
-          emptyMessage="Nenhum teste cadastrado."
+          emptyMessage="Nenhum teste cadastrada."
           loadingMessage="Carregando testes..."
           renderLabel={(teste) => teste.tipo}
         />
@@ -142,35 +118,23 @@ export function DetalhesAeronavePage() {
 
       <CadastrarEtapaModal
         isOpen={isEtapaModalOpen}
-        aeronaveId={id!}
-        onClose={() => setIsEtapaModalOpen(false)}
-        onSuccess={() => {
-          setIsEtapaModalOpen(false);
-
-          window.location.reload();
-        }}
+        aeronaveId={aeronaveId}
+        onClose={() => handleSuccess("etapa")}
+        onSuccess={() => handleSuccess("etapa")}
       />
 
       <CadastrarPecaModal
         isOpen={isPecaModalOpen}
-        aeronaveId={id!}
-        onClose={() => setIsPecaModalOpen(false)}
-        onSuccess={() => {
-          setIsPecaModalOpen(false);
-
-          window.location.reload();
-        }}
+        aeronaveId={aeronaveId}
+        onClose={() => handleSuccess("peca")}
+        onSuccess={() => handleSuccess("peca")}
       />
 
       <CadastrarTesteModal
         isOpen={isTesteModalOpen}
-        aeronaveId={id!}
-        onClose={() => setIsTesteModalOpen(false)}
-        onSuccess={() => {
-          setIsTesteModalOpen(false);
-
-          window.location.reload();
-        }}
+        aeronaveId={aeronaveId}
+        onClose={() => handleSuccess("teste")}
+        onSuccess={() => handleSuccess("teste")}
       />
     </div>
   );

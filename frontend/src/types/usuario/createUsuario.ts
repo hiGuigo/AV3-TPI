@@ -1,4 +1,4 @@
-import type { Permissao } from "../permissao";
+import type { Permissao } from "../funcionario/funcionario";
 
 export interface CreateUsuarioData {
   nome: string;

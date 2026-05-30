@@ -1,8 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 
 import { getPecaById, updatePeca } from "../../services/peca.service";
-import type { Peca } from "../../types/peca/peca";
+
+import type { Peca, StatusPeca } from "../../types/peca/peca";
+
+const proximoStatus: Record<StatusPeca, StatusPeca | null> = {
+  EM_PRODUCAO: "EM_TRANSPORTE",
+  EM_TRANSPORTE: "PRONTA",
+  PRONTA: null,
+};
 
 export function usePeca() {
   const { id } = useParams();
@@ -14,41 +21,46 @@ export function usePeca() {
   useEffect(() => {
     if (!id) return;
 
-    let isMounted = true;
+    let active = true;
 
-    getPecaById(id)
-      .then((data) => {
-        if (!isMounted) return;
+    async function load() {
+      try {
+        setIsLoading(true);
+
+        const data = await getPecaById(id);
+
+        if (!active) return;
+
         setPeca(data);
         setErrorMessage("");
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error(error);
-        if (!isMounted) return;
+
+        if (!active) return;
+
         setErrorMessage("Erro ao carregar peça.");
-      })
-      .finally(() => {
-        if (!isMounted) return;
-        setIsLoading(false);
-      });
+      } finally {
+        if (active) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    load();
 
     return () => {
-      isMounted = false;
+      active = false;
     };
   }, [id]);
+
+  const isFinal = useMemo(() => {
+    return peca?.status === "PRONTA";
+  }, [peca]);
 
   async function avancarStatus() {
     if (!peca) return;
 
-    let nextStatus: "EM_TRANSPORTE" | "PRONTA" | null = null;
-
-    if (peca.status === "EM_PRODUCAO") {
-      nextStatus = "EM_TRANSPORTE";
-    }
-
-    if (peca.status === "EM_TRANSPORTE") {
-      nextStatus = "PRONTA";
-    }
+    const nextStatus = proximoStatus[peca.status as StatusPeca];
 
     if (!nextStatus) return;
 
@@ -70,5 +82,6 @@ export function usePeca() {
     isLoading,
     errorMessage,
     avancarStatus,
+    isFinal,
   };
 }

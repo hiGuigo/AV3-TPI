@@ -1,5 +1,3 @@
-import { useParams } from "react-router-dom";
-
 import { Button } from "../../components/ui/Button";
 import { FeedbackModal } from "../../components/ui/FeedBackModal";
 import { Input } from "../../components/ui/Input";
@@ -7,22 +5,16 @@ import { Input } from "../../components/ui/Input";
 import { useEditarAeronave } from "../../hooks/aeronave/useEditarAeronave";
 
 export function EditarAeronavePage() {
-  const { id } = useParams();
-
   const {
     aeronave,
-
     isLoading,
     isSaving,
-
     formData,
     handleChange,
-
     handleSubmit,
-
     isModalOpen,
     handleCloseModal,
-  } = useEditarAeronave(id as string);
+  } = useEditarAeronave();
 
   if (isLoading || !aeronave) {
     return (
@@ -119,11 +111,7 @@ export function EditarAeronavePage() {
           </div>
 
           <div className="flex justify-end pt-4">
-            <Button
-              type="submit"
-              disabled={isSaving}
-              className="bg-blue-600"
-            >
+            <Button type="submit" disabled={isSaving} className="bg-blue-600">
               {isSaving ? "Salvando..." : "Salvar alterações"}
             </Button>
           </div>

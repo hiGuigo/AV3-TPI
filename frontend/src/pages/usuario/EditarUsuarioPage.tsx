@@ -1,5 +1,3 @@
-import { useParams } from "react-router-dom";
-
 import { Button } from "../../components/ui/Button";
 import { FeedbackModal } from "../../components/ui/FeedBackModal";
 import { Input } from "../../components/ui/Input";
@@ -7,8 +5,6 @@ import { Input } from "../../components/ui/Input";
 import { useEditarUsuario } from "../../hooks/usuario/useEditarUsuario";
 
 export function EditarUsuarioPage() {
-  const { id } = useParams();
-
   const {
     usuario,
     isLoading,
@@ -18,7 +14,7 @@ export function EditarUsuarioPage() {
     handleSubmit,
     isModalOpen,
     handleCloseModal,
-  } = useEditarUsuario(id as string);
+  } = useEditarUsuario();
 
   if (isLoading || !usuario) {
     return (
@@ -47,7 +43,9 @@ export function EditarUsuarioPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-6 items-center">
-            <div className="rounded-xl bg-slate-50 px-4 py-3">Senha omitida</div>
+            <div className="rounded-xl bg-slate-50 px-4 py-3">
+              Senha omitida
+            </div>
 
             <Input
               type="password"
@@ -114,11 +112,7 @@ export function EditarUsuarioPage() {
           </div>
 
           <div className="flex justify-end pt-4">
-            <Button
-              type="submit"
-              disabled={isSaving}
-              className="bg-blue-600"
-            >
+            <Button type="submit" disabled={isSaving} className="bg-blue-600">
               {isSaving ? "Salvando..." : "Salvar alterações"}
             </Button>
           </div>

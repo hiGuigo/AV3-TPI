@@ -1,18 +1,10 @@
-import { useNavigate } from "react-router-dom";
-
 import { Button } from "../../components/ui/Button";
-
 import { ItemList } from "../../components/ui/ItemList";
 
 import { useAeronaves } from "../../hooks/aeronave/useAeronaves";
-import { useAuth } from "../../hooks/useAuth";
 
 export function AeronavesPage() {
-  const { aeronaves, isLoading } = useAeronaves();
-
-  const { usuario } = useAuth();
-
-  const navigate = useNavigate();
+  const { aeronaves, usuario, isLoading, navigate } = useAeronaves();
 
   return (
     <div className="flex flex-col gap-2">

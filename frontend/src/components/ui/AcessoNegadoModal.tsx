@@ -15,7 +15,8 @@ export function AcessoNegadoModal({
         <h2 className="text-lg font-semibold">Acesso negado!</h2>
 
         <p className="text-sm">
-          Achou que ia conseguir acessar página protegida? Achou <strong>ERRADO</strong>.
+          Achou que ia conseguir acessar página protegida? Achou{" "}
+          <strong>ERRADO</strong>.
         </p>
 
         <p className="text-sm">

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { getEtapaById, updateEtapa } from "../../services/etapa.service";
 import { useFuncionarios } from "../../hooks/funcionario/useFuncionario";
 
-import type { Etapa } from "../../types/etapa/etapa";
+import type { Etapa, EtapaStatus } from "../../types/etapa/etapa";
 
 export function useEtapa() {
   const { id } = useParams();
@@ -22,30 +22,36 @@ export function useEtapa() {
 
     let isMounted = true;
 
-    getEtapaById(id)
-      .then((data) => {
+    async function load() {
+      try {
+        setIsLoading(true);
+
+        const data = await getEtapaById(id);
+
         if (!isMounted) return;
 
         setEtapa(data);
         setErrorMessage("");
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error(error);
 
         if (!isMounted) return;
 
         setErrorMessage("Erro ao carregar etapa.");
-      })
-      .finally(() => {
-        if (!isMounted) return;
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
 
-        setIsLoading(false);
-      });
+    load();
 
     return () => {
       isMounted = false;
     };
   }, [id]);
+
   const isConcluida = etapa?.status === "CONCLUIDA";
 
   const funcionariosDisponiveis = useMemo(() => {
@@ -72,7 +78,10 @@ export function useEtapa() {
     if (!etapa) return;
 
     try {
-      await updateEtapa(etapa.id, { status: "ANDAMENTO" });
+      await updateEtapa(etapa.id, {
+        status: "ANDAMENTO" as EtapaStatus,
+      });
+
       await refetchEtapa();
     } catch (error) {
       console.error(error);
@@ -84,7 +93,10 @@ export function useEtapa() {
     if (!etapa) return;
 
     try {
-      await updateEtapa(etapa.id, { status: "CONCLUIDA" });
+      await updateEtapa(etapa.id, {
+        status: "CONCLUIDA" as EtapaStatus,
+      });
+
       await refetchEtapa();
     } catch (error) {
       console.error(error);
@@ -107,9 +119,11 @@ export function useEtapa() {
     } catch (error) {
       console.error(error);
 
+      const err = error;
+
       setErrorMessage(
-        error?.response?.data?.erro ??
-          error?.response?.data?.message ??
+        err?.response?.data?.erro ??
+          err?.response?.data?.message ??
           "Erro ao adicionar funcionário.",
       );
     }
@@ -137,11 +151,15 @@ export function useEtapa() {
     } catch (error) {
       console.error(error);
 
+      const err = error;
+
       setErrorMessage(
-        error?.response?.data?.erro ??
-          error?.response?.data?.message ??
+        err?.response?.data?.erro ??
+          err?.response?.data?.message ??
           "Erro ao remover funcionário.",
       );
+
+      return false;
     }
   }
 

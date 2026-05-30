@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useAeronave } from "./useAeronave";
 
@@ -9,10 +9,12 @@ import type { UpdateAeronaveData } from "../../types/aeronave/updateAeronave";
 
 type TipoAeronave = "COMERCIAL" | "MILITAR";
 
-export function useEditarAeronave(id: string) {
+export function useEditarAeronave() {
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
-  const { aeronave, isLoading } = useAeronave(id);
+  const { aeronave, isLoading } = useAeronave();
 
   const [isSaving, setIsSaving] = useState(false);
 

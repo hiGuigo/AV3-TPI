@@ -4,12 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 import { getAeronaves } from "../../services/aeronave.service";
 
-import type { Aeronaves } from "../../types/aeronave/aeronaves";
+import type { Aeronave } from "../../types/aeronave/aeronave";
+import { useAuth } from "../useAuth";
 
 export function useAeronaves() {
   const navigate = useNavigate();
 
-  const [aeronaves, setAeronaves] = useState<Aeronaves[]>([]);
+  const [aeronaves, setAeronaves] = useState<Aeronave[]>([]);
+
+  const { usuario } = useAuth();
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,8 +44,10 @@ export function useAeronaves() {
 
   return {
     aeronaves,
+    usuario,
     isLoading,
     errorMessage,
     handleNavigateToCreate,
+    navigate,
   };
 }
