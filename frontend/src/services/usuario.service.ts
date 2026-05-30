@@ -13,12 +13,24 @@ export async function createUsuario(data: CreateUsuarioData) {
 
 export async function getUsuarioById(id: string) {
   const response = await api.get<Usuario>(`/usuarios/${id}`);
-  
+
   return response.data;
 }
 
 export async function getUsuarios() {
   const response = await api.get<Usuarios[]>("/usuarios");
 
+  return response.data;
+}
+
+export async function updateUsuario(
+  id: string,
+  data: {
+    username?: string;
+    senha?: string;
+    permissao?: "ADMIN" | "ENGENHEIRO" | "FUNCIONARIO";
+  },
+) {
+  const response = await api.patch(`/usuarios/${id}`, data);
   return response.data;
 }

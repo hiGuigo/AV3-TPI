@@ -7,3 +7,15 @@ export async function getFuncionarios() {
 
   return response.data;
 }
+
+export async function updateFuncionario(
+  id: string,
+  data: {
+    nome?: string;
+    telefone?: string;
+    endereco?: string;
+  },
+) {
+  const response = await api.patch(`/funcionarios/${id}`, data);
+  return response.data;
+}

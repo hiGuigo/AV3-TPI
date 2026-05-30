@@ -28,6 +28,7 @@ import { DetalhesUsuarioPage } from "../pages/usuario/DetalhesUsuarioPage";
 
 // páginas de edição
 import { EditarAeronavePage } from "../pages/aeronave/EditarAeronavePage";
+import { EditarUsuarioPage } from "../pages/usuario/EditarUsuarioPage";
 
 // tratamento das rotas
 import { PrivateRoute } from "./private.route";
@@ -80,6 +81,10 @@ export function AppRoutes() {
             <Route
               path="/aeronaves/editar/:id"
               element={<EditarAeronavePage />}
+            />
+            <Route
+              path="/usuarios/editar/:id"
+              element={<EditarUsuarioPage />}
             />
           </Route>
         </Route>
