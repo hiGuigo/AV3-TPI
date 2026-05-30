@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 import { Button } from "../../components/ui/Button";
 
@@ -8,7 +9,7 @@ import { ListarItensAeronave } from "../../components/ListarItensAeronave";
 
 import type { Etapa, Peca, Teste } from "../../types/aeronave/aeronave";
 import { CadastrarEtapaModal } from "../../components/CadastrarEtapaModal";
-import { useState } from "react";
+import { CadastrarPecaModal } from "../../components/CadastrarPecaModal";
 
 export function DetalhesAeronavePage() {
   const { id } = useParams();
@@ -16,6 +17,7 @@ export function DetalhesAeronavePage() {
   const { aeronave, isLoading } = useAeronave(id as string);
 
   const [isEtapaModalOpen, setIsEtapaModalOpen] = useState(false);
+  const [isPecaModalOpen, setIsPecaModalOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -70,13 +72,16 @@ export function DetalhesAeronavePage() {
 
           <Button
             onClick={() => setIsEtapaModalOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-blue-600"
           >
             Adicionar Etapa
           </Button>
 
-          <Button className="w-full bg-blue-600 px-4 py-2 hover:bg-blue-700">
-            Adicionar peça
+          <Button
+            onClick={() => setIsPecaModalOpen(true)}
+            className="bg-blue-600"
+          >
+            Adicionar Peça
           </Button>
 
           <Button className="w-full bg-blue-600 px-4 py-2 hover:bg-blue-700">
@@ -120,6 +125,17 @@ export function DetalhesAeronavePage() {
         onClose={() => setIsEtapaModalOpen(false)}
         onSuccess={() => {
           setIsEtapaModalOpen(false);
+
+          window.location.reload();
+        }}
+      />
+
+      <CadastrarPecaModal
+        isOpen={isPecaModalOpen}
+        aeronaveId={id!}
+        onClose={() => setIsPecaModalOpen(false)}
+        onSuccess={() => {
+          setIsPecaModalOpen(false);
 
           window.location.reload();
         }}
