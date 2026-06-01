@@ -136,6 +136,7 @@ frontend/
     ├── providers/
     ├── routes/
     ├── services/
+    ├── utils/
     └── types/
 ```
 
@@ -176,6 +177,10 @@ Camada responsável pela comunicação com a API backend.
 #### `src/types/`
 
 Definições globais de TypeScript.
+
+#### `src/utils/`
+
+Responsável por funções/recursos auxiliadores
 
 ### Fluxo de uma requisição autenticada
 

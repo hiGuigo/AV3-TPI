@@ -36,6 +36,7 @@
 ## Etapa
 
 - id
+- nome
 - prazo
 - status (`PENDENTE`, `ANDAMENTO` ou `CONCLUIDA`)
 - aeronave associada

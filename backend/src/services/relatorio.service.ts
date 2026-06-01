@@ -2,13 +2,27 @@ import { RelatorioRepository } from "../repositories/relatorio.repository";
 import { AeronaveRepository } from "../repositories/aeronave.repository";
 import { UsuarioRepository } from "../repositories/usuario.repository";
 
+import { performance } from "perf_hooks";
+
 export class RelatorioService {
   private relatorioRepository = new RelatorioRepository();
   private aeronaveRepository = new AeronaveRepository();
   private usuarioRepository = new UsuarioRepository();
 
   async findAll() {
-    return this.relatorioRepository.findMany();
+    const inicioProcessamento = performance.now();
+
+    const relatorios = await this.relatorioRepository.findMany();
+
+    const fimProcessamento = performance.now();
+
+    const tempoProcessamento = fimProcessamento - inicioProcessamento;
+
+    console.log(
+      `[Service] findAll executado em ${tempoProcessamento.toFixed(2)} ms`,
+    );
+
+    return relatorios;
   }
 
   async findUnique(id: string) {

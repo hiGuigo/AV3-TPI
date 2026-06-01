@@ -1,10 +1,24 @@
 import { AeronaveRepository } from "../repositories/aeronave.repository";
 
+import { performance } from "perf_hooks";
+
 export class AeronaveService {
   private aeronaveRepository = new AeronaveRepository();
 
   async findAll() {
-    return this.aeronaveRepository.findMany();
+    const inicioProcessamento = performance.now();
+
+    const aeronaves = await this.aeronaveRepository.findMany();
+
+    const fimProcessamento = performance.now();
+
+    const tempoProcessamento = fimProcessamento - inicioProcessamento;
+
+    console.log(
+      `[Service] findAll executado em ${tempoProcessamento.toFixed(2)} ms`,
+    );
+
+    return aeronaves;
   }
 
   async findUnique(id: string) {
