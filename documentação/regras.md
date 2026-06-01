@@ -158,8 +158,6 @@ if (usuarioEmUso) {
 
 Obs.: Por mais que o back-end permita o cadastro de funcionários e usuários separadamente, o sistema utiliza outra forma de cadastrar um usuário através do site, onde um funcionário já é cadastrado com um usuário novo através do método "createWithUser()", que se baseia nos mesmos princípios do "create()", mas utiliza o método transaction() para cadastrar ambos funcionário e usuário associados.
 
-<img src="./regras/7. funcionario usuario existe.gif"/>
-
 ```ts
 const usuarioExiste = await prisma.usuario.findUnique({
   where: { id: data.usuarioId },
@@ -317,7 +315,7 @@ if (funcionariosAtuaisIds.length > 0 && totalFinalFuncionarios <= 0) {
 
 **15. Testes avaliados não podem ser deletados**
 
-Obs.: A funcionalidade de exclusão de testes não foi incorporada ao front-end. Essa decisão foi tomada visando garantir a integridade dos registros. No entanto, a funcionlidade existe e pode ser utilizada para atender às regras de negócio se assim for necessário.
+Obs.: A funcionalidade de exclusão de testes não foi incorporada ao front-end. Essa decisão foi tomada visando garantir a integridade dos registros. No entanto, a funcionalidade existe e pode ser utilizada para atender às regras de negócio se assim for necessário.
 
 ```ts
 if (teste.resultado === "APROVADO" || teste.resultado === "REPROVADO") {
