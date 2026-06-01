@@ -1,5 +1,7 @@
 import { TesteRepository } from "../repositories/teste.repository";
 
+import { performance } from "perf_hooks";
+
 export class TesteService {
   private testeRepository = new TesteRepository();
 
@@ -13,7 +15,19 @@ export class TesteService {
   }
 
   async findAll() {
-    return this.testeRepository.findMany();
+    const inicioProcessamento = performance.now();
+
+    const testes = await this.testeRepository.findMany();
+
+    const fimProcessamento = performance.now();
+
+    const tempoProcessamento = fimProcessamento - inicioProcessamento;
+
+    console.log(
+      `[Service] findAll executado em ${tempoProcessamento.toFixed(2)} ms`,
+    );
+
+    return testes;
   }
 
   async findUnique(id: string) {

@@ -1,5 +1,7 @@
 import { PecaRepository } from "../repositories/peca.repository";
 
+import { performance } from "perf_hooks";
+
 export class PecaService {
   private pecaRepository = new PecaRepository();
 
@@ -21,7 +23,19 @@ export class PecaService {
   }
 
   async findAll() {
-    return this.pecaRepository.findMany();
+    const inicioProcessamento = performance.now();
+
+    const pecas = await this.pecaRepository.findMany();
+
+    const fimProcessamento = performance.now();
+
+    const tempoProcessamento = fimProcessamento - inicioProcessamento;
+
+    console.log(
+      `[Service] findAll executado em ${tempoProcessamento.toFixed(2)} ms`,
+    );
+
+    return pecas;
   }
 
   async findUnique(id: string) {

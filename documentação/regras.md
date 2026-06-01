@@ -19,6 +19,8 @@ return this.usuarioRepository.create({
 
 **2. Usuário (username) existente não pode ser cadastrado novamente**
 
+<img src="./regras/2. usuario existente.gif"/>
+
 ```ts
 const usuarioExiste = await this.usuarioRepository.findByUsername(
   data.username,
@@ -56,6 +58,8 @@ model Usuario {
 - Dificulta previsões sequenciais de identificadores por questões de segurança
 
 **4. Utilização de JWT (Jason Web Token) para autenticação stateless**
+
+<img src="./regras/4. token.gif"/>
 
 ```ts
 // configuração do payload + user (fastify-jwt.d.ts)
@@ -132,7 +136,7 @@ fastify.post<{
 - Melhora a segurança da aplicação
 - Centraliza regras de autorização de forma organizada e escalável
 
-**6. Funcionários não podem ser vinculados ao mesmo usuário**
+**6. Funcionários não podem ser vinculados a um usuário em uso**
 
 Obs.: Por mais que o back-end permita o cadastro de funcionários e usuários separadamente, o sistema utiliza outra forma de cadastrar um usuário através do site, onde um funcionário já é cadastrado com um usuário novo através do método "createWithUser()", que se baseia nos mesmos princípios do "create()", mas utiliza o método transaction() para cadastrar ambos funcionário e usuário associados.
 
@@ -154,6 +158,8 @@ if (usuarioEmUso) {
 
 Obs.: Por mais que o back-end permita o cadastro de funcionários e usuários separadamente, o sistema utiliza outra forma de cadastrar um usuário através do site, onde um funcionário já é cadastrado com um usuário novo através do método "createWithUser()", que se baseia nos mesmos princípios do "create()", mas utiliza o método transaction() para cadastrar ambos funcionário e usuário associados.
 
+<img src="./regras/7. funcionario usuario existe.gif"/>
+
 ```ts
 const usuarioExiste = await prisma.usuario.findUnique({
   where: { id: data.usuarioId },
@@ -170,6 +176,8 @@ if (!usuarioExiste) {
 
 **8. Aeronaves não podem ser criadas com código já existente**
 
+<img src="./regras/8. cadastrar aeronave existente.gif"/>
+
 ```ts
 const existe = await this.aeronaveRepository.findByCodigo(data.codigo);
 
@@ -182,6 +190,8 @@ if (existe) {
 - Impede que duas aeronaves sejam confundidas em processos internos ou relatórios
 
 **9. Regras de transição de status das etapas**
+
+<img src="./regras/9. fluxo etapa.gif"/>
 
 ```ts
 // *o sistema não permite que no update, sejam feitas alterações em "status" que não "ANDAMENTO" ou "CONCLUIDA"
@@ -208,6 +218,8 @@ private validarTransicaoPeca(
 - Garante que relatórios e métricas reflitam corretamente o estado real das operações
 
 **10. Regras de transição de status das peças**
+
+<img src="./regras/10. fluxo peca.gif"/>
 
 ```ts
 // *o sistema não permite que no update, sejam feitas alterações em "status" que não "EM_TRANSPORTE" ou "PRONTA"
@@ -239,6 +251,8 @@ private validarTransicaoPeca(
 
 **11. Regras de transição de status dos testes**
 
+<img src="./regras/11. fluxo teste.gif"/>
+
 ```ts
 // *o sistema não permite que no update, sejam feitas alterações em "status" que não "APROVADO" ou "REPROVADO"
 private validarTransicaoTeste(
@@ -257,6 +271,8 @@ private validarTransicaoTeste(
 
 **12. Funcionários só podem ser alterados enquanto a etapa não estiver concluída**
 
+<img src="./regras/12. etapa concluida.gif"/>
+
 ```ts
 const alterandoFuncionarios =
   (data.adicionarFuncionariosIds?.length || 0) > 0 ||
@@ -273,6 +289,8 @@ if (etapa.status === "CONCLUIDA" && alterandoFuncionarios) {
 
 **13. Etapas concluídas devem possuir pelo menos um funcionário**
 
+<img src="./regras/13. ultimo funcionario.gif"/>
+
 ```ts
 if (data.status === "CONCLUIDA" && totalFinalFuncionarios <= 0) {
   throw new Error("Etapa concluída deve possuir pelo menos um funcionário");
@@ -284,6 +302,8 @@ if (data.status === "CONCLUIDA" && totalFinalFuncionarios <= 0) {
 - Mantém coerência operacional e auditoria do processo
 
 **14. O sistema impede remover todos os funcionários de uma etapa**
+
+Obs.: A funcionalidade de remover múltiplos funcionários será implementada futuramente no front-end do projeto.
 
 ```ts
 if (funcionariosAtuaisIds.length > 0 && totalFinalFuncionarios <= 0) {
@@ -297,6 +317,8 @@ if (funcionariosAtuaisIds.length > 0 && totalFinalFuncionarios <= 0) {
 
 **15. Testes avaliados não podem ser deletados**
 
+Obs.: A funcionalidade de exclusão de testes não foi incorporada ao front-end. Essa decisão foi tomada visando garantir a integridade dos registros. No entanto, a funcionlidade existe e pode ser utilizada para atender às regras de negócio se assim for necessário.
+
 ```ts
 if (teste.resultado === "APROVADO" || teste.resultado === "REPROVADO") {
   throw new Error("Não é possível deletar um teste já avaliado");
@@ -309,6 +331,8 @@ if (teste.resultado === "APROVADO" || teste.resultado === "REPROVADO") {
 
 **16. Usuários administradores não podem deletar a si próprios**
 
+Obs.: Também por razões de integridade, foi optado não implementar a exclusão direta dos usuários no front-end. No entanto, a funcionalidade está disponível para ser utilizada, caso assim seja necessário.
+
 ```ts
 if (usuario.id === id) {
   throw new Error("Você não pode deletar a si próprio");
@@ -319,6 +343,8 @@ if (usuario.id === id) {
 - Garante continuidade de gerenciamento do sistema
 
 **17. O sistema deve possuir pelo menos um administrador**
+
+Obs.: Complemento da regra 16. Assim como explicado na regra anterior, foi optado não incluir a funcionalidade de exclusão ao front-end.
 
 ```ts
 const usuarios = await this.usuarioRepository.findMany();
@@ -334,6 +360,8 @@ if (usuarioExiste.permissao === "ADMIN" && totalAdmins === 1) {
 - Evita bloqueio administrativo da aplicação
 
 **18. Engenheiros possuem restrições de edição em testes**
+
+Obs.: No front-end, esse aviso de restrição não chega a ser evidenciado, uma vez que a funcionalidade de edição de testes não foi inclusa na plataforma online.
 
 ```ts
 if (usuario.permissao === "ENGENHEIRO") {
@@ -388,15 +416,15 @@ O administrador possui todas as permissões do engenheiro e também pode:
 - cadastrar usuários
 - editar usuários
 - visualizar usuários
-- excluir usuários
+- excluir usuários (implementado apenas no back-end)
 - cadastrar funcionários
 - editar funcionários
 - visualizar funcionários
-- excluir funcionários
+- excluir funcionários (implementado apenas no back-end)
 - cadastrar diretamente um funcionário com usuário
 - adicionar etapas
-- editar etapas
-- excluir etapas
-- editar peças
-- excluir peças
-- excluir testes
+- editar etapas (implementado apenas no back-end)
+- excluir etapas (implementado apenas no back-end)
+- editar peças (implementado apenas no back-end)
+- excluir peças (implementado apenas no back-end)
+- excluir testes (implementado apenas no back-end)

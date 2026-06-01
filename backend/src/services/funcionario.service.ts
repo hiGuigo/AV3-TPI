@@ -4,11 +4,25 @@ import bcrypt from "bcrypt";
 
 import { FuncionarioRepository } from "../repositories/funcionario.repository";
 
+import { performance } from "perf_hooks";
+
 export class FuncionarioService {
   private funcionarioRepository = new FuncionarioRepository();
 
   async findAll() {
-    return this.funcionarioRepository.findMany();
+    const inicioProcessamento = performance.now();
+
+    const funcionarios = await this.funcionarioRepository.findMany();
+
+    const fimProcessamento = performance.now();
+
+    const tempoProcessamento = fimProcessamento - inicioProcessamento;
+
+    console.log(
+      `[Service] findAll executado em ${tempoProcessamento.toFixed(2)} ms`,
+    );
+
+    return funcionarios;
   }
 
   async create(data: {

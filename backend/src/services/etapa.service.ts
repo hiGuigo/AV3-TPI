@@ -1,5 +1,7 @@
 import { EtapaRepository } from "../repositories/etapa.repository";
 
+import { performance } from "perf_hooks";
+
 export class EtapaService {
   private etapaRepository = new EtapaRepository();
 
@@ -21,7 +23,19 @@ export class EtapaService {
   }
 
   async findAll() {
-    return this.etapaRepository.findMany();
+    const inicioProcessamento = performance.now();
+
+    const etapas = await this.etapaRepository.findMany();
+
+    const fimProcessamento = performance.now();
+
+    const tempoProcessamento = fimProcessamento - inicioProcessamento;
+
+    console.log(
+      `[Service] findAll executado em ${tempoProcessamento.toFixed(2)} ms`,
+    );
+
+    return etapas;
   }
 
   async findUnique(id: string) {
