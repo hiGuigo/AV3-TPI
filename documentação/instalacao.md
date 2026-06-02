@@ -74,6 +74,9 @@ npx prisma migrate dev
 
 ```bash
 npx prisma db seed
+
+username: admin
+senha: admin
 ```
 
 ### 10. Iniciar o servidor em modo de desenvolvimento
